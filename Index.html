@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaptia — Estudiar sin peleas</title>
+
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:light-dark(#f7fbfb,#0d1719);
+  --surface:light-dark(#fff,#142124);
+  --surface2:light-dark(#edf8f6,#183033);
+  --text:light-dark(#173238,#eef8f7);
+  --muted:light-dark(#63767b,#a9bec1);
+  --blue:light-dark(#79aee8,#8dbdf1);
+  --blue2:light-dark(#eaf3fc,#20394d);
+  --mint:light-dark(#70cdb8,#75d3bc);
+  --mint2:light-dark(#e4f7f2,#1a3a34);
+  --border:light-dark(#dbe8e7,#2a4144);
+  --shadow:0 18px 50px rgba(33,72,77,.10)
+}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+
+.app{
+  min-height:100vh;
+  background:var(--bg);
+}
+
+.container{
+  width:min(1120px,calc(100% - 40px));
+  margin:auto;
+}
+
+/* =========================
+   NAV
+========================= */
+
+.nav{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:22px;
+  letter-spacing:-.03em;
+}
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:900;
+}
+
+.navlinks{
+  display:flex;
+  gap:28px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.navlinks a{
+  text-decoration:none;
+  color:inherit;
+}
+
+.navcta{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  padding:72px 0 70px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:var(--blue2);
+  filter:blur(4px);
+  right:-220px;
+  top:-220px;
+  opacity:.8;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:64px;
+  align-items:center;
+  position:relative;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 11px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  color:#4d7779;
+}
+
+.badge i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--mint);
+}
+
+h1{
+  font-size:clamp(42px,5vw,68px);
+  line-height:1.02;
+  letter-spacing:-.055em;
+  margin:20px 0 22px;
+  max-width:760px;
+}
+
+h2{
+  font-size:clamp(30px,4vw,44px);
+  line-height:1.08;
+  letter-spacing:-.04em;
+  margin:0 0 14px;
+}
+
+.lead{
+  font-size:19px;
+  color:var(--muted);
+  max-width:690px;
+}
+
+.actions{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:30px;
+}
+
+.primary{
+  border:0;
+  border-radius:13px;
+  background:#287f8b;
+  color:#fff;
+  padding:15px 22px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(40,127,139,.20);
+}
+
+.micro{
+  font-size:12px;
+  color:var(--text);
+  opacity:.72;
+  margin-top:12px;
+}
+
+/* =========================
+   AUTORITY STRIP
+========================= */
+
+.authority{
+  padding:0 0 25px;
+}
+
+.authority-inner{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:17px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  text-align:center;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb,var(--surface2) 55%,transparent),
+    transparent
+  );
+}
+
+.authority-item{
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:.01em;
+}
+
+.authority-item strong{
+  color:var(--text);
+}
+
+.authority-divider{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--mint);
+}
+
+/* =========================
+   MOCKUP
+========================= */
+
+.mockup{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  transform:rotate(1deg);
+}
+
+.screen{
+  border-radius:20px;
+  background:var(--surface2);
+  padding:20px;
+}
+
+.screen-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.tiny{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.dash{
+  background:var(--surface);
+  border-radius:18px;
+  padding:18px;
+  margin-top:14px;
+}
+
+.progress{
+  height:8px;
+  background:var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress span{
+  display:block;
+  width:72%;
+  height:100%;
+  background:linear-gradient(90deg,var(--blue),var(--mint));
+}
+
+.mission{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.mission:last-child{
+  border:0;
+}
+
+.icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:var(--blue2);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+}
+
+.pill{
+  margin-left:auto;
+  font-size:11px;
+  font-weight:800;
+  padding:5px 8px;
+  border-radius:8px;
+  background:var(--mint2);
+}
+
+/* =========================
+   GENERAL SECTIONS
+========================= */
+
+section{
+  padding:90px 0;
+}
+
+.section-intro{
+  max-width:680px;
+  margin-bottom:38px;
+}
+
+.eyebrow{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  color:#4f9290;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.pain-grid,
+.benefit-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 8px 30px rgba(30,75,79,.05);
+}
+
+.card .bigicon{
+  font-size:25px;
+}
+
+.card h3{
+  font-size:18px;
+  margin:15px 0 8px;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:14px;
+  margin:0;
+}
+
+/* =========================
+   SOLUTION
+========================= */
+
+.solution{
+  background:var(--surface2);
+}
+
+.dual{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.mode{
+  padding:32px;
+  border-radius:24px;
+  border:1px solid var(--border);
+  min-height:270px;
+}
+
+/* Cambio solicitado:
+   Fondo diferenciado para cada modo */
+
+.mode.parent-mode{
+  background:var(--blue2);
+}
+
+.mode.student-mode{
+  background:var(--mint2);
+}
+
+.mode-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.tag{
+  font-size:11px;
+  font-weight:800;
+  padding:6px 9px;
+  border-radius:8px;
+  background:rgba(255,255,255,.45);
+  color:#4d789a;
+}
+
+.student-mode .tag{
+  color:#408776;
+}
+
+.mode h3{
+  font-size:25px;
+  margin:22px 0 10px;
+}
+
+.mode p{
+  color:var(--muted);
+  max-width:470px;
+}
+
+.bullets{
+  display:grid;
+  gap:10px;
+  margin-top:24px;
+}
+
+.bullets div{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* =========================
+   PRICING TOGGLE
+========================= */
+
+.pricing-head{
+  text-align:center;
+  max-width:650px;
+  margin:0 auto 28px;
+}
+
+.billing-toggle{
+  display:flex;
+  justify-content:center;
+  margin:0 auto 34px;
+}
+
+.toggle-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:5px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:999px;
+}
+
+.toggle-option{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 17px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.toggle-option.active{
+  background:#287f8b;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(40,127,139,.18);
+}
+
+.save-badge{
+  font-size:10px;
+  font-weight:900;
+  color:#347d70;
+  background:var(--mint2);
+  border-radius:999px;
+  padding:5px 8px;
+  margin-left:3px;
+}
+
+.pricing{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  align-items:stretch;
+}
+
+.price-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:27px;
+  display:flex;
+  flex-direction:column;
+}
+
+.price-card.featured{
+  border:2px solid #69b8b2;
+  position:relative;
+  box-shadow:var(--shadow);
+}
+
+.price-card.hidden{
+  display:none;
+}
+
+.ribbon{
+  position:absolute;
+  right:18px;
+  top:18px;
+  background:var(--mint2);
+  color:#347d70;
+  border-radius:999px;
+  padding:6px 9px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.price{
+  font-size:38px;
+  font-weight:850;
+  letter-spacing:-.04em;
+  margin:20px 0 4px;
+}
+
+.price span{
+  font-size:13px;
+  color:var(--muted);
+  font-weight:500;
+}
+
+.features{
+  list-style:none;
+  padding:0;
+  margin:24px 0;
+  display:grid;
+  gap:11px;
+  flex:1;
+}
+
+.features li{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.features li:before{
+  content:"✓";
+  color:#4f9b8c;
+  font-weight:900;
+  margin-right:8px;
+}
+
+.outline{
+  width:100%;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  padding:13px;
+  border-radius:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.featured .outline{
+  background:#287f8b;
+  color:white;
+  border-color:#287f8b;
+}
+
+.annual-note{
+  font-size:11px;
+  color:#4f9290;
+  font-weight:800;
+}
+
+/* =========================
+   FINAL CTA
+========================= */
+
+.final{
+  padding:70px 0 45px;
+}
+
+.finalbox{
+  background:linear-gradient(135deg,var(--blue2),var(--mint2));
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:50px;
+  text-align:center;
+}
+
+.finalbox h2{
+  max-width:680px;
+  margin:0 auto 12px;
+}
+
+.finalbox p{
+  color:var(--muted);
+  margin:0 auto 24px;
+  max-width:570px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  padding:28px 0 36px;
+  border-top:1px solid var(--border);
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(15,33,36,.48);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:20;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modalbox{
+  width:min(480px,100%);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.2);
+  position:relative;
+}
+
+.close{
+  position:absolute;
+  right:15px;
+  top:13px;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:24px;
+  cursor:pointer;
+}
+
+.modalbox h3{
+  font-size:27px;
+  line-height:1.1;
+  margin:4px 30px 10px 0;
+}
+
+.modalbox p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+.form{
+  display:grid;
+  gap:11px;
+  margin-top:20px;
+}
+
+.form input{
+  width:100%;
+  padding:14px 15px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  font:inherit;
+  outline:none;
+}
+
+.form input:focus{
+  border-color:#6bb9b3;
+}
+
+.form button{
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#287f8b;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.success{
+  display:none;
+  margin-top:14px;
+  padding:12px;
+  border-radius:12px;
+  background:var(--mint2);
+  font-size:13px;
+  color:#3c7d71;
+}
+
+.success.show{
+  display:block;
+}
+
+/* =========================
+   MOBILE STICKY CTA
+========================= */
+
+.mobile-sticky-cta{
+  display:none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+  body{
+    padding-bottom:74px;
+  }
+
+  .container{
+    width:min(100% - 28px,680px);
+  }
+
+  .nav{
+    height:64px;
+  }
+
+  .navlinks{
+    display:none;
+  }
+
+  .navcta{
+    padding:8px 11px;
+    font-size:12px;
+  }
+
+  .hero{
+    padding:45px 0 45px;
+  }
+
+  .hero-grid{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+
+  h1{
+    font-size:43px;
+  }
+
+  .lead{
+    font-size:17px;
+  }
+
+  .actions{
+    display:block;
+  }
+
+  .primary{
+    width:100%;
+  }
+
+  .micro{
+    color:var(--text);
+    opacity:.78;
+    text-align:center;
+  }
+
+  /* Franja de autoridad móvil */
+
+  .authority{
+    padding:0 0 15px;
+  }
+
+  .authority-inner{
+    flex-direction:column;
+    gap:7px;
+    padding:15px 12px;
+  }
+
+  .authority-divider{
+    display:none;
+  }
+
+  .authority-item{
+    font-size:11px;
+    line-height:1.35;
+  }
+
+  /* Mockup */
+
+  .mockup{
+    transform:none;
+  }
+
+  .screen{
+    padding:18px;
+  }
+
+  .screen strong{
+    font-size:15px;
+  }
+
+  .screen .tiny{
+    font-size:12px;
+  }
+
+  .mission{
+    padding:15px 0;
+  }
+
+  .mission strong{
+    font-size:14px;
+  }
+
+  .pill{
+    font-size:10px;
+  }
+
+  .pain-grid,
+  .benefit-grid,
+  .pricing,
+  .dual{
+    grid-template-columns:1fr;
+  }
+
+  section{
+    padding:65px 0;
+  }
+
+  .mode{
+    min-height:auto;
+  }
+
+  .price-card{
+    padding:23px;
+  }
+
+  .finalbox{
+    padding:34px 22px;
+  }
+
+  .footer{
+    display:block;
+    text-align:center;
+  }
+
+  .footer div+div{
+    margin-top:8px;
+  }
+
+  /* Pricing */
+
+  .billing-toggle{
+    margin-bottom:25px;
+  }
+
+  .toggle-wrap{
+    width:100%;
+    justify-content:center;
+  }
+
+  .toggle-option{
+    flex:1;
+  }
+
+  .save-badge{
+    display:none;
+  }
+
+  /* Sticky CTA */
+
+  .mobile-sticky-cta{
+    position:fixed;
+    display:block;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:19;
+    padding:14px 18px;
+    border:0;
+    border-radius:15px;
+    background:#287f8b;
+    color:#fff;
+    font-size:15px;
+    font-weight:900;
+    box-shadow:
+      0 8px 25px rgba(0,0,0,.20),
+      0 2px 8px rgba(40,127,139,.25);
+    cursor:pointer;
+  }
+}
+
+@media(min-width:801px){
+  .annual-card{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="container nav">
+
+  <div class="brand">
+    <span class="logo">K</span>
+    Kaptia
+  </div>
+
+  <nav class="navlinks">
+    <a href="#solucion">Cómo funciona</a>
+    <a href="#beneficios">Beneficios</a>
+    <a href="#precios">Precios</a>
+  </nav>
+
+  <button class="navcta open-modal">
+    Probar gratis
+  </button>
+
+</header>
+
+<main>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+  <div class="container hero-grid">
+
+    <div>
+
+      <span class="badge">
+        <i></i>
+        Creado para niños con TDAH
+      </span>
+
+      <h1>
+        Tú controlas su estudio desde tu celular. Tu hijo aprende jugando en su tablet.
+      </h1>
+
+      <p class="lead">
+        Transformamos las guías del colegio en misiones interactivas de 15 minutos adaptadas a su cerebro. Mejora sus notas y recupera la tranquilidad en casa.
+      </p>
+
+      <div class="actions">
+
+        <button class="primary open-modal">
+          Iniciar Prueba Gratuita →
+        </button>
+
+        <div class="micro">
+          Cancela cuando quieras. No requiere tarjeta para empezar.
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MOCKUP -->
+
+    <div class="mockup" aria-label="Vista previa de Kaptia">
+
+      <div class="screen">
+
+        <div class="screen-top">
+
+          <strong>Hoy con Kaptia</strong>
+
+          <span class="tiny">
+            Racha · 6 días 🔥
+          </span>
+
+        </div>
+
+        <div class="dash">
+
+          <div class="tiny">
+            Progreso de la semana
+          </div>
+
+          <div class="progress" style="margin-top:9px">
+            <span></span>
+          </div>
+
+          <div class="mission">
+
+            <div class="icon">🧩</div>
+
+            <div>
+              <strong>Fracciones</strong>
+              <div class="tiny">Misión · 5 min</div>
+            </div>
+
+            <span class="pill">EN CURSO</span>
+
+          </div>
+
+          <div class="mission">
+
+            <div class="icon">🚀</div>
+
+            <div>
+              <strong>Repaso express</strong>
+              <div class="tiny">Misión · 5 min</div>
+            </div>
+
+            <span class="pill">LISTO</span>
+
+          </div>
+
+          <div class="mission">
+
+            <div class="icon">🏆</div>
+
+            <div>
+              <strong>Desafío final</strong>
+              <div class="tiny">Misión · 5 min</div>
+            </div>
+
+            <span class="pill">+80 XP</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     AUTHORITY STRIP
+========================= -->
+
+<section class="authority">
+
+  <div class="container">
+
+    <div class="authority-inner">
+
+      <div class="authority-item">
+        <strong>Metodología basada en neuroeducación</strong>
+        para cerebros neurodivergentes
+      </div>
+
+      <span class="authority-divider"></span>
+
+      <div class="authority-item">
+        <strong>Beta Privada</strong>
+        · Cupos limitados
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     PAIN
+========================= -->
+
+<section>
+
+  <div class="container">
+
+    <div class="section-intro">
+
+      <div class="eyebrow">
+        Para familias reales
+      </div>
+
+      <h2>
+        Estudiar no debería ser una batalla diaria
+      </h2>
+
+      <p class="lead">
+        Cuando el material no está pensado para cómo aprende tu hijo, el esfuerzo termina cayendo sobre toda la familia.
+      </p>
+
+    </div>
+
+    <div class="pain-grid">
+
+      <article class="card">
+
+        <div class="bigicon">⏳</div>
+
+        <h3>
+          Tardes enteras perdidas
+        </h3>
+
+        <p>
+          Intentando que se concentre, empiece y termine una tarea que debería tomar mucho menos.
+        </p>
+
+      </article>
+
+      <article class="card">
+
+        <div class="bigicon">💛</div>
+
+        <h3>
+          Frustración y autoestima
+        </h3>
+
+        <p>
+          Malas notas que pueden convertirse en frustración y hacerle sentir que estudiar no es para él.
+        </p>
+
+      </article>
+
+      <article class="card">
+
+        <div class="bigicon">🧭</div>
+
+        <h3>
+          Faltan herramientas
+        </h3>
+
+        <p>
+          Quieres ayudarlo, pero no siempre sabes cómo adaptar el material a sus necesidades.
+        </p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SOLUTION
+========================= -->
+
+<section id="solucion" class="solution">
+
+  <div class="container">
+
+    <div class="section-intro">
+
+      <div class="eyebrow">
+        Una experiencia diseñada en dos
+      </div>
+
+      <h2>
+        Dos espacios separados. Un solo objetivo.
+      </h2>
+
+      <p class="lead">
+        Tú tienes visibilidad. Él tiene foco. Kaptia conecta ambos sin convertirte en su profesor particular.
+      </p>
+
+    </div>
+
+    <div class="dual">
+
+      <!-- MODO PADRE -->
+
+      <article class="mode parent-mode">
+
+        <div class="mode-head">
+
+          <strong>
+            01 · Modo Padre
+          </strong>
+
+          <span class="tag">
+            CONTROL TOTAL
+          </span>
+
+        </div>
+
+        <h3>
+          Todo bajo control, sin estar encima.
+        </h3>
+
+        <p>
+          Sube la guía del colegio o fotos del cuaderno desde tu celular en 10 segundos. Recibe sugerencias de metas y reportes en tiempo real.
+        </p>
+
+        <div class="bullets">
+
+          <div>
+            ✓ Carga de material en segundos
+          </div>
+
+          <div>
+            ✓ Metas sugeridas y editables
+          </div>
+
+          <div>
+            ✓ Avances visibles desde tu celular
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- MODO ESTUDIANTE -->
+
+      <article class="mode student-mode">
+
+        <div class="mode-head">
+
+          <strong>
+            02 · Modo Estudiante
+          </strong>
+
+          <span class="tag">
+            FOCO ABSOLUTO
+          </span>
+
+        </div>
+
+        <h3>
+          Aprender se siente como avanzar en un juego.
+        </h3>
+
+        <p>
+          Tu hijo abre su tablet y encuentra un entorno gamificado en bloques de 5 minutos, libre de distracciones.
+        </p>
+
+        <div class="bullets">
+
+          <div>
+            ✓ Misiones cortas y concretas
+          </div>
+
+          <div>
+            ✓ Recompensas y rachas
+          </div>
+
+          <div>
+            ✓ Sin necesidad de supervisión constante
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     BENEFITS
+========================= -->
+
+<section id="beneficios">
+
+  <div class="container">
+
+    <div class="section-intro">
+
+      <div class="eyebrow">
+        Menos fricción. Más avance.
+      </div>
+
+      <h2>
+        Diseñado alrededor de cómo aprende
+      </h2>
+
+    </div>
+
+    <div class="benefit-grid">
+
+      <article class="card">
+
+        <div class="bigicon">🧠</div>
+
+        <h3>
+          Metodología científica
+        </h3>
+
+        <p>
+          Basada en principios de neuroeducación para reducir la carga cognitiva y convertir el estudio en pasos manejables.
+        </p>
+
+      </article>
+
+      <article class="card">
+
+        <div class="bigicon">📈</div>
+
+        <h3>
+          Métricas en tiempo real
+        </h3>
+
+        <p>
+          Revisa avances y rachas sin supervisar encima de él. Saber qué pasó te ayuda a intervenir cuando realmente hace falta.
+        </p>
+
+      </article>
+
+      <article class="card">
+
+        <div class="bigicon">📱</div>
+
+        <h3>
+          Multiplataforma
+        </h3>
+
+        <p>
+          Funciona en celular, tablet o computador sin instalar programas. Kaptia acompaña a tu familia donde ya está.
+        </p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     PRICING
+========================= -->
+
+<section id="precios">
+
+  <div class="container">
+
+    <div class="pricing-head">
+
+      <div class="eyebrow">
+        Planes simples
+      </div>
+
+      <h2>
+        Empieza con el que necesitas hoy
+      </h2>
+
+      <p class="lead">
+        Prueba Kaptia durante la beta y reserva tu cupo antes del lanzamiento.
+      </p>
+
+    </div>
+
+
+    <!-- TOGGLE -->
+
+    <div class="billing-toggle">
+
+      <div class="toggle-wrap">
+
+        <button
+          class="toggle-option active"
+          id="monthlyToggle"
+          type="button"
+          aria-pressed="true">
+          Mensual
+        </button>
+
+        <button
+          class="toggle-option"
+          id="annualToggle"
+          type="button"
+          aria-pressed="false">
+          Anual
+        </button>
+
+        <span class="save-badge">
+          -45%
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- PLANES -->
+
+    <div class="pricing">
+
+      <!-- BÁSICO -->
+
+      <article
+        class="price-card monthly-card"
+        id="basicCard">
+
+        <div class="eyebrow">
+          Básico
+        </div>
+
+        <div class="price">
+          $9.990
+          <span>$/mes</span>
+        </div>
+
+        <ul class="features">
+
+          <li>
+            Hasta 5 documentos mensuales
+          </li>
+
+          <li>
+            Formato TDAH
+          </li>
+
+          <li>
+            Control parental básico
+          </li>
+
+        </ul>
+
+        <button
+          class="outline open-modal"
+          data-plan="Básico">
+
+          Elegir Básico
+
+        </button>
+
+      </article>
+
+
+      <!-- PRO MENSUAL -->
+
+      <article
+        class="price-card featured monthly-card"
+        id="proMonthlyCard">
+
+        <span class="ribbon">
+          MÁS POPULAR
+        </span>
+
+        <div class="eyebrow">
+          Pro
+        </div>
+
+        <div class="price">
+          $14.990
+          <span>$/mes</span>
+        </div>
+
+        <ul class="features">
+
+          <li>
+            Documentos ilimitados
+          </li>
+
+          <li>
+            Simulaciones de pruebas
+          </li>
+
+          <li>
+            Reportes de progreso
+          </li>
+
+        </ul>
+
+        <button
+          class="outline open-modal"
+          data-plan="Pro">
+
+          Elegir Pro
+
+        </button>
+
+      </article>
+
+
+      <!-- PRO ANUAL -->
+
+      <article
+        class="price-card featured annual-card"
+        id="proAnnualCard">
+
+        <span class="ribbon">
+          AHORRA 45%
+        </span>
+
+        <div class="eyebrow">
+          Pro Anual
+        </div>
+
+        <div class="price">
+          $99.000
+          <span>$/año</span>
+        </div>
+
+        <div class="annual-note">
+          AHORRA 45% VS. PAGO MENSUAL
+        </div>
+
+        <ul class="features">
+
+          <li>
+            Todo lo de Pro
+          </li>
+
+          <li>
+            Mantenimiento cognitivo para vacaciones escolares
+          </li>
+
+        </ul>
+
+        <button
+          class="outline open-modal"
+          data-plan="Pro Anual">
+
+          Elegir Pro Anual
+
+        </button>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FINAL CTA
+========================= -->
+
+<section class="final">
+
+  <div class="container">
+
+    <div class="finalbox">
+
+      <div class="eyebrow">
+        Fase Beta Privada
+      </div>
+
+      <h2>
+        Que estudiar vuelva a sentirse posible.
+      </h2>
+
+      <p>
+        Reserva tu cupo y obtén 1 mes gratis cuando Kaptia lance oficialmente.
+      </p>
+
+      <button class="primary open-modal">
+        Reservar mi cupo →
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="container footer">
+
+  <div>
+    © 2026 Kaptia. Aprender, paso a paso.
+  </div>
+
+  <div>
+    Hecho para familias que quieren menos peleas y más confianza.
+  </div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modalTitle">
+
+  <div class="modalbox">
+
+    <button
+      class="close"
+      id="close"
+      aria-label="Cerrar">
+      ×
+    </button>
+
+    <div class="eyebrow">
+      Beta privada
+    </div>
+
+    <h3 id="modalTitle">
+      Reserva tu cupo en Kaptia
+    </h3>
+
+    <p>
+      Estamos en Fase Beta Privada. Deja tu correo para reservar tu cupo y obtener
+      <strong>1 mes gratis al lanzar.</strong>
+    </p>
+
+    <form
+      class="form"
+      id="form">
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Tu correo electrónico"
+        required>
+
+      <button type="submit">
+        Quiero reservar mi cupo
+      </button>
+
+    </form>
+
+    <div
+      class="success"
+      id="success">
+
+      ¡Listo! Tu cupo quedó reservado para la beta. Te contactaremos al lanzar. 🎉
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     MOBILE STICKY CTA
+========================= -->
+
+<button
+  class="mobile-sticky-cta open-modal"
+  aria-label="Probar Kaptia gratis">
+
+  Probar gratis →
+
+</button>
+
+
+<script>
+
+/* =====================================
+   MODAL
+===================================== */
+
+const modal = document.getElementById('modal');
+const close = document.getElementById('close');
+const form = document.getElementById('form');
+const success = document.getElementById('success');
+
+function openModal(){
+
+  modal.classList.add('open');
+
+  document.body.style.overflow = 'hidden';
+
+  setTimeout(() => {
+    document.getElementById('email').focus();
+  }, 80);
+}
+
+function closeModal(){
+
+  modal.classList.remove('open');
+
+  document.body.style.overflow = '';
+
+}
+
+
+/* Abrir modal */
+
+document
+  .querySelectorAll('.open-modal')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      /*
+       * Si el botón corresponde a un plan,
+       * podemos guardar el plan seleccionado.
+       */
+
+      const selectedPlan = button.dataset.plan;
+
+      if(selectedPlan){
+
+        document.getElementById('modalTitle').textContent =
+          `Reserva tu cupo — ${selectedPlan}`;
+
+      }else{
+
+        document.getElementById('modalTitle').textContent =
+          'Reserva tu cupo en Kaptia';
+
+      }
+
+      openModal();
+
+    });
+
+  });
+
+
+/* Cerrar modal */
+
+close.addEventListener('click', closeModal);
+
+modal.addEventListener('click', event => {
+
+  if(event.target === modal){
+    closeModal();
+  }
+
+});
+
+document.addEventListener('keydown', event => {
+
+  if(event.key === 'Escape'){
+    closeModal();
+  }
+
+});
+
+
+/* =====================================
+   FORMULARIO
+===================================== */
+
+form.addEventListener('submit', event => {
+
+  event.preventDefault();
+
+  success.classList.add('show');
+
+  form.style.display = 'none';
+
+});
+
+
+/* =====================================
+   PRICING TOGGLE
+===================================== */
+
+const monthlyToggle =
+  document.getElementById('monthlyToggle');
+
+const annualToggle =
+  document.getElementById('annualToggle');
+
+const monthlyCards =
+  document.querySelectorAll('.monthly-card');
+
+const annualCard =
+  document.getElementById('proAnnualCard');
+
+
+function showMonthly(){
+
+  monthlyToggle.classList.add('active');
+  annualToggle.classList.remove('active');
+
+  monthlyToggle.setAttribute('aria-pressed','true');
+  annualToggle.setAttribute('aria-pressed','false');
+
+  monthlyCards.forEach(card => {
+    card.classList.remove('hidden');
+  });
+
+  annualCard.classList.add('hidden');
+
+}
+
+
+function showAnnual(){
+
+  monthlyToggle.classList.remove('active');
+  annualToggle.classList.add('active');
+
+  monthlyToggle.setAttribute('aria-pressed','false');
+  annualToggle.setAttribute('aria-pressed','true');
+
+  monthlyCards.forEach(card => {
+    card.classList.add('hidden');
+  });
+
+  annualCard.classList.remove('hidden');
+
+}
+
+
+monthlyToggle.addEventListener(
+  'click',
+  showMonthly
+);
+
+annualToggle.addEventListener(
+  'click',
+  showAnnual
+);
+
+
+/*
+ * Estado inicial:
+ * Mensual
+ */
+
+showMonthly();
+
+</script>
+
+</body>
+</html>
