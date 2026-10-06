@@ -1799,19 +1799,38 @@ document.addEventListener('keydown', event => {
 
 });
 
+/* =========================================
+   FORMULARIO (Conectado a Formspree)
+========================================= */
 
-/* =====================================
-   FORMULARIO
-===================================== */
-
-form.addEventListener('submit', event => {
-
-  event.preventDefault();
-
-  success.classList.add('show');
-
-  form.style.display = 'none';
-
+form.addEventListener('submit', async event => {
+  // 1. Evita que la página recargue o salte a otra web
+  event.preventDefault(); 
+  
+  // 2. Captura el correo ingresado
+  const formData = new FormData(form);
+  
+  try {
+    // 3. Envía los datos silenciosamente a tu enlace de Formspree
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: formData,
+      headers: {
+          'Accept': 'application/json'
+      }
+    });
+    
+    // 4. Si Formspree recibe todo bien, mostramos tu mensaje de éxito
+    if (response.ok) {
+      success.classList.add('show'); // Muestra tu mensaje con tu estilo original
+      form.style.display = 'none';   // Oculta el formulario
+      form.reset();                  // Limpia el input del correo
+    } else {
+      alert("Hubo un pequeño problema al procesar tu solicitud. Por favor, intenta de nuevo.");
+    }
+  } catch (error) {
+    alert("Error de conexión. Revisa tu internet e intenta nuevamente.");
+  }
 });
 
 
