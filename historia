@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Inca: Descubre el Imperio</title>
+    <style>
+        :root {
+            --primary: #8E44AD; 
+            --secondary: #F39C12; 
+            --bg: #F4F6F7;
+            --text: #2C3E50;
+            --white: #FFFFFF;
+            --success: #27AE60;
+            --error: #E74C3C;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #732D91;
+            flex-wrap: wrap;
+        }
+        nav button {
+            background: none;
+            border: none;
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        nav button.active, nav button:hover {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .tab-content {
+            display: none;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        /* Fase 1: Tarjetas */
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .flashcard {
+            background: #fdfdfd;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+        .flashcard-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .flashcard-content {
+            display: none;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-top: 1rem;
+        }
+        
+        /* Fase 2: Asociación */
+        .match-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .match-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .match-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .match-item.selected {
+            border-color: var(--secondary);
+            background-color: #fcf3cf;
+        }
+        .match-item.matched {
+            border-color: var(--success);
+            background-color: #d5f5e3;
+            color: #1e8449;
+            cursor: default;
+        }
+        .feedback-banner {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        /* Fase 3: Evaluación */
+        .question-card {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+        .options li {
+            background: var(--white);
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #dcdde1;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .options li:hover {
+            background: #f1f2f6;
+            border-color: #718093;
+        }
+        .options li.correct {
+            background: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+            font-weight: bold;
+        }
+        .options li.incorrect {
+            background: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+        .feedback-msg {
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            padding: 0.8rem;
+            border-radius: 4px;
+            display: none;
+        }
+        .score-board {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            background: #fdfdfd;
+            border: 2px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+		/* Modo de Enfoque (Fase 2) */
+        .match-container {
+            transition: all 0.3s ease;
+        }
+        .match-container.focus-right #col-conceptos .match-item:not(.selected):not(.matched) {
+            opacity: 0.25;
+            transform: scale(0.95);
+            pointer-events: none; /* Evita clics por error */
+        }
+        .match-container.focus-right #col-definiciones {
+            background-color: #fef9e7;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏔️ Exploradores del Imperio Inca</h1>
+    <p>Aprende, asocia y conquista el conocimiento</p>
+</header>
+
+<nav>
+    <button class="active" onclick="openTab('repaso', this)">1. Descubrimiento</button>
+    <button onclick="openTab('juego', this)">2. El Chasqui</button>
+    <button onclick="openTab('evaluacion', this)">3. El Gran Consejo</button>
+</nav>
+
+<div class="container">
+    <!-- FASE 1: TARJETAS DE REPASO -->
+    <div id="repaso" class="tab-content active">
+        <h2 style="color: var(--primary); text-align: center;">Toca las tarjetas para descubrir los secretos</h2>
+        
+        <div class="flashcard-grid">
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">☀️ Sapa Inca</div>
+                <div class="flashcard-content">Representación del Dios Sol en la tierra. Vivía en un palacio con paredes de oro.</div>
+            </div>
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">🌱 Los Andenes</div>
+                <div class="flashcard-content">Terrazas de cultivo en forma de "escaleras" para aprovechar el agua de la lluvia.</div>
+            </div>
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">🏃‍♂️ Red de Caminos</div>
+                <div class="flashcard-content">Construida para comunicarse. Los mensajes los llevaba el chasqui.</div>
+            </div>
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">🗣️ Capital e Idioma</div>
+                <div class="flashcard-content">La capital fue Cusco y su idioma oficial era el quechua.</div>
+            </div>
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">⚖️ La Economía</div>
+                <div class="flashcard-content">Se basaba en la reciprocidad y la redistribución (intercambio de productos).</div>
+            </div>
+            <div class="flashcard" onclick="flipCard(this)">
+                <div class="flashcard-title">⛰️ Territorio y Países</div>
+                <div class="flashcard-content">Zona montañosa en los Andes. Abarcó Chile, Argentina, Perú, Bolivia, Ecuador y Colombia.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FASE 2: JUEGO DE ASOCIACIÓN -->
+    <div id="juego" class="tab-content">
+        <h2 style="color: var(--primary); text-align: center;">El Desafío del Chasqui: Une los Conceptos</h2>
+        
+        <div class="match-container">
+            <div class="match-column" id="col-conceptos">
+                <div class="match-item" data-id="1" onclick="selectItem(this, 'concepto')">Sapa Inca</div>
+                <div class="match-item" data-id="2" onclick="selectItem(this, 'concepto')">Yanaconas</div>
+                <div class="match-item" data-id="3" onclick="selectItem(this, 'concepto')">Andenes</div>
+                <div class="match-item" data-id="4" onclick="selectItem(this, 'concepto')">Cusco</div>
+            </div>
+            
+            <div class="match-column" id="col-definiciones">
+                <div class="match-item" data-id="4" onclick="selectItem(this, 'definicion')">Capital del Imperio</div>
+                <div class="match-item" data-id="1" onclick="selectItem(this, 'definicion')">Representación del Dios Sol</div>
+                <div class="match-item" data-id="3" onclick="selectItem(this, 'definicion')">Terrazas de cultivo en escalera</div>
+                <div class="match-item" data-id="2" onclick="selectItem(this, 'definicion')">Grupo social más bajo sin beneficios</div>
+            </div>
+        </div>
+        
+        <div id="match-feedback" class="feedback-banner"></div>
+    </div>
+
+
+<!-- FASE 3: EVALUACIÓN -->
+    <div id="evaluacion" class="tab-content">
+        <h2 style="color: var(--primary); text-align: center;">El Gran Consejo Inca</h2>
+        <p style="text-align: center; color: #7f8c8d;">Responde las 10 preguntas de tu misión. ¡Lee con atención!</p>
+        
+        <div class="score-board">
+            Preguntas respondidas: <span id="answered-count">0</span> / 10 | Aciertos: <span id="correct-count">0</span>
+        </div>
+
+        <div id="quiz-container"></div>
+        
+        <!-- Nuevo botón de reintento (oculto por defecto) -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <button id="btn-reintentar" onclick="reintentarQuiz()" style="display: none; background-color: var(--primary); color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🔄 Intentar Nuevamente</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Navegación
+    function openTab(tabName, element) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        element.classList.add('active');
+    }
+
+    // Fase 1: Flashcards
+    function flipCard(card) {
+        const title = card.querySelector('.flashcard-title');
+        const content = card.querySelector('.flashcard-content');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+            title.style.display = 'block';
+            card.style.backgroundColor = '#fdfdfd';
+        } else {
+            content.style.display = 'block';
+            title.style.display = 'none';
+            card.style.backgroundColor = '#fef9e7';
+        }
+    }
+
+    // Fase 2: Asociación
+let selectedConcept = null;
+    let selectedDefinition = null;
+    let matchesFound = 0;
+
+    function selectItem(element, type) {
+        if (element.classList.contains('matched')) return;
+
+        const matchContainer = document.querySelector('.match-container');
+
+        // Novedad amigable: Permitir deseleccionar tocando el mismo elemento
+        if (element.classList.contains('selected')) {
+            element.classList.remove('selected');
+            if (type === 'concepto') {
+                selectedConcept = null;
+                matchContainer.classList.remove('focus-right'); // Quita el foco
+            } else {
+                selectedDefinition = null;
+            }
+            return;
+        }
+
+        const siblings = element.parentElement.children;
+        for (let el of siblings) {
+            if (!el.classList.contains('matched')) el.classList.remove('selected');
+        }
+        element.classList.add('selected');
+
+        if (type === 'concepto') {
+            selectedConcept = element;
+            matchContainer.classList.add('focus-right'); // Activa la iluminación a la derecha
+        } else {
+            selectedDefinition = element;
+        }
+
+        if (selectedConcept && selectedDefinition) checkMatch();
+    }
+
+    function checkMatch() {
+        const idConcepto = selectedConcept.getAttribute('data-id');
+        const idDefinicion = selectedDefinition.getAttribute('data-id');
+        const feedback = document.getElementById('match-feedback');
+        const matchContainer = document.querySelector('.match-container');
+
+        if (idConcepto === idDefinicion) {
+            selectedConcept.classList.remove('selected');
+            selectedDefinition.classList.remove('selected');
+            selectedConcept.classList.add('matched');
+            selectedDefinition.classList.add('matched');
+            
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#d5f5e3';
+            feedback.style.color = '#1e8449';
+            feedback.innerText = '¡Excelente asociación! 🎉';
+            
+            matchesFound++;
+            if (matchesFound === 4) {
+                setTimeout(() => {
+                    feedback.innerText = '¡Misión Cumplida! Ve a la pestaña "El Gran Consejo". 🏆';
+                }, 1000);
+            }
+        } else {
+            selectedConcept.classList.remove('selected');
+            selectedDefinition.classList.remove('selected');
+            selectedConcept.style.borderColor = '#e74c3c';
+            selectedDefinition.style.borderColor = '#e74c3c';
+            
+            setTimeout(() => {
+                if(!selectedConcept.classList.contains('matched')) selectedConcept.style.borderColor = '#bdc3c7';
+                if(!selectedDefinition.classList.contains('matched')) selectedDefinition.style.borderColor = '#bdc3c7';
+            }, 600);
+
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#fadbd8';
+            feedback.style.color = '#c0392b';
+            feedback.innerText = 'Casi... revisa bien las pistas antes de unir.';
+        }
+        
+        // Resetear variables y limpiar el entorno visual
+        selectedConcept = null;
+        selectedDefinition = null;
+        matchContainer.classList.remove('focus-right');
+    }
+// Fase 3: Evaluación (10 Preguntas del apunte)
+    const questions = [
+        {
+            question: "¿A quién se consideraba la representación del Dios Sol en la tierra y vivía en un palacio de oro?",
+            options: ["Al Sapa Inca.", "Al Chasqui.", "Al Yanacona."],
+            correct: 0,
+            hint: "Era la máxima autoridad del imperio."
+        },
+        {
+            question: "¿Cómo se llamaba la técnica de cultivo inca y en qué consistía?",
+            options: ["Chinampas o islas flotantes en lagos.", "Tala y roza en la selva espesa.", "Andenes. Terrazas en forma de 'escaleras' para aprovechar el agua de lluvia."],
+            correct: 2,
+            hint: "Recuerda la forma de escaleras en las montañas."
+        },
+        {
+            question: "¿En cuántas regiones se dividió el Imperio Inca y por qué?",
+            options: ["En dos regiones, por el clima.", "En cuatro regiones, debido a lo grande que era para administrarlo mejor.", "En diez regiones, una por cada emperador."],
+            correct: 1,
+            hint: "El imperio era inmenso y necesitaba una gran división administrativa."
+        },
+        {
+            question: "¿Qué construyeron los incas para comunicarse en un imperio tan grande y quién llevaba los mensajes?",
+            options: ["Una red de caminos. Los mensajes eran llevados por el chasqui.", "Barcos de totora. Los llevaban los pescadores.", "Túneles subterráneos. Los llevaban los soldados."],
+            correct: 0,
+            hint: "Eran corredores muy veloces que iban por tierra."
+        },
+        {
+            question: "¿En qué países actuales se desarrolló el Imperio Inca?",
+            options: ["Solo en Perú y Chile.", "México, Guatemala y Honduras.", "Chile, Argentina, Perú, Bolivia, Ecuador y Colombia."],
+            correct: 2,
+            hint: "Abarcó gran parte de la costa oeste y la cordillera en Sudamérica."
+        },
+        {
+            question: "¿En qué se basaba la economía de los incas?",
+            options: ["En el uso de monedas de plata y oro.", "En la reciprocidad y la redistribución (intercambio de productos).", "Únicamente en la pesca y venta de mariscos."],
+            correct: 1,
+            hint: "Se basaba en el trabajo comunitario y en ayudarse mutuamente."
+        },
+        {
+            question: "¿Cómo era el territorio de los incas y por qué?",
+            options: ["Montañoso, ya que se ubicaron en la cordillera de los Andes (área andina o altiplano).", "Selvático, lleno de árboles y lluvias constantes.", "Un valle fértil junto a un gran lago."],
+            correct: 0,
+            hint: "Es el hogar de grandes cumbres y mucha altura."
+        },
+        {
+            question: "¿Cuál fue el idioma de los incas?",
+            options: ["El náhuatl.", "El español.", "El quechua."],
+            correct: 2,
+            hint: "Es un idioma que aún se habla en varios países de los Andes."
+        },
+        {
+            question: "¿Cuál fue la capital de los incas?",
+            options: ["Tenochtitlán.", "Cusco.", "Lima."],
+            correct: 1,
+            hint: "Conocida como 'el ombligo del mundo'."
+        },
+        {
+            question: "¿Cuál era el grupo social más bajo, que no tenía ningún beneficio?",
+            options: ["La nobleza.", "Los chasquis.", "Los yanaconas."],
+            correct: 2,
+            hint: "Era el estrato inferior de su sociedad piramidal."
+        }
+    ];
+
+    let answeredCount = 0;
+    let correctCount = 0;
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = ''; // Limpia el contenedor para el reintento
+        
+        questions.forEach((q, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-card';
+            qDiv.innerHTML = `<h3>${index + 1}. ${q.question}</h3>`;
+            
+            const optionsList = document.createElement('ul');
+            optionsList.className = 'options';
+            optionsList.id = `options-${index}`;
+            
+            // 1. Guardar el texto de la respuesta correcta original
+            const correctAnswerText = q.options[q.correct];
+            
+            // 2. Crear una copia de las opciones y mezclarlas (Shuffle)
+            let shuffledOptions = [...q.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // 3. Encontrar el nuevo índice de la respuesta correcta
+            const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+            
+            // 4. Renderizar las opciones ya mezcladas
+            shuffledOptions.forEach((opt, optIndex) => {
+                const li = document.createElement('li');
+                li.textContent = opt;
+                li.onclick = () => validateAnswer(index, optIndex, li, newCorrectIndex, optionsList, q.hint);
+                optionsList.appendChild(li);
+            });
+            
+            qDiv.appendChild(optionsList);
+
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback-msg';
+            feedbackDiv.id = `feedback-${index}`;
+            qDiv.appendChild(feedbackDiv);
+
+            container.appendChild(qDiv);
+        });
+    }
+
+    function validateAnswer(qIndex, selectedOptIndex, selectedElement, actualCorrectIndex, optionsList, hint) {
+        const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+
+        // Bloquear selecciones posteriores
+        for (let i = 0; i < optionsList.children.length; i++) {
+            optionsList.children[i].onclick = null;
+            optionsList.children[i].style.cursor = 'default';
+        }
+
+        answeredCount++;
+        document.getElementById('answered-count').innerText = answeredCount;
+
+        if (selectedOptIndex === actualCorrectIndex) {
+            selectedElement.classList.add('correct');
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.style.color = '#155724';
+            feedbackDiv.style.backgroundColor = '#d4edda';
+            feedbackDiv.innerHTML = `¡Correcto! 🌟`;
+            correctCount++;
+        } else {
+            selectedElement.classList.add('incorrect');
+            optionsList.children[actualCorrectIndex].classList.add('correct'); // Ilumina la correcta actual
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.style.color = '#721c24';
+            feedbackDiv.style.backgroundColor = '#f8d7da';
+            feedbackDiv.innerHTML = `<strong>Pista deductiva:</strong> ${hint}`;
+        }
+
+        document.getElementById('correct-count').innerText = correctCount;
+        
+        // Mostrar botón de reintento al finalizar
+        if(answeredCount === 10) {
+            document.getElementById('btn-reintentar').style.display = 'block';
+        }
+    }
+
+    // Nueva función para reiniciar contadores, ocultar botón y volver a mezclar
+    function reintentarQuiz() {
+        answeredCount = 0;
+        correctCount = 0;
+        document.getElementById('answered-count').innerText = answeredCount;
+        document.getElementById('correct-count').innerText = correctCount;
+        document.getElementById('btn-reintentar').style.display = 'none';
+        
+        renderQuiz(); 
+        
+        // Hacer scroll suave hacia arriba
+        document.getElementById('evaluacion').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Inicializar el quiz por primera vez
+    renderQuiz();
+</script>
+</body>
+</html>
