@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaptia - Misión Ciencias</title>
+    <style>
+        :root { --primary: #1E3A8A; --secondary: #10B981; --bg: #F8FAFC; --text: #334155; --aprende: #F59E0B; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); padding: 20px; text-align: center; }
+        .container { max-width: 650px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: left; }
+        h1 { color: var(--primary); text-align: center; font-weight: 800; margin-bottom: 5px; }
+        
+        .marcador { background-color: #FEF3C7; color: #D97706; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 12px; display: inline-block; margin-bottom: 25px; }
+        .progress-bar { height: 12px; background: #E2E8F0; border-radius: 10px; margin-bottom: 25px; overflow: hidden; display: none; }
+        .progress-fill { width: 0%; height: 100%; background: var(--secondary); border-radius: 10px; transition: width 0.5s ease; }
+        
+        /* Sistema de Vistas */
+        .vista-app { display: none; }
+        .vista-app.activa { display: block; animation: fadeIn 0.5s; }
+        
+        /* Zona de Aprendizaje */
+        .zona-entrenamiento { background: #FFFBEB; border: 3px dashed #FCD34D; padding: 25px; border-radius: 16px; margin-bottom: 25px; }
+        .zona-entrenamiento h2 { color: #D97706; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .concepto { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--aprende); }
+        .concepto strong { color: var(--primary); font-size: 1.1em; }
+
+        /* Bloques de Preguntas */
+        .pregunta-bloque { background: #DBEAFE; border: 2px solid #BFDBFE; padding: 20px; border-radius: 16px; margin-bottom: 20px;}
+        h3 { color: var(--primary); margin-top: 0; font-size: 20px; }
+        .imagen-apoyo { width: 100%; border-radius: 12px; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; background-color: #e2e8f0; text-align: center; padding: 30px 0; font-weight: bold; color: #64748b; }
+        
+        /* Botones de Gamificación */
+        .grid-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .btn-opcion { background: white; border: 2px solid #94A3B8; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; color: var(--text); }
+        .btn-opcion:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .btn-opcion.correcta { background: #D1FAE5; border-color: #10B981; color: #065F46; }
+        .btn-opcion.incorrecta { background: #FEE2E2; border-color: #EF4444; color: #991B1B; animation: shake 0.4s; }
+        
+        .btn-accion { background-color: var(--secondary); color: white; border: none; padding: 15px 24px; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: 0.2s; display: block; margin-top: 20px; text-align: center; }
+        .btn-accion.oculto { display: none; }
+        .btn-accion:hover { background-color: #059669; transform: translateY(-2px); }
+        .btn-entrenamiento { background-color: var(--aprende); box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3); }
+        .btn-entrenamiento:hover { background-color: #D97706; }
+
+        .feedback { font-weight: bold; margin-top: 15px; font-size: 15px; display: none; padding: 12px; border-radius: 8px; }
+        .pista { background-color: #FEF2F2; color: #991B1B; display: block; border-left: 4px solid #EF4444; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+    </style>
+</head>
+<body>
+
+    <h1>🌍 Misión Ciencias</h1>
+    <div style="text-align: center;">
+        <div class="marcador">🏆 Puntos Kaptia: <span id="puntos">0</span></div>
+    </div>
+
+    <div class="container">
+        
+        <p style="text-align: center; font-weight: bold; color: #64748B; display: none;" id="contador-ronda"></p>
+        <div class="progress-bar" id="barra-container"><div class="progress-fill" id="barra"></div></div>
+
+        <!-- ================= PANTALLA INICIAL ================= -->
+        <div class="vista-app activa" id="inicio">
+            <h2 style="text-align: center; color: var(--primary);">¡Bienvenido, Santi!</h2>
+            <p style="text-align: center; font-size: 18px;">Hoy te convertirás en un experto de la naturaleza. Aprenderemos cómo sobreviven los animales y las plantas en sus ecosistemas.</p>
+            <button class="btn-accion" onclick="cambiarVista('aprende-f1')">Iniciar Entrenamiento 🚀</button>
+        </div>
+
+        <!-- ================= FASE 1: APRENDIZAJE ================= -->
+        <div class="vista-app" id="aprende-f1">
+            <div class="zona-entrenamiento">
+                <h2>🧠 Zona de Entrenamiento: Fase 1</h2>
+                <p>Lee con atención antes de jugar. ¡Esta es tu munición!</p>
+                <div class="concepto">🌿 <strong>Bióticos:</strong> Son los elementos que <strong>TIENEN VIDA</strong>. Nacen, crecen y comen. (Ej: Cóndor, Vicuña, Puma, Plantas).</div>
+                <div class="concepto">🪨 <strong>Abióticos:</strong> Son los elementos <strong>SIN VIDA</strong> del entorno. (Ej: Tierra, Agua, Arena, Sol).</div>
+                <div class="concepto">💧 <strong>Las Plantas:</strong> Necesitan fundamentalmente <strong>AGUA</strong> para crecer, y siempre crecen buscando la luz del <strong>SOL</strong>.</div>
+                <div class="concepto">🪱 <strong>Las Lombrices:</strong> Para mantener su piel mojada y no secarse, prefieren ambientes <strong>OSCUROS y HÚMEDOS</strong>.</div>
+                <button class="btn-accion btn-entrenamiento" onclick="iniciarFase(1, 1)">¡Entendido! A jugar 🎮</button>
+            </div>
+        </div>
+
+        <!-- ================= FASE 1: MISIONES ================= -->
+        <div class="vista-app" id="f1-m1">
+            <div class="pregunta-bloque">
+                <h3>1. Los Factores del Ecosistema 🦅💧</h3>
+                <p><strong>El Cóndor, la Vicuña y el Puma son:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'm1_a', false, 'Recuerda que los animales respiran y comen.', 'f1-m1')">🪨 Abióticos (Sin vida)</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm1_a', true, '', 'f1-m1')">🌿 Bióticos (Tienen vida)</button>
+                </div>
+                <p><strong>La tierra, el agua y la arena son:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'm1_b', true, '', 'f1-m1')">🪨 Abióticos (Sin vida)</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm1_b', false, 'Recuerda que el agua no respira ni crece.', 'f1-m1')">🌿 Bióticos (Tienen vida)</button>
+                </div>
+                <div id="feed-m1" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f1-m1" onclick="cambiarVista('f1-m2', 2, 1)">Siguiente Misión 🚀</button>
+            </div>
+        </div>
+
+        <div class="vista-app" id="f1-m2">
+            <div class="pregunta-bloque">
+                <h3>2. El Experimento del Poroto 🌱</h3>
+                <div class="imagen-apoyo">[ Ilustración Plantas vs Sol y Agua ]</div>
+                <p><strong>¿Qué elemento es fundamental para el desarrollo?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'm2_a', true, '', 'f1-m2')">💧 El Agua</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm2_a', false, 'Revisa bien qué le echamos todos los días al vaso.', 'f1-m2')">🥤 La Bebida</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm2_a', false, 'Las plantas no comen sal, necesitan líquidos.', 'f1-m2')">🧂 La Sal</button>
+                </div>
+                <p><strong>La planta crecerá siempre en dirección a:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'm2_b', false, 'En la noche las plantas descansan.', 'f1-m2')">🌙 La Luna</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm2_b', true, '', 'f1-m2')">☀️ El Sol</button>
+                </div>
+                <div id="feed-m2" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f1-m2" onclick="cambiarVista('f1-m3', 3, 1)">Siguiente Misión 🚀</button>
+            </div>
+        </div>
+
+        <div class="vista-app" id="f1-m3">
+            <div class="pregunta-bloque">
+                <h3>3. El escondite de la Lombriz 🪱</h3>
+                <div class="imagen-apoyo">[ Infografía Gráfico Lombrices ]</div>
+                <p><strong>¿Cómo es el ambiente preferido de las lombrices?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'm3_a', false, '¡Cuidado! El sol seca la piel de las lombrices.', 'f1-m3')">☀️🏜️ Luminoso y Seco</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm3_a', true, '', 'f1-m3')">🌑💧 Oscuro y Húmedo</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'm3_a', false, 'Si está seco, no pueden respirar por la piel.', 'f1-m3')">🌑🏜️ Oscuro y Seco</button>
+                </div>
+                <div id="feed-m3" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f1-m3" onclick="cambiarVista('aprende-f2')">¡Superaste la Fase 1! Ir a Fase 2 🏆</button>
+            </div>
+        </div>
+
+        <!-- ================= FASE 2: APRENDIZAJE ================= -->
+        <div class="vista-app" id="aprende-f2">
+            <div class="zona-entrenamiento">
+                <h2>🧠 Zona de Entrenamiento: Fase 2</h2>
+                <p>Nuevas estrategias de supervivencia. ¡Léelas bien!</p>
+                <div class="concepto">🦅 <strong>Migración:</strong> Viajar a otros lugares buscando buen clima o alimento. (Ej: Aves viajando en bandadas).</div>
+                <div class="concepto">🐻 <strong>Hibernación:</strong> Un estado de "sueño" prolongado en invierno. Baja su temperatura y frecuencia respiratoria para no gastar energía.</div>
+                <div class="concepto">🦎 <strong>Camuflaje (Cripsis):</strong> Asemejarse al <strong>PROPIO ENTORNO</strong> (ramas, hojas, rocas) para pasar desapercibido.</div>
+                <div class="concepto">🐍 <strong>Mimetismo:</strong> Asemejarse a <strong>OTROS ORGANISMOS</strong> peligrosos para asustar y obtener ventaja.</div>
+                <div class="concepto">🌵 <strong>Espinas:</strong> Las plantas del desierto (cactus) transforman sus hojas en espinas para evitar que los animales beban su líquido.</div>
+                <button class="btn-accion btn-entrenamiento" onclick="iniciarFase(2, 1)">¡Entendido! A jugar 🎮</button>
+            </div>
+        </div>
+
+        <!-- ================= FASE 2: MISIONES ================= -->
+        <div class="vista-app" id="f2-m1">
+            <div class="pregunta-bloque">
+                <h3>1. El clima se pone difícil ❄️</h3>
+                <p><strong>Aves viajando largas distancias en bandadas para buscar alimento:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m1_a', false, 'Dormir no te hace viajar.', 'f2-m1')">💤 Hibernación</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m1_a', true, '', 'f2-m1')">🦅 Migración</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m1_a', false, 'El camuflaje es para esconderse.', 'f2-m1')">🍂 Camuflaje</button>
+                </div>
+                <p><strong>Un estado de "sueño" donde baja la temperatura y respiración:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m1_b', true, '', 'f2-m1')">🐻 Hibernación</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m1_b', false, 'Si viajan, no duermen.', 'f2-m1')">🦅 Migración</button>
+                </div>
+                <div id="feed-f2_m1" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f2-m1" onclick="cambiarVista('f2-m2', 2, 2)">Siguiente Misión 🚀</button>
+            </div>
+        </div>
+
+        <div class="vista-app" id="f2-m2">
+            <div class="pregunta-bloque">
+                <h3>2. Maestros del Engaño 🎭</h3>
+                <p><strong>Asemejarse al PROPIO ENTORNO donde vive para pasar desapercibido:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m2_a', true, '', 'f2-m2')">🦎 Camuflaje / Cripsis</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m2_a', false, 'Asemejarse a OTROS es mimetismo.', 'f2-m2')">🐍 Mimetismo</button>
+                </div>
+                <p><strong>Asemejarse a OTROS ORGANISMOS con los que no tiene relación:</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m2_b', false, 'Esconderse en las rocas u hojas es camuflaje.', 'f2-m2')">🦎 Camuflaje / Cripsis</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m2_b', true, '', 'f2-m2')">🐍 Mimetismo</button>
+                </div>
+                <div id="feed-f2_m2" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f2-m2" onclick="cambiarVista('f2-m3', 3, 2)">Siguiente Misión 🚀</button>
+            </div>
+        </div>
+
+        <div class="vista-app" id="f2-m3">
+            <div class="pregunta-bloque">
+                <h3>3. El secreto de los Cactus 🌵</h3>
+                <p><strong>¿Por qué plantas como el cactus transforman sus hojas en espinas?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m3_a', false, 'Las espinas evitan la pérdida de agua.', 'f2-m3')">☀️ Para recibir luz solar</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m3_a', true, '', 'f2-m3')">💧 Para evitar que los animales beban su líquido</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f2_m3_a', false, 'Los cactus no migran.', 'f2-m3')">🦅 Para migrar en invierno</button>
+                </div>
+                <div id="feed-f2_m3" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f2-m3" onclick="cambiarVista('aprende-f3')">¡Superaste la Fase 2! Ir a Fase 3 🏆</button>
+            </div>
+        </div>
+
+        <!-- ================= FASE 3: APRENDIZAJE ================= -->
+        <div class="vista-app" id="aprende-f3">
+            <div class="zona-entrenamiento">
+                <h2>🧠 Zona de Entrenamiento: Fase 3</h2>
+                <p>Último esfuerzo. ¡Presta atención a cómo se mueven y qué los cubre!</p>
+                <div class="concepto">🦆 <strong>Desplazamiento:</strong> Las patas de los animales cambian según su hábitat. El pato tiene membranas para nadar, mientras que el pájaro carpintero tiene garras para agarrarse a los árboles. Las alas del pingüino parecen aletas para nadar en ambientes fríos.</div>
+                <div class="concepto">🐭 <strong>Mamíferos:</strong> Su cuerpo está cubierto de <strong>PELOS</strong>. (Ej: La chinchilla tiene pelo suave, delgado y tupido para soportar el frío).</div>
+                <div class="concepto">🦅 <strong>Aves:</strong> Su cuerpo está cubierto de <strong>PLUMAS</strong>.</div>
+                <div class="concepto">🐟 <strong>Peces y Reptiles:</strong> Su cuerpo está cubierto de <strong>ESCAMAS</strong>.</div>
+                <div class="concepto">🐸 <strong>Anfibios:</strong> Tienen la <strong>PIEL DESNUDA o HÚMEDA</strong>.</div>
+                <button class="btn-accion btn-entrenamiento" onclick="iniciarFase(3, 1)">¡Entendido! A jugar 🎮</button>
+            </div>
+        </div>
+
+        <!-- ================= FASE 3: MISIONES ================= -->
+        <div class="vista-app" id="f3-m1">
+            <div class="pregunta-bloque">
+                <h3>1. Pies especiales 🦆</h3>
+                <div class="imagen-apoyo">[ Aquí Kaptia muestra la imagen de las patas del pato y el pájaro carpintero ]</div>
+                <p><strong>¿Por qué el pato y el pájaro carpintero tienen las patas diferentes?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m1_a', true, '', 'f3-m1')">🌍 Porque viven en distintos hábitats: uno nada y otro trepa.</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m1_a', false, 'Recuerda que ambos necesitan buscar comida, pero lo hacen en lugares distintos.', 'f3-m1')">🍔 Porque comen cosas diferentes.</button>
+                </div>
+                <p><strong>¿Qué adaptación tiene el pingüino para desplazarse en ambientes fríos?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m1_b', true, '', 'f3-m1')">🐧 Sus alas parecen aletas y sus patas tienen membranas.</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m1_b', false, 'El pingüino no tiene garras, necesita nadar.', 'f3-m1')">🦅 Sus alas son para volar y tiene garras.</button>
+                </div>
+                <div id="feed-f3_m1" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f3-m1" onclick="cambiarVista('f3-m2', 2, 3)">Siguiente Misión 🚀</button>
+            </div>
+        </div>
+
+        <div class="vista-app" id="f3-m2">
+            <div class="pregunta-bloque">
+                <h3>2. ¿De qué están cubiertos? 🧥</h3>
+                <p><strong>La chinchilla es un mamífero. ¿Cómo es su cubierta corporal?</strong></p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_a', true, '', 'f3-m2')">🐭 Pelos (suaves, delgados y tupidos)</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_a', false, 'Las chinchillas viven en el frío, necesitan algo que las abrigue.', 'f3-m2')">🐸 Piel desnuda</button>
+                </div>
+                <p><strong>Relaciona al grupo de animales con su cubierta:</strong></p>
+                <p>Las aves están cubiertas de:</p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_b', true, '', 'f3-m2')">🦅 Plumas</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_b', false, 'Recuerda qué usan los pájaros para volar.', 'f3-m2')">🐟 Escamas</button>
+                </div>
+                <p>Los peces y muchos reptiles están cubiertos de:</p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_c', false, 'Las plumas se mojarían mucho en el agua.', 'f3-m2')">🦅 Plumas</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_c', true, '', 'f3-m2')">🐟 Escamas</button>
+                </div>
+                <p>Los anfibios están cubiertos de:</p>
+                <div class="grid-opciones barajar">
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_d', true, '', 'f3-m2')">🐸 Piel desnuda o húmeda</button>
+                    <button class="btn-opcion" onclick="evaluar(this, 'f3_m2_d', false, 'Los sapos no tienen pelo.', 'f3-m2')">🐭 Pelos</button>
+                </div>
+                <div id="feed-f3_m2" class="feedback pista"></div>
+                <button class="btn-accion oculto" id="sig-f3-m2" onclick="cambiarVista('final-juego')">¡Finalizar Misiones! 🏆</button>
+            </div>
+        </div>
+
+        <!-- ================= PANTALLA FINAL ================= -->
+        <div class="vista-app" id="final-juego">
+            <h2 style="color: #D97706; text-align: center;">¡Impresionante, Santi! 🌟</h2>
+            <p style="text-align: center; font-size: 18px;">Has superado todas las fases. Eres un verdadero experto en adaptación y ecosistemas.</p>
+            <p style="text-align: center;">¡Estás listo para sacar un 7.0 en tu prueba de ciencias!</p>
+        </div>
+
+    </div>
+
+    <script>
+        let puntos = 0;
+        let estadoMisiones = { m1_a: false, m1_b: false, m2_a: false, m2_b: false, m3_a: false, f2_m1_a: false, f2_m1_b: false, f2_m2_a: false, f2_m2_b: false, f2_m3_a: false, f3_m1_a: false, f3_m1_b: false, f3_m2_a: false, f3_m2_b: false, f3_m2_c: false, f3_m2_d: false };
+
+        // Barajar botones al cargar
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.barajar').forEach(grid => {
+                let botones = Array.from(grid.children);
+                for (let i = botones.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    grid.appendChild(botones[j]);
+                }
+            });
+        });
+
+        function cambiarVista(idDestino, numMision, fase) {
+            document.querySelectorAll('.vista-app').forEach(v => v.classList.remove('activa'));
+            document.getElementById(idDestino).classList.add('activa');
+            
+            // Lógica para mostrar u ocultar la barra superior
+            let barra = document.getElementById('barra-container');
+            let txtRonda = document.getElementById('contador-ronda');
+            
+            if(idDestino.includes('-m')) {
+                barra.style.display = 'block';
+                txtRonda.style.display = 'block';
+                // Calculo del ancho de la barra
+                let totalMisionesFase = fase === 3 ? 2 : 3; 
+                txtRonda.innerText = `Fase ${fase} - Ronda ${numMision} de ${totalMisionesFase}`;
+                document.getElementById('barra').style.width = (numMision * (100 / totalMisionesFase)) + '%';
+            } else {
+                barra.style.display = 'none';
+                txtRonda.style.display = 'none';
+            }
+        }
+
+        function iniciarFase(fase, numMision) {
+            cambiarVista(`f${fase}-m1`, numMision, fase);
+        }
+
+        function evaluar(btn, idPregunta, esCorrecta, pista, idVista) {
+            if (estadoMisiones[idPregunta]) return;
+
+            let hermanos = btn.parentElement.children;
+            for (let el of hermanos) { el.classList.remove('incorrecta'); }
+
+            let feedbackId = "feed-" + idPregunta.replace('_a', '').replace('_b', '').replace('_c', '').replace('_d', '');
+            let feed = document.getElementById(feedbackId);
+
+            if (esCorrecta) {
+                btn.classList.add('correcta');
+                estadoMisiones[idPregunta] = true;
+                feed.style.display = 'none';
+                
+                puntos += 20;
+                document.getElementById('puntos').innerText = puntos;
+                verificarMisionLista(idPregunta.replace('_a', '').replace('_b', '').replace('_c', '').replace('_d', ''), idVista);
+            } else {
+                btn.classList.add('incorrecta');
+                feed.innerText = "🕵️‍♂️ Pista: " + pista;
+                feed.style.display = 'block';
+            }
+        }
+
+        function verificarMisionLista(grupoMision, idVista) {
+            let sigBtnId = "sig-" + idVista;
+            if (grupoMision === 'm1' && estadoMisiones.m1_a && estadoMisiones.m1_b) document.getElementById(sigBtnId).style.display = 'block';
+            if (grupoMision === 'm2' && estadoMisiones.m2_a && estadoMisiones.m2_b) document.getElementById(sigBtnId).style.display = 'block';
+            if (grupoMision === 'm3' && estadoMisiones.m3_a) document.getElementById(sigBtnId).style.display = 'block';
+            
+            if (grupoMision === 'f2_m1' && estadoMisiones.f2_m1_a && estadoMisiones.f2_m1_b) document.getElementById(sigBtnId).style.display = 'block';
+            if (grupoMision === 'f2_m2' && estadoMisiones.f2_m2_a && estadoMisiones.f2_m2_b) document.getElementById(sigBtnId).style.display = 'block';
+            if (grupoMision === 'f2_m3' && estadoMisiones.f2_m3_a) document.getElementById(sigBtnId).style.display = 'block';
+            
+            if (grupoMision === 'f3_m1' && estadoMisiones.f3_m1_a && estadoMisiones.f3_m1_b) document.getElementById(sigBtnId).style.display = 'block';
+            if (grupoMision === 'f3_m2' && estadoMisiones.f3_m2_a && estadoMisiones.f3_m2_b && estadoMisiones.f3_m2_c && estadoMisiones.f3_m2_d) document.getElementById(sigBtnId).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
