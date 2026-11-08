@@ -3,5 +3,5 @@
 // ============================================================================
 const KaptiaAIEngine = {
     version: "1.0-Sprint1",
-    status: "Ready for Gemini 2.5 Flash integration in Sprint 2"
+    status: "Ready for Gemini API integration in Sprint 2"
 };
