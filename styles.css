@@ -1,0 +1,1101 @@
+:root {
+    --bg-app: #F2F6FA;
+    --navy-dark: #0F1E36;
+    --navy-primary: #1E3A8A;
+    --emerald: #52B788;
+    --emerald-btn: #58B889;
+    --amber-gold: #F6BD3A;
+    --text-main: #182232;
+    --text-muted: #5C6B7E;
+    --white: #FFFFFF;
+    --font-scale: 1;
+}
+
+body.large-font {
+    --font-scale: 1.15;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   SISTEMA DE TRANSICIONES SUAVES ENTRE PANTALLAS
+   ========================================================================== */
+.screen {
+    display: none;
+    min-height: 100dvh;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.screen.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR MINIMALISTA
+   ========================================================================== */
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 36px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+}
+
+.brand-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-k {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--navy-dark);
+    color: white;
+    font-weight: 800;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-text {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--navy-dark);
+}
+
+.pill-neuro {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.divider-v {
+    width: 1px;
+    height: 24px;
+    background: #CBD5E1;
+}
+
+.user-pill {
+    background: #E9EEF5;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.points-pill-top {
+    background: #E9EEF5;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-google {
+    background: white;
+    border: 1px solid #DCE3EB;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.g-icon {
+    font-weight: 800;
+    color: #4285F4;
+}
+
+.btn-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid #DCE3EB;
+    background: white;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-back-pill {
+    background: white;
+    border: 1px solid #CBD5E1;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-back-pill:hover {
+    background: #E2E8F0;
+}
+
+.sub-nav-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+    padding: 8px 42px 0;
+}
+
+.sub-link {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   PANTALLA 1: EL PORTAL
+   ========================================================================== */
+.portal-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.portal-heading {
+    text-align: center;
+    margin-bottom: 34px;
+}
+
+.portal-heading h1 {
+    font-size: calc(44px * var(--font-scale));
+    font-weight: 800;
+    color: var(--navy-dark);
+    line-height: 1.12;
+    margin-bottom: 10px;
+}
+
+.portal-heading p {
+    font-size: 18px;
+    color: var(--text-muted);
+}
+
+.portal-cards {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 28px;
+    padding: 28px 32px;
+    width: 430px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 18px 38px rgba(15, 30, 54, 0.06);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(15, 30, 54, 0.11);
+}
+
+.profile-illustration {
+    font-size: 68px;
+    background: #F8FAFC;
+    width: 120px;
+    height: 140px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.role-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.tag-student {
+    background: #FFF3CD;
+    color: #7A5A00;
+}
+
+.tag-parent {
+    background: #E8EEF5;
+    color: #1E3A8A;
+}
+
+.profile-info h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.profile-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.points-tag {
+    background: #FFF4D6;
+    color: #6E4E00;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.spacer-tag {
+    height: 43px;
+}
+
+.btn-portal-student {
+    width: 100%;
+    background: var(--amber-gold);
+    color: var(--navy-dark);
+    border: none;
+    padding: 13px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-portal-parent {
+    width: 100%;
+    background: var(--navy-dark);
+    color: white;
+    border: none;
+    padding: 13px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.portal-footer {
+    margin-top: 32px;
+}
+
+.link-magic-pass {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   PANTALLAS 2 Y 3: MUNDOS Y SUB-MATERIAS (PASTELES PLANOS LIMPIOS)
+   ========================================================================== */
+.main-wrapper {
+    max-width: 1040px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 18px 28px 40px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: calc(34px * var(--font-scale));
+    font-weight: 800;
+    color: var(--navy-dark);
+    margin: 12px 0 32px;
+}
+
+.fw-normal {
+    font-weight: 500;
+}
+
+.worlds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+    gap: 26px;
+}
+
+.world-card {
+    border-radius: 26px;
+    padding: 32px 34px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    cursor: pointer;
+    transition: transform 0.22s ease;
+}
+
+.world-card:hover {
+    transform: translateY(-5px);
+}
+
+.world-green  { background-color: #D6F0DF; }
+.world-blue   { background-color: #D6ECFF; }
+.world-orange { background-color: #FFE8C2; }
+.world-purple { background-color: #F2D9F7; }
+
+.world-icon {
+    font-size: 84px;
+    width: 120px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.world-content {
+    flex: 1;
+}
+
+.world-content h2 {
+    font-size: calc(28px * var(--font-scale));
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 6px;
+}
+
+.world-content p {
+    font-size: 16px;
+    color: #334155;
+    margin-bottom: 16px;
+}
+
+.btn-world {
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-green  { background-color: #55B377; }
+.btn-blue   { background-color: #5B9BD5; }
+.btn-orange { background-color: #F09843; }
+.btn-purple { background-color: #A665B8; }
+
+/* Barra de progreso individual en Pantalla 3 (Sub-materias) */
+.capsule-progress-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.65);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 10px 0 8px;
+}
+
+.capsule-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.capsule-status-text {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* ==========================================================================
+   PANTALLA 4: LA CÁPSULA DE ENFOQUE
+   ========================================================================== */
+.breadcrumb-title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.capsule-workspace {
+    max-width: 860px;
+    width: 100%;
+    margin: 10px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.stages-pill-bar {
+    background: #E6ECF2;
+    padding: 8px;
+    border-radius: 999px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.stage-step-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 11px 14px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.stage-step-btn.active {
+    background: #76C893;
+    color: white;
+    font-weight: 700;
+}
+
+.capsule-focus-box {
+    background: white;
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.04);
+}
+
+.capsule-inner-pastel {
+    background: #EAF9F0;
+    border-radius: 22px;
+    padding: 28px 34px;
+    text-align: center;
+}
+
+.capsule-counter-pill {
+    background: white;
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.capsule-big-illustration {
+    font-size: 92px;
+    margin: 8px 0 16px;
+}
+
+.capsule-concept-title {
+    font-size: calc(30px * var(--font-scale));
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.capsule-concept-desc {
+    font-size: calc(18px * var(--font-scale));
+    line-height: 1.5;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.capsule-options-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.choice-btn {
+    background: white;
+    border: 2px solid #CBD5E1;
+    padding: 16px;
+    border-radius: 18px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.choice-btn:hover {
+    border-color: #55B377;
+    transform: translateY(-2px);
+}
+
+.choice-btn.correct {
+    background: #55B377;
+    border-color: #3B8EA5;
+    color: white;
+}
+
+.choice-btn.wrong {
+    background: #FEE2E2;
+    border-color: #FCA5A5;
+    color: #991B1B;
+}
+
+.capsule-footer {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.btn-capsule-prev {
+    background: white;
+    border: 1px solid #CBD5E1;
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-capsule-next {
+    background: #76C893;
+    color: white;
+    border: none;
+    padding: 14px 44px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   PANTALLA 5: EL REINO SQUISHY
+   ========================================================================== */
+.kingdom-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.kingdom-title-box {
+    background: white;
+    border: 3px solid #1E293B;
+    border-radius: 22px;
+    padding: 14px 38px;
+}
+
+.kingdom-title-box h1 {
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.kingdom-points-box {
+    background: #FDE047;
+    border: 3px solid white;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-size: 22px;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.kingdom-columns {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 26px;
+}
+
+.gachapon-panel, .shelf-panel {
+    background: white;
+    border: 3px solid #1E293B;
+    border-radius: 26px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gachapon-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.gachapon-dome {
+    width: 190px;
+    height: 170px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+    border: 4px solid #38BDF8;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 18px;
+    font-size: 34px;
+}
+
+.gachapon-base {
+    width: 160px;
+    height: 110px;
+    background: #FBBF24;
+    border: 4px solid #F59E0B;
+    border-radius: 0 0 22px 22px;
+    margin-top: -12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.gachapon-status {
+    font-weight: 700;
+    color: var(--text-muted);
+    margin: 12px 0;
+    text-align: center;
+}
+
+.btn-gachapon-buy {
+    background: #34D399;
+    border: 3px solid #059669;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.wooden-shelf {
+    width: 100%;
+    background: #E6A15C;
+    border: 8px solid #C87D3B;
+    border-radius: 20px;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.squishy-slot {
+    background: rgba(255, 255, 255, 0.35);
+    border-bottom: 10px solid #B56928;
+    border-radius: 16px;
+    height: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.squishy-slot:hover {
+    transform: scale(1.08);
+}
+
+.squishy-emoji {
+    font-size: 54px;
+}
+
+.squishy-locked {
+    font-size: 32px;
+    background: #7C4D2B;
+    color: #FDE68A;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   PANTALLA 6: PANEL DE APODERADOS Y PASE MÁGICO
+   ========================================================================== */
+.parent-panel-label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.parent-tabs {
+    display: flex;
+    gap: 8px;
+    background: #E2E8F0;
+    padding: 5px;
+    border-radius: 999px;
+}
+
+.parent-tab {
+    border: none;
+    background: transparent;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.parent-tab.active {
+    background: white;
+    color: var(--navy-dark);
+}
+
+.parent-two-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 28px;
+    margin-top: 12px;
+}
+
+.parent-white-card {
+    background: white;
+    border-radius: 28px;
+    padding: 32px;
+    box-shadow: 0 14px 34px rgba(15, 30, 54, 0.05);
+}
+
+.parent-white-card h2 {
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.scanner-illustration {
+    font-size: 64px;
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.small-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.subject-pills-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.subj-pill {
+    flex: 1;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    background: #EDF2F7;
+    cursor: pointer;
+}
+
+.subj-pill.active-subj {
+    background: #D8B4FE;
+    color: #3B0764;
+}
+
+.clean-input, .clean-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1.5px solid #CBD5E1;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 12px;
+    user-select: text;
+}
+
+.dropzone-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #CBD5E1;
+    border-radius: 18px;
+    padding: 26px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+    background: #F8FAFC;
+}
+
+.btn-create-capsule {
+    width: 100%;
+    background: var(--emerald-btn);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.metric-box {
+    border: 1.5px solid #E2E8F0;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.metric-icon {
+    font-size: 28px;
+}
+
+.metric-box strong {
+    display: block;
+    font-size: 24px;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    border: 1.5px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Vista Pase Mágico */
+.pill-active-student {
+    background: #E2E8F0;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.student-hero-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.avatar-circle-lg {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: #E0F2FE;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.giant-name {
+    font-size: 42px !important;
+    margin: 0 !important;
+}
+
+.golden-points-banner {
+    background: #FACC15;
+    padding: 14px;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.student-progress-strip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.green-progress-pill {
+    flex: 1;
+    background: #DCFCE7;
+    color: #166534;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.subtitle-pass {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.qr-and-pin-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    margin-bottom: 24px;
+}
+
+.pin-display-box {
+    background: #E8F1FB;
+    padding: 18px 24px;
+    border-radius: 18px;
+    font-size: 26px;
+    color: var(--navy-dark);
+}
+
+.pass-actions-row {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-blue-pill {
+    flex: 1;
+    background: #2563EB;
+    color: white;
+    border: none;
+    padding: 13px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-gray-pill {
+    background: #E8EEF5;
+    color: var(--navy-dark);
+    border: none;
+    padding: 13px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   MODALES
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 30, 54, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 26px;
+    max-width: 420px;
+    width: 100%;
+    padding: 28px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.18);
+}
+
+.modal-box h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.modal-box p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.pin-huge-input {
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    padding: 12px;
+    border-radius: 16px;
+    border: 2px solid #93C5FD;
+    margin-bottom: 14px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.error-text {
+    color: #DC2626;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
