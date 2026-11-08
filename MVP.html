@@ -13,9 +13,7 @@
 </head>
 <body>
 
-    <!-- ==================================================================
-         PANTALLA 1: EL PORTAL (BIENVENIDA Y SELECCIÓN DE PERFIL)
-         ================================================================== -->
+    <!-- PANTALLA 1: EL PORTAL -->
     <section id="screen-portal" class="screen active">
         <header class="top-bar">
             <div class="brand-group">
@@ -27,8 +25,8 @@
                 <button class="btn-google" onclick="openParentLoginModal()">
                     <span class="g-icon">G</span> Iniciar sesión con Google
                 </button>
-                <button class="btn-circle" onclick="toggleFontSize()" title="Cambiar tamaño de texto">Aa+</button>
-                <button class="btn-circle" id="btn-sound-portal" onclick="toggleSound()" title="Sonido">🔊</button>
+                <button class="btn-circle" onclick="toggleFontSize()" title="Cambiar tamaño">Aa+</button>
+                <button class="btn-circle" onclick="toggleSound()" title="Sonido">🔊</button>
             </div>
         </header>
 
@@ -39,7 +37,6 @@
             </div>
 
             <div class="portal-cards">
-                <!-- Tarjeta Modo Estudiante -->
                 <div class="profile-card student-profile-card" onclick="enterStudentFlow()">
                     <div class="profile-illustration">👦🏽🎧</div>
                     <div class="profile-info">
@@ -51,7 +48,6 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta Modo Padre -->
                 <div class="profile-card parent-profile-card" onclick="openParentLoginModal()">
                     <div class="profile-illustration">👨🏽‍🏫📋</div>
                     <div class="profile-info">
@@ -72,9 +68,7 @@
         </div>
     </section>
 
-    <!-- ==================================================================
-         PANTALLA 2: TABLERO DE MUNDOS (4 ASIGNATURAS MINIMALISTAS)
-         ================================================================== -->
+    <!-- PANTALLA 2: TABLERO DE MUNDOS -->
     <section id="screen-worlds" class="screen">
         <header class="top-bar">
             <div class="brand-group">
@@ -97,7 +91,6 @@
             <h1 class="page-title">¡Hola <span class="student-name-ref">Santi</span>! ¿Qué mundo <span class="fw-normal">vamos a explorar hoy?</span></h1>
 
             <div class="worlds-grid">
-                <!-- Mundo 1: Ciencias Naturales -->
                 <div class="world-card world-green" onclick="openWorld('ciencias')">
                     <div class="world-icon">🌳</div>
                     <div class="world-content">
@@ -106,8 +99,6 @@
                         <button class="btn-world btn-green">Entrar ➔</button>
                     </div>
                 </div>
-
-                <!-- Mundo 2: Historia y Sociedad -->
                 <div class="world-card world-blue" onclick="openWorld('historia')">
                     <div class="world-icon">🏛️</div>
                     <div class="world-content">
@@ -116,8 +107,6 @@
                         <button class="btn-world btn-blue">Entrar ➔</button>
                     </div>
                 </div>
-
-                <!-- Mundo 3: Matemáticas -->
                 <div class="world-card world-orange" onclick="openWorld('matematicas')">
                     <div class="world-icon">🧮</div>
                     <div class="world-content">
@@ -126,8 +115,6 @@
                         <button class="btn-world btn-orange">Entrar ➔</button>
                     </div>
                 </div>
-
-                <!-- Mundo 4: Lenguaje -->
                 <div class="world-card world-purple" onclick="openWorld('lenguaje')">
                     <div class="world-icon">📖</div>
                     <div class="world-content">
@@ -140,9 +127,7 @@
         </div>
     </section>
 
-    <!-- ==================================================================
-         PANTALLA 3: SUB-MATERIAS / CÁPSULAS DE UN MUNDO (CON PROGRESO)
-         ================================================================== -->
+    <!-- PANTALLA 3: SUB-MATERIAS -->
     <section id="screen-topics" class="screen">
         <header class="top-bar">
             <div class="brand-group">
@@ -164,14 +149,11 @@
 
         <div class="main-wrapper">
             <h1 class="page-title">¡Hola <span class="student-name-ref">Santi</span>! Elige qué vamos a estudiar hoy:</h1>
-            <!-- Contenedor dinámico donde se pintan las cápsulas del mundo elegido -->
             <div id="capsules-grid-container" class="worlds-grid"></div>
         </div>
     </section>
 
-    <!-- ==================================================================
-         PANTALLA 4: LA CÁPSULA DE ENFOQUE (JUEGO PASO A PASO SIN SCROLL)
-         ================================================================== -->
+    <!-- PANTALLA 4: CÁPSULA DE ENFOQUE -->
     <section id="screen-capsule" class="screen">
         <header class="top-bar">
             <div class="brand-group">
@@ -187,20 +169,13 @@
         </header>
 
         <div class="capsule-workspace">
-            <!-- Barra de 4 Etapas con Paso 4 Dinámico según Asignatura -->
             <div id="capsule-stages-bar" class="stages-pill-bar"></div>
-
-            <!-- Tarjeta Central de Enfoque -->
             <div id="capsule-stage-content" class="capsule-focus-box"></div>
-
-            <!-- Botonera Inferior -->
             <div id="capsule-footer-bar" class="capsule-footer"></div>
         </div>
     </section>
 
-    <!-- ==================================================================
-         PANTALLA 5: EL REINO SQUISHY (MÁQUINA GACHAPON + REPISA 3D)
-         ================================================================== -->
+    <!-- PANTALLA 5: EL REINO SQUISHY -->
     <section id="screen-kingdom" class="screen">
         <header class="top-bar">
             <div class="brand-group">
@@ -224,7 +199,6 @@
             </div>
 
             <div class="kingdom-columns">
-                <!-- Máquina Dispensadora Gachapon -->
                 <div class="gachapon-panel">
                     <div id="gachapon-machine" class="gachapon-visual">
                         <div class="gachapon-dome">
@@ -245,7 +219,6 @@
                     </button>
                 </div>
 
-                <!-- Estantería de Madera 3 Niveles -->
                 <div class="shelf-panel">
                     <div id="squishy-shelf-grid" class="wooden-shelf"></div>
                 </div>
@@ -253,9 +226,7 @@
         </div>
     </section>
 
-    <!-- ==================================================================
-         PANTALLA 6: PANEL DE APODERADOS (KAPTEAR IA + PASE MÁGICO)
-         ================================================================== -->
+    <!-- PANTALLA 6: PANEL DE APODERADOS -->
     <section id="screen-parent" class="screen">
         <header class="top-bar">
             <div class="brand-group">
@@ -279,7 +250,6 @@
         </header>
 
         <div class="main-wrapper">
-            <!-- SUB-VISTA A: KAPTEAR NUEVO MATERIAL + HISTORIAL -->
             <div id="parent-view-kaptear" class="parent-two-cols">
                 <div class="parent-white-card">
                     <h2>Kaptear Nuevo Material con IA</h2>
@@ -300,7 +270,7 @@
                         <input type="file" id="file-upload-input" accept=".pdf,.jpg,.jpeg,.png,.txt" hidden onchange="handleFileSelected(this)" />
                     </label>
 
-                    <textarea id="input-capsule-text" class="clean-textarea" rows="3" placeholder="O pega aquí el texto de la guía (En el Sprint 2 conectaremos aquí tu API Key de Gemini)..."></textarea>
+                    <textarea id="input-capsule-text" class="clean-textarea" rows="3" placeholder="O pega aquí el texto de la guía..."></textarea>
 
                     <button class="btn-create-capsule" onclick="createDemoCapsuleSprint1()">
                         Crear Cápsula
@@ -320,7 +290,7 @@
                         <div class="metric-box">
                             <span class="metric-icon">🎯</span>
                             <div>
-                                <strong id="parent-accuracy-val">88%</strong>
+                                <strong>88%</strong>
                                 <small>Precisión</small>
                             </div>
                         </div>
@@ -330,13 +300,12 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA B: GESTIÓN DE ESTUDIANTE Y PASE MÁGICO (QR + PIN) -->
             <div id="parent-view-student" class="parent-two-cols hidden">
                 <div class="parent-white-card student-summary-card">
                     <span class="pill-active-student">Estudiante Activo</span>
                     <div class="student-hero-row">
                         <div class="avatar-circle-lg">👦🏽</div>
-                        <h2 id="parent-student-name-display" class="giant-name">Santi</h2>
+                        <h2 class="giant-name"><span class="student-name-ref">Santi</span></h2>
                     </div>
 
                     <div class="golden-points-banner">
@@ -355,10 +324,9 @@
 
                 <div class="parent-white-card magic-pass-card">
                     <h2>Pase Mágico</h2>
-                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su tablet o ingresar sin contraseña</p>
+                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su tablet</p>
 
                     <div class="qr-and-pin-row">
-                        <!-- Código QR Generado en SVG Puro (Funciona 100% Offline) -->
                         <div class="qr-box">
                             <svg viewBox="0 0 100 100" width="130" height="130">
                                 <rect width="100" height="100" rx="12" fill="#DCEEFF"/>
@@ -381,14 +349,13 @@
                                 <rect x="78" y="76" width="10" height="12" fill="#1E3A8A"/>
                             </svg>
                         </div>
-
                         <div class="pin-display-box">
                             <span>PIN: <strong id="magic-pin-display">1234</strong></span>
                         </div>
                     </div>
 
                     <div class="pass-actions-row">
-                        <button class="btn-blue-pill" onclick="openEditStudentModal()">+ Editar / Añadir Estudiante</button>
+                        <button class="btn-blue-pill" onclick="openEditStudentModal()">+ Editar Estudiante</button>
                         <button class="btn-gray-pill" onclick="copyMagicPass()">Compartir Código</button>
                     </div>
                 </div>
@@ -396,14 +363,11 @@
         </div>
     </section>
 
-    <!-- ==================================================================
-         MODALES DE AUTENTICACIÓN Y VINCULACIÓN
-         ================================================================== -->
-    <!-- Modal 1: Login Simple de Apoderado -->
+    <!-- MODALES -->
     <div id="modal-parent-login" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👨‍👩‍👦 Acceso Apoderados</h3>
-            <p>Ingresa con las credenciales predeterminadas del MVP:</p>
+            <p>Ingresa con las credenciales del MVP:</p>
             <label class="small-label">Usuario</label>
             <input type="text" id="login-user" class="clean-input" value="padre" />
             <label class="small-label">Contraseña</label>
@@ -416,37 +380,33 @@
         </div>
     </div>
 
-    <!-- Modal 2: Pase Mágico del Estudiante (Cuando se cierra sesión o usa otro equipo) -->
     <div id="modal-student-pin" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>✨ Ingresar con Pase Mágico</h3>
-            <p>Escribe tu PIN de 4 números o simula el escaneo del QR de tu papá/mamá:</p>
+            <p>Escribe tu PIN de 4 números:</p>
             <input type="password" id="student-pin-input" maxlength="4" class="pin-huge-input" placeholder="1234" value="1234" />
-            <div id="pin-error" class="error-text hidden">PIN incorrecto. Revisa el Pase Mágico en el Panel de Padres.</div>
+            <div id="pin-error" class="error-text hidden">PIN incorrecto.</div>
             <div class="modal-buttons">
                 <button class="btn-gray-pill" onclick="closeModals()">Cancelar</button>
-                <button class="btn-portal-student" onclick="verifyStudentPin()">🔓 Desbloquear mi Reino</button>
+                <button class="btn-portal-student" onclick="verifyStudentPin()">🔓 Desbloquear</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal 3: Crear / Configurar Datos del Estudiante -->
     <div id="modal-edit-student" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👦🏽 Configurar Estudiante</h3>
-            <p>Actualiza el nombre y el PIN de acceso rápido:</p>
-            <label class="small-label">Nombre del Estudiante</label>
+            <label class="small-label">Nombre</label>
             <input type="text" id="edit-student-name" class="clean-input" value="Santi" />
-            <label class="small-label">PIN de Pase Mágico (4 dígitos)</label>
+            <label class="small-label">PIN (4 dígitos)</label>
             <input type="text" id="edit-student-pin" maxlength="4" class="clean-input" value="1234" />
             <div class="modal-buttons">
                 <button class="btn-gray-pill" onclick="closeModals()">Cancelar</button>
-                <button class="btn-blue-pill" onclick="saveStudentProfile()">Guardar Cambios</button>
+                <button class="btn-blue-pill" onclick="saveStudentProfile()">Guardar</button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts del Proyecto -->
     <script src="ai_engine.js"></script>
     <script src="app.js"></script>
 </body>
