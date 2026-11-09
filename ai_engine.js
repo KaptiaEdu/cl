@@ -180,3 +180,4 @@ Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
         return JSON.parse(cleanJson);
     }
 };
+
