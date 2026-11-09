@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Kaptia — Plataforma Neuro-Adaptativa</title>
     <!-- Fuente Lexend -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,19 +13,21 @@
 </head>
 <body>
 
-    <!-- PANTALLA 1: EL PORTAL -->
+    <!-- ==================================================================
+         PANTALLA 1: EL PORTAL (BIENVENIDA Y SELECCIÓN DE PERFIL)
+         ================================================================== -->
     <section id="screen-portal" class="screen active">
         <header class="top-bar">
             <div class="brand-group">
                 <div class="logo-k">K</div>
                 <span class="brand-text">KAPTIA</span>
-                <span class="pill-neuro">Neuro-Adaptativo</span>
+                <span class="pill-neuro hide-mobile">Neuro-Adaptativo</span>
             </div>
             <div class="top-actions">
                 <button class="btn-google" onclick="openParentLoginModal()">
-                    <span class="g-icon">G</span> Iniciar sesión con Google
+                    <span class="g-icon">G</span> <span class="hide-xs">Acceso Padres</span>
                 </button>
-                <button class="btn-circle" onclick="toggleFontSize()" title="Cambiar tamaño">Aa+</button>
+                <button class="btn-circle" onclick="toggleFontSize()" title="Tamaño de texto">Aa+</button>
                 <button class="btn-circle" onclick="toggleSound()" title="Sonido">🔊</button>
             </div>
         </header>
@@ -37,24 +39,29 @@
             </div>
 
             <div class="portal-cards">
+                <!-- Tarjeta Modo Estudiante -->
                 <div class="profile-card student-profile-card" onclick="enterStudentFlow()">
                     <div class="profile-illustration">👦🏽🎧</div>
                     <div class="profile-info">
                         <span class="role-tag tag-student">MODO ESTUDIANTE</span>
                         <h2 id="portal-student-name">🎮 Santi</h2>
-                        <p>¡A jugar y superar misiones!</p>
-                        <div class="points-tag">🏆 <span class="points-val">120</span> pts acumulados</div>
+                        <p>¡A jugar, repasar y lograr el 7.0!</p>
+                        <div class="dual-currency-row">
+                            <span class="points-tag">🏆 <span class="points-val">120</span></span>
+                            <span class="gems-tag">💎 <span class="gems-val">15</span></span>
+                        </div>
                         <button class="btn-portal-student">¡Entrar a jugar! ➔</button>
                     </div>
                 </div>
 
+                <!-- Tarjeta Modo Padre -->
                 <div class="profile-card parent-profile-card" onclick="openParentLoginModal()">
                     <div class="profile-illustration">👨🏽‍🏫📋</div>
                     <div class="profile-info">
                         <span class="role-tag tag-parent">MODO PADRE (IA)</span>
                         <h2>👨‍👩‍👦 Apoderados</h2>
-                        <p>Subir guías, fotos e historial de <span class="student-name-ref">Santi</span></p>
-                        <div class="spacer-tag"></div>
+                        <p>Subir múltiples fotos/PDFs, fechas de prueba e historial de <span class="student-name-ref">Santi</span></p>
+                        <div class="spacer-tag hide-mobile"></div>
                         <button class="btn-portal-parent">Ir al Panel de Padres ➔</button>
                     </div>
                 </div>
@@ -68,16 +75,19 @@
         </div>
     </section>
 
-    <!-- PANTALLA 2: TABLERO DE MUNDOS -->
+    <!-- ==================================================================
+         PANTALLA 2: TABLERO DE MUNDOS (4 ASIGNATURAS MINIMALISTAS)
+         ================================================================== -->
     <section id="screen-worlds" class="screen">
         <header class="top-bar">
             <div class="brand-group">
                 <span class="brand-text">KAPTIA</span>
-                <div class="divider-v"></div>
+                <div class="divider-v hide-xs"></div>
                 <div class="user-pill">👦🏽 <span class="student-name-ref">Santi</span></div>
             </div>
             <div class="top-actions">
-                <div class="points-pill-top">🏆 <span class="points-val">120</span> pts</div>
+                <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
+                <div class="gems-pill-top" title="Gemas de Esfuerzo por Repasar">💎 <span class="gems-val">15</span></div>
                 <button class="btn-circle" onclick="toggleSound()">🔊</button>
             </div>
         </header>
@@ -99,6 +109,7 @@
                         <button class="btn-world btn-green">Entrar ➔</button>
                     </div>
                 </div>
+
                 <div class="world-card world-blue" onclick="openWorld('historia')">
                     <div class="world-icon">🏛️</div>
                     <div class="world-content">
@@ -107,6 +118,7 @@
                         <button class="btn-world btn-blue">Entrar ➔</button>
                     </div>
                 </div>
+
                 <div class="world-card world-orange" onclick="openWorld('matematicas')">
                     <div class="world-icon">🧮</div>
                     <div class="world-content">
@@ -115,6 +127,7 @@
                         <button class="btn-world btn-orange">Entrar ➔</button>
                     </div>
                 </div>
+
                 <div class="world-card world-purple" onclick="openWorld('lenguaje')">
                     <div class="world-icon">📖</div>
                     <div class="world-content">
@@ -127,18 +140,20 @@
         </div>
     </section>
 
-    <!-- PANTALLA 3: SUB-MATERIAS -->
+    <!-- ==================================================================
+         PANTALLA 3: SUB-MATERIAS / CÁPSULAS (CON TOPE 5 REPASOS Y FECHA)
+         ================================================================== -->
     <section id="screen-topics" class="screen">
         <header class="top-bar">
             <div class="brand-group">
-                <button class="btn-back-pill" onclick="navigateTo('screen-worlds')">⬅ Ver Mundos</button>
-                <span class="brand-text">KAPTIA</span>
+                <button class="btn-back-pill" onclick="navigateTo('screen-worlds')">⬅ Mundos</button>
+                <span class="brand-text hide-xs">KAPTIA</span>
             </div>
             <h2 id="topics-world-header" class="center-header-title">Ciencias Naturales 🌱</h2>
             <div class="top-actions">
-                <div class="user-pill">👦🏽 <span class="student-name-ref">Santi</span></div>
-                <div class="points-pill-top">🏆 <span class="points-val">120</span> pts</div>
-                <button class="btn-circle" onclick="toggleSound()">🔊</button>
+                <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
+                <div class="gems-pill-top">💎 <span class="gems-val">15</span></div>
+                <button class="btn-circle hide-xs" onclick="toggleSound()">🔊</button>
             </div>
         </header>
 
@@ -148,39 +163,68 @@
         </div>
 
         <div class="main-wrapper">
-            <h1 class="page-title">¡Hola <span class="student-name-ref">Santi</span>! Elige qué vamos a estudiar hoy:</h1>
+            <h1 class="page-title" style="margin-bottom:14px;">Elige tu misión de estudio:</h1>
+
+            <!-- Selector entre Pruebas Vigentes y Baúl de Pruebas Pasadas -->
+            <div class="topics-filter-bar">
+                <button id="btn-filter-active" class="filter-pill active" onclick="setTopicsFilter('active')">
+                    🎯 Pruebas Vigentes (Dan Puntos y Gemas 💎)
+                </button>
+                <button id="btn-filter-archived" class="filter-pill" onclick="setTopicsFilter('archived')">
+                    🏅 Baúl de Pruebas Rendidas
+                </button>
+            </div>
+
             <div id="capsules-grid-container" class="worlds-grid"></div>
         </div>
     </section>
 
-    <!-- PANTALLA 4: CÁPSULA DE ENFOQUE -->
-    <section id="screen-capsule" class="screen">
-        <header class="top-bar">
+    <!-- ==================================================================
+         PANTALLA 4: LA CÁPSULA DE ENFOQUE (100dvh CERO SCROLL + ANTI-AZAR)
+         ================================================================== -->
+    <section id="screen-capsule" class="screen screen-locked-viewport">
+        <header class="top-bar compact-top-bar">
             <div class="brand-group">
-                <button class="btn-back-pill" onclick="navigateTo('screen-topics')">🏠 Ver Cápsulas</button>
-                <span class="brand-text">KAPTIA</span>
+                <button class="btn-back-pill" onclick="navigateTo('screen-topics')">⬅ Cápsulas</button>
+                <div id="capsule-breadcrumb" class="breadcrumb-title">Ciencias • Las Plantas</div>
             </div>
-            <div id="capsule-breadcrumb" class="breadcrumb-title">Ciencias Naturales • Ecosistemas y Adaptaciones</div>
             <div class="top-actions">
-                <div class="user-pill">👦🏽 <span class="student-name-ref">Santi</span></div>
-                <div class="points-pill-top">🏆 <span class="points-val">120</span> pts</div>
-                <button class="btn-circle" onclick="toggleSound()">🔊</button>
+                <span id="capsule-mastery-pill" class="mastery-pill-top">⭐ 1/5 Repasos</span>
+                <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
+                <div class="gems-pill-top">💎 <span class="gems-val">15</span></div>
             </div>
         </header>
 
         <div class="capsule-workspace">
+            <!-- Barra de 4 Etapas -->
             <div id="capsule-stages-bar" class="stages-pill-bar"></div>
+
+            <!-- Banner Detector Anti-Azar (Modo Calma de Detective) -->
+            <div id="calm-mode-banner" class="calm-banner hidden">
+                <div class="calm-banner-text">
+                    🧘‍♂️ <strong>¡Pausa de Detective!</strong> Respondiste muy rápido. Respira y lee con calma...
+                </div>
+                <div class="calm-progress-track">
+                    <div id="calm-progress-fill" class="calm-progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Central de Enfoque -->
             <div id="capsule-stage-content" class="capsule-focus-box"></div>
+
+            <!-- Botonera Inferior -->
             <div id="capsule-footer-bar" class="capsule-footer"></div>
         </div>
     </section>
 
-    <!-- PANTALLA 5: EL REINO SQUISHY -->
+    <!-- ==================================================================
+         PANTALLA 5: EL REINO SQUISHY (CON MONEDAS 🏆 Y GEMAS 💎)
+         ================================================================== -->
     <section id="screen-kingdom" class="screen">
         <header class="top-bar">
             <div class="brand-group">
                 <button class="btn-back-pill" onclick="navigateTo('screen-worlds')">🏠 Volver a Mundos</button>
-                <span class="brand-text">KAPTIA</span>
+                <span class="brand-text hide-xs">KAPTIA</span>
             </div>
             <div class="top-actions">
                 <div class="user-pill">👦🏽 <span class="student-name-ref">Santi</span></div>
@@ -193,8 +237,9 @@
                 <div class="kingdom-title-box">
                     <h1>El Reino Squishy</h1>
                 </div>
-                <div class="kingdom-points-box">
-                    Tus Puntos: <span class="points-val">120</span> 🏆
+                <div class="kingdom-currencies">
+                    <div class="kingdom-points-box">🏆 Monedas: <span class="points-val">120</span></div>
+                    <div class="kingdom-gems-box">💎 Gemas de Repaso: <span class="gems-val">15</span></div>
                 </div>
             </div>
 
@@ -213,10 +258,15 @@
                             <div class="gachapon-exit">🎁</div>
                         </div>
                     </div>
-                    <p id="gachapon-msg" class="gachapon-status">¡Canjea 40 puntos para abrir una cápsula sorpresa!</p>
-                    <button class="btn-gachapon-buy" onclick="buySquishyCapsule()">
-                        🪙 Desbloquear Squishy (40 pts) ➔
-                    </button>
+                    <p id="gachapon-msg" class="gachapon-status">¡Canjea tus Monedas 🏆 o Gemas de Esfuerzo 💎!</p>
+                    <div class="gachapon-buttons-stack">
+                        <button class="btn-gachapon-buy" onclick="buySquishyCapsule('normal')">
+                            🪙 Tirada Simple (40 🏆)
+                        </button>
+                        <button class="btn-gachapon-mythic" onclick="buySquishyCapsule('mythic')">
+                            💎 Tirada Élite de Repaso (15 💎)
+                        </button>
+                    </div>
                 </div>
 
                 <div class="shelf-panel">
@@ -226,36 +276,48 @@
         </div>
     </section>
 
-    <!-- PANTALLA 6: PANEL DE APODERADOS -->
+    <!-- ==================================================================
+         PANTALLA 6: PANEL DE APODERADOS (MULTI-ARCHIVOS + FECHA DE PRUEBA)
+         ================================================================== -->
     <section id="screen-parent" class="screen">
         <header class="top-bar">
             <div class="brand-group">
                 <span class="brand-text">KAPTIA</span>
-                <div class="divider-v"></div>
-                <span class="parent-panel-label">Panel de Apoderados</span>
+                <div class="divider-v hide-xs"></div>
+                <span class="parent-panel-label hide-xs">Panel de Apoderados</span>
             </div>
 
             <div class="parent-tabs">
                 <button id="tab-parent-kaptear" class="parent-tab active" onclick="switchParentTab('kaptear')">
-                    ⚡ Kaptear e Historial
+                    ⚡ Kaptear Guías
                 </button>
                 <button id="tab-parent-student" class="parent-tab" onclick="switchParentTab('student')">
-                    👦🏽 Estudiante y Pase Mágico
+                    👦🏽 Pase Mágico
                 </button>
             </div>
 
             <div class="top-actions">
-                <button class="btn-back-pill" onclick="navigateTo('screen-portal')">Cambiar Perfil ↪</button>
+                <button class="btn-back-pill" onclick="navigateTo('screen-portal')">Salir ↪</button>
             </div>
         </header>
 
         <div class="main-wrapper">
+            <!-- SUB-VISTA A: KAPTEAR MULTI-ARCHIVOS CON GEMINI API + HISTORIAL -->
             <div id="parent-view-kaptear" class="parent-two-cols">
                 <div class="parent-white-card">
-                    <h2>Kaptear Nuevo Material con IA</h2>
-                    <div class="scanner-illustration">🖨️✨</div>
+                    <h2>Kaptear Material con IA (Multi-Archivo)</h2>
 
-                    <p class="small-label">1. Elige el mundo escolar:</p>
+                    <!-- Configuración rápida de API Key de Gemini -->
+                    <div class="api-key-box">
+                        <label class="small-label">🔑 Tu API Key de Google Gemini:</label>
+                        <div class="api-key-row">
+                            <input type="password" id="gemini-api-key-input" class="clean-input" style="margin-bottom:0;" placeholder="Pega aquí tu llave AIza..." />
+                            <button class="btn-gray-pill btn-sm" onclick="saveGeminiKeyFromUI()">Guardar</button>
+                        </div>
+                        <small id="api-key-status" class="api-status-label"></small>
+                    </div>
+
+                    <p class="small-label">1. Elige la asignatura:</p>
                     <div class="subject-pills-row">
                         <button class="subj-pill active-subj" data-subj="ciencias" onclick="selectUploadSubject('ciencias', this)">Ciencias</button>
                         <button class="subj-pill" data-subj="matematicas" onclick="selectUploadSubject('matematicas', this)">Matemáticas</button>
@@ -263,72 +325,94 @@
                         <button class="subj-pill" data-subj="lenguaje" onclick="selectUploadSubject('lenguaje', this)">Lenguaje</button>
                     </div>
 
-                    <input type="text" id="input-capsule-title" class="clean-input" placeholder="Título (Ej: Las Plantas o Imperio Inca)" />
+                    <div class="form-two-cols">
+                        <div>
+                            <label class="small-label">2. Título del Tema:</label>
+                            <input type="text" id="input-capsule-title" class="clean-input" placeholder="Ej: Imperio Inca o Las Plantas" />
+                        </div>
+                        <div>
+                            <label class="small-label">3. Fecha de la Prueba (Vigencia):</label>
+                            <input type="date" id="input-exam-date" class="clean-input" />
+                        </div>
+                    </div>
 
-                    <label class="dropzone-box" for="file-upload-input">
-                        <span id="dropzone-text">📄 Sube PDF o Foto del Cuaderno</span>
-                        <input type="file" id="file-upload-input" accept=".pdf,.jpg,.jpeg,.png,.txt" hidden onchange="handleFileSelected(this)" />
-                    </label>
+                    <label class="small-label">4. Adjunta todas las páginas (varios PDFs o fotos del cuaderno):</label>
+                    <div class="upload-buttons-dual">
+                        <label class="dropzone-box" for="file-upload-input">
+                            <span>📂 Seleccionar Archivos (PDFs / Fotos)</span>
+                            <input type="file" id="file-upload-input" accept=".pdf,.jpg,.jpeg,.png" multiple hidden onchange="handleFilesSelected(this)" />
+                        </label>
+                        <label class="camera-box" for="camera-upload-input">
+                            <span>📸 Fotografiar Cuaderno</span>
+                            <input type="file" id="camera-upload-input" accept="image/*" capture="environment" multiple hidden onchange="handleFilesSelected(this)" />
+                        </label>
+                    </div>
 
-                    <textarea id="input-capsule-text" class="clean-textarea" rows="3" placeholder="O pega aquí el texto de la guía..."></textarea>
+                    <!-- Lista de archivos adjuntos con opción de quitar -->
+                    <div id="uploaded-files-list" class="attached-files-list"></div>
 
-                    <button class="btn-create-capsule" onclick="createDemoCapsuleSprint1()">
-                        Crear Cápsula
+                    <textarea id="input-capsule-text" class="clean-textarea" rows="2" placeholder="Opcional: Pega texto adicional o indicaciones del profesor..."></textarea>
+
+                    <div id="ai-loading-box" class="ai-loading-banner hidden">
+                        🧠 Procesando todas las páginas con Gemini IA y armando misiones para <span class="student-name-ref">Santi</span>...
+                    </div>
+
+                    <div id="ai-error-box" class="error-text hidden" style="text-align:center; padding:8px;"></div>
+
+                    <button id="btn-generate-ai" class="btn-create-capsule" onclick="createCapsuleWithGemini()">
+                        ✨ Crear Cápsula con IA
                     </button>
                 </div>
 
                 <div class="parent-white-card">
-                    <h2>Progreso e Historial de <span class="student-name-ref">Santi</span></h2>
+                    <h2>Progreso y Efecto 7.0 de <span class="student-name-ref">Santi</span></h2>
                     <div class="metrics-row">
                         <div class="metric-box">
-                            <span class="metric-icon">🕒</span>
+                            <span class="metric-icon">💎</span>
                             <div>
-                                <strong>15 min</strong>
-                                <small>hoy</small>
+                                <strong class="gems-val">15</strong>
+                                <small>Gemas de Repaso</small>
                             </div>
                         </div>
                         <div class="metric-box">
-                            <span class="metric-icon">🎯</span>
+                            <span class="metric-icon">🧘‍♂️</span>
                             <div>
-                                <strong>88%</strong>
-                                <small>Precisión</small>
+                                <strong id="parent-calm-val">0</strong>
+                                <small>Pausas Anti-Azar</small>
                             </div>
                         </div>
                     </div>
 
+                    <p class="small-label">Estado de Preparación por Prueba (Meta: 5 Repasos = 7.0):</p>
                     <div id="parent-history-list" class="history-list"></div>
                 </div>
             </div>
 
+            <!-- SUB-VISTA B: GESTIÓN DE ESTUDIANTE Y PASE MÁGICO (QR + PIN) -->
             <div id="parent-view-student" class="parent-two-cols hidden">
                 <div class="parent-white-card student-summary-card">
                     <span class="pill-active-student">Estudiante Activo</span>
                     <div class="student-hero-row">
                         <div class="avatar-circle-lg">👦🏽</div>
-                        <h2 class="giant-name"><span class="student-name-ref">Santi</span></h2>
+                        <h2 id="parent-student-name-display" class="giant-name">Santi</h2>
                     </div>
 
                     <div class="golden-points-banner">
-                        Puntos Kaptia: <span class="points-val">120</span> 🏆
-                    </div>
-
-                    <div class="student-progress-strip">
-                        <span class="green-progress-pill">⏳ En progreso &nbsp; 60%</span>
-                        <button class="btn-gray-pill" onclick="switchParentTab('kaptear')">Ver Historial</button>
+                        🏆 <span class="points-val">120</span> Monedas &nbsp;|&nbsp; 💎 <span class="gems-val">15</span> Gemas
                     </div>
 
                     <button class="btn-create-capsule" onclick="switchParentTab('kaptear')">
-                        Cargar Tarea
+                        ⚡ Subir Nueva Guía de Estudio
                     </button>
                 </div>
 
                 <div class="parent-white-card magic-pass-card">
                     <h2>Pase Mágico</h2>
-                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su tablet</p>
+                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su celular o tablet</p>
 
                     <div class="qr-and-pin-row">
                         <div class="qr-box">
-                            <svg viewBox="0 0 100 100" width="130" height="130">
+                            <svg viewBox="0 0 100 100" width="120" height="120">
                                 <rect width="100" height="100" rx="12" fill="#DCEEFF"/>
                                 <rect x="12" y="12" width="26" height="26" rx="4" fill="#1E3A8A"/>
                                 <rect x="17" y="17" width="16" height="16" rx="2" fill="#DCEEFF"/>
@@ -349,6 +433,7 @@
                                 <rect x="78" y="76" width="10" height="12" fill="#1E3A8A"/>
                             </svg>
                         </div>
+
                         <div class="pin-display-box">
                             <span>PIN: <strong id="magic-pin-display">1234</strong></span>
                         </div>
@@ -363,7 +448,9 @@
         </div>
     </section>
 
-    <!-- MODALES -->
+    <!-- ==================================================================
+         MODALES DE AUTENTICACIÓN, PASE MÁGICO Y RECOMPENSA DE MAESTRÍA
+         ================================================================== -->
     <div id="modal-parent-login" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👨‍👩‍👦 Acceso Apoderados</h3>
@@ -388,7 +475,7 @@
             <div id="pin-error" class="error-text hidden">PIN incorrecto.</div>
             <div class="modal-buttons">
                 <button class="btn-gray-pill" onclick="closeModals()">Cancelar</button>
-                <button class="btn-portal-student" onclick="verifyStudentPin()">🔓 Desbloquear</button>
+                <button class="btn-portal-student" onclick="verifyStudentPin()">🔓 Desbloquear mi Reino</button>
             </div>
         </div>
     </div>
@@ -396,17 +483,32 @@
     <div id="modal-edit-student" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👦🏽 Configurar Estudiante</h3>
-            <label class="small-label">Nombre</label>
+            <label class="small-label">Nombre del Estudiante</label>
             <input type="text" id="edit-student-name" class="clean-input" value="Santi" />
-            <label class="small-label">PIN (4 dígitos)</label>
+            <label class="small-label">PIN de Pase Mágico (4 dígitos)</label>
             <input type="text" id="edit-student-pin" maxlength="4" class="clean-input" value="1234" />
             <div class="modal-buttons">
                 <button class="btn-gray-pill" onclick="closeModals()">Cancelar</button>
-                <button class="btn-blue-pill" onclick="saveStudentProfile()">Guardar</button>
+                <button class="btn-blue-pill" onclick="saveStudentProfile()">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal de Celebración de Fin de Cápsula / Repaso -->
+    <div id="modal-capsule-reward" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:center;">
+            <div id="reward-modal-icon" style="font-size:64px; margin-bottom:8px;">🏆</div>
+            <h3 id="reward-modal-title">¡Cápsula Completada!</h3>
+            <p id="reward-modal-desc" style="font-size:15px; color:#334155; margin-bottom:14px;"></p>
+            <div id="reward-modal-stars" style="font-size:26px; margin-bottom:16px;">⭐⭐☆☆☆</div>
+            <div class="modal-buttons">
+                <button class="btn-gray-pill" onclick="closeModals(); navigateTo('screen-topics');">Ver Cápsulas</button>
+                <button class="btn-create-capsule" onclick="closeModals(); navigateTo('screen-kingdom');">🏰 Ir a Mi Reino</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts del Proyecto -->
     <script src="ai_engine.js"></script>
     <script src="app.js"></script>
 </body>
