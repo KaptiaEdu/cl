@@ -35,7 +35,7 @@ function renderStarsBadge(reviewCount, maxReviews = 5) {
 }
 
 // ============================================================================
-// 2. BASE DE DATOS INICIAL POR MUNDO Y CÁPSULAS (CON REPASOS Y FECHAS)
+// 2. BASE DE DATOS INICIAL POR MUNDO Y CÁPSULAS (CON REPASOS, FECHAS Y PISTAS)
 // ============================================================================
 const INITIAL_WORLDS_DATA = {
     ciencias: {
@@ -58,8 +58,18 @@ const INITIAL_WORLDS_DATA = {
                     { icon: "☀️", title: "Energía Solar", desc: "Las hojas de las plantas crecen siempre buscando la luz del Sol para fabricar su propio alimento." }
                 ],
                 associations: [
-                    { concept: "Cóndor y Vicuña", match: "Factores Bióticos (Con vida)", distractor: "Factores Abióticos (Sin vida)" },
-                    { concept: "Rocas y Agua", match: "Factores Abióticos (Sin vida)", distractor: "Animales vertebrados" }
+                    {
+                        concept: "Cóndor y Vicuña",
+                        match: "Factores Bióticos (Con vida)",
+                        distractor: "Factores Abióticos (Sin vida)",
+                        hint: "Piensa si el cóndor y la vicuña respiran, crecen y se alimentan."
+                    },
+                    {
+                        concept: "Rocas y Agua",
+                        match: "Factores Abióticos (Sin vida)",
+                        distractor: "Animales vertebrados",
+                        hint: "Las rocas y el agua son esenciales en la naturaleza, pero ¿tienen vida propia?"
+                    }
                 ],
                 missions: [
                     {
@@ -83,7 +93,8 @@ const INITIAL_WORLDS_DATA = {
                     ],
                     question: "¿Qué ocurrirá con la planta dentro de la caja?",
                     options: ["🌱 Crecerá inclinándose hacia la ventana con sol", "🥀 Se esconderá de la luz", "🪨 Se convertirá en factor abiótico"],
-                    correct: "🌱 Crecerá inclinándose hacia la ventana con sol"
+                    correct: "🌱 Crecerá inclinándose hacia la ventana con sol",
+                    hint: "Las plantas siempre buscan la fuente de luz solar para poder fabricar su alimento."
                 }
             },
             {
@@ -101,15 +112,25 @@ const INITIAL_WORLDS_DATA = {
                     { icon: "🌋", title: "Magma y Lava", desc: "Cuando la roca fundida (magma) sube y sale por el cráter del volcán hacia la superficie, pasa a llamarse lava." }
                 ],
                 associations: [
-                    { concept: "Placas Convergentes", match: "Chocan entre sí", distractor: "Se separan" },
-                    { concept: "Placas Divergentes", match: "Se separan entre sí", distractor: "Se deslizan de lado" }
+                    {
+                        concept: "Placas Convergentes",
+                        match: "Chocan entre sí",
+                        distractor: "Se separan",
+                        hint: "Converger significa juntarse o dirigirse hacia un mismo punto."
+                    },
+                    {
+                        concept: "Placas Divergentes",
+                        match: "Se separan entre sí",
+                        distractor: "Se deslizan de lado",
+                        hint: "Divergir significa tomar caminos separados o alejarse."
+                    }
                 ],
                 missions: [
                     {
                         question: "Cuando dos placas tectónicas chocan entre sí provocando sismos, el movimiento es...",
                         options: ["💥 Convergente", "↔️ Divergente", "🌊 Oceánico"],
                         correct: "💥 Convergente",
-                        hint: "Piensa en dos fuerzas que convergen en el mismo punto."
+                        hint: "Piensa en dos fuerzas que convergen (se juntan y chocan) en el mismo punto."
                     }
                 ],
                 step4Challenge: {
@@ -120,7 +141,8 @@ const INITIAL_WORLDS_DATA = {
                     ],
                     question: "¿Cuál es la medida de autocuidado correcta durante el sismo?",
                     options: ["🛡️ Alejarse de ventanas y cubrirse bajo una mesa firme", "🏃 Correr por las escaleras mientras tiembla", "🪟 Mirar por la ventana"],
-                    correct: "🛡️ Alejarse de ventanas y cubrirse bajo una mesa firme"
+                    correct: "🛡️ Alejarse de ventanas y cubrirse bajo una mesa firme",
+                    hint: "Observa los dos pasos de apoyo con ticket verde que están justo arriba de la pregunta."
                 }
             }
         ]
@@ -144,8 +166,18 @@ const INITIAL_WORLDS_DATA = {
                     { icon: "🏃", title: "Chasquis y Andenes", desc: "Los Chasquis eran los mensajeros que corrían por la red de caminos. Cultivaban en terrazas escalonadas llamadas Andenes." }
                 ],
                 associations: [
-                    { concept: "Los Chasquis", match: "Mensajeros de la red de caminos", distractor: "Terrazas de cultivo agrícola" },
-                    { concept: "Los Andenes", match: "Terrazas escalonadas en los cerros", distractor: "Idioma oficial quechua" }
+                    {
+                        concept: "Los Chasquis",
+                        match: "Mensajeros de la red de caminos",
+                        distractor: "Terrazas de cultivo agrícola",
+                        hint: "Recuerda quiénes corrían a gran velocidad llevando recados por el imperio."
+                    },
+                    {
+                        concept: "Los Andenes",
+                        match: "Terrazas escalonadas en los cerros",
+                        distractor: "Idioma oficial quechua",
+                        hint: "Eran escalones gigantes construidos en las laderas de las montañas para plantar."
+                    }
                 ],
                 missions: [
                     {
@@ -167,7 +199,8 @@ const INITIAL_WORLDS_DATA = {
                         "🔸 Porque sí, en las montañas.",
                         "🔹 Los chasquis corrían rápido."
                     ],
-                    correct: "📖 Los incas construyeron andenes para cultivar en los cerros, creando 'terrazas en forma de escaleras' que aprovechaban el agua."
+                    correct: "📖 Los incas construyeron andenes para cultivar en los cerros, creando 'terrazas en forma de escaleras' que aprovechaban el agua.",
+                    hint: "Busca la opción que reafirma la pregunta, incluye la cita entre comillas y explica para qué servían."
                 }
             }
         ]
@@ -190,8 +223,18 @@ const INITIAL_WORLDS_DATA = {
                     { icon: "📦", title: "Multiplicar es repetir", desc: "Si tenemos 3 cajas con 124 cuadernos en cada una, multiplicamos 124 × 3 = 372 cuadernos en total." }
                 ],
                 associations: [
-                    { concept: "48 : 6", match: "Resultado: 8", distractor: "Resultado: 6" },
-                    { concept: "124 × 3", match: "Resultado: 372", distractor: "Resultado: 127" }
+                    {
+                        concept: "48 : 6",
+                        match: "Resultado: 8",
+                        distractor: "Resultado: 6",
+                        hint: "Piensa: ¿6 multiplicado por cuánto nos da 48?"
+                    },
+                    {
+                        concept: "124 × 3",
+                        match: "Resultado: 372",
+                        distractor: "Resultado: 127",
+                        hint: "Multiplica primero la unidad: 4 × 3 = 12 (termina en 2)."
+                    }
                 ],
                 missions: [
                     {
@@ -209,7 +252,8 @@ const INITIAL_WORLDS_DATA = {
                     ],
                     question: "Siguiendo los pasos M.O.R.A., ¿cuál es la respuesta completa de 56 : 4?",
                     options: ["🧮 El resultado es 14 (porque 10 + 4 = 14)", "🧮 El resultado es 40", "🧮 El resultado es 16"],
-                    correct: "🧮 El resultado es 14 (porque 10 + 4 = 14)"
+                    correct: "🧮 El resultado es 14 (porque 10 + 4 = 14)",
+                    hint: "Suma los dos resultados parciales del paso R: 10 más 4."
                 }
             }
         ]
@@ -232,8 +276,18 @@ const INITIAL_WORLDS_DATA = {
                     { icon: "💬", title: "Citar con Comillas", desc: "En el método R.I.C.E., la letra C significa Citar una parte exacta de la lectura usando comillas (\"...\")." }
                 ],
                 associations: [
-                    { concept: "Letra R (Reafirmar)", match: "Usar las palabras de la pregunta", distractor: "Copiar el título del cuento" },
-                    { concept: "Letra C (Citar)", match: "Escribir evidencia exacta entre comillas", distractor: "Dar solo un sí o un no" }
+                    {
+                        concept: "Letra R (Reafirmar)",
+                        match: "Usar las palabras de la pregunta",
+                        distractor: "Copiar el título del cuento",
+                        hint: "Reafirmar es comenzar tu respuesta repitiendo parte de la pregunta."
+                    },
+                    {
+                        concept: "Letra C (Citar)",
+                        match: "Escribir evidencia exacta entre comillas",
+                        distractor: "Dar solo un sí o un no",
+                        hint: "Recuerda que las comillas abrazan las palabras exactas del texto."
+                    }
                 ],
                 missions: [
                     {
@@ -247,15 +301,16 @@ const INITIAL_WORLDS_DATA = {
                     prompt: "Lectura: 'Pedro es bueno para argumentar, pero una vez convenció a sus hermanos de juntar pulgas y la casa se llenó de pulgas.'",
                     guideSteps: [
                         "R + I: Yo creo que a Pedro no siempre le sirve argumentar bien.",
-                        "C + E: En el texto dice que \"la casa se llenó de pulgas\", lo que demuestra que su idea causó un gran problema."
+                        "C + E: En el texto dice que \"la casa se llenó de pulgas\", lo que demuestra que su idea causó un problema."
                     ],
-                    question: "¿Cuál oración cumple correctamente la R (Reafirmar) e I (Incluir) incluyendo al personaje?",
+                    question: "¿Cuál oración cumple correctamente la R (Reafirmar) e I (Incluir) mencionando al personaje?",
                     options: [
                         "✍️ Yo creo que a Pedro no siempre le sirve ser bueno para argumentar.",
                         "✍️ No le sirve.",
                         "✍️ Las pulgas saltan mucho."
                     ],
-                    correct: "✍️ Yo creo que a Pedro no siempre le sirve ser bueno para argumentar."
+                    correct: "✍️ Yo creo que a Pedro no siempre le sirve ser bueno para argumentar.",
+                    hint: "Elige la oración completa que incluye el nombre de Pedro y las palabras de la pregunta."
                 }
             }
         ]
@@ -275,7 +330,7 @@ const SQUISHY_COLLECTION = [
 ];
 
 // ============================================================================
-// 3. ESTADO GLOBAL Y PERSISTENCIA LOCAL (SPRINT 3)
+// 3. ESTADO GLOBAL Y PERSISTENCIA LOCAL (CON CANDADO PROGRESIVO DE ETAPAS)
 // ============================================================================
 const appState = {
     studentName: localStorage.getItem("kaptia_student_name") || "Santi",
@@ -286,16 +341,19 @@ const appState = {
     soundEnabled: true,
     largeFont: false,
     currentWorldKey: "ciencias",
-    topicsFilter: "active", // "active" | "archived"
+    topicsFilter: "active",
     currentCapsuleId: "cap-plantas",
     currentStageIdx: 0,
+    maxUnlockedStageIdx: 0, // Evita que el estudiante salte al Paso 4 sin hacer los pasos 1, 2 y 3
     currentConceptIdx: 0,
     currentAssocIdx: 0,
     currentMissionIdx: 0,
+    answeredCurrentQuestion: false, // Evita avanzar sin responder o marcar errores después de acertar
+    currentOptionsOrder: null,      // Mantiene fijo el orden aleatorio de la pregunta actual mientras está en pantalla
     questionShownAt: 0,
     triggerCalmLock: false,
     uploadSubject: "ciencias",
-    filesQueue: [], // Cola de múltiples archivos en el Panel Padre
+    filesQueue: [],
     worldsData: JSON.parse(localStorage.getItem("kaptia_worlds_s3")) || INITIAL_WORLDS_DATA,
     squishies: JSON.parse(localStorage.getItem("kaptia_squishies_s3")) || SQUISHY_COLLECTION
 };
@@ -478,15 +536,18 @@ function renderWorldCapsules() {
 function openCapsule(capsuleId) {
     appState.currentCapsuleId = capsuleId;
     appState.currentStageIdx = 0;
+    appState.maxUnlockedStageIdx = 0; // Reinicia el candado progresivo al abrir la cápsula
     appState.currentConceptIdx = 0;
     appState.currentAssocIdx = 0;
     appState.currentMissionIdx = 0;
+    appState.answeredCurrentQuestion = false;
+    appState.currentOptionsOrder = null;
     appState.triggerCalmLock = false;
     navigateTo("screen-capsule");
 }
 
 // ============================================================================
-// 6. CÁPSULA DE ENFOQUE + EFECTO 7.0 + DETECTOR ANTI-AZAR (< 1.8 SEG)
+// 6. CÁPSULA DE ENFOQUE BLINDADA (CANDADO DE ETAPAS + PISTA AL FALLAR)
 // ============================================================================
 function getActiveCapsuleObj() {
     const world = appState.worldsData[appState.currentWorldKey];
@@ -500,13 +561,17 @@ function isCapsuleRewardEligible(cap) {
     return !examInfo.isExpired && reviews < maxR;
 }
 
+function prepareNewQuestionState() {
+    appState.answeredCurrentQuestion = false;
+    appState.currentOptionsOrder = null;
+}
+
 function renderCapsuleWorkspace() {
     const world = appState.worldsData[appState.currentWorldKey];
     const cap = getActiveCapsuleObj();
 
     document.getElementById("capsule-breadcrumb").textContent = `${world.title} • ${cap.title}`;
 
-    // Banner de Maestría / Efecto 7.0
     const reviews = cap.reviewCount || 0;
     const maxR = cap.maxReviews || 5;
     const examInfo = getExamStatus(cap.examDate);
@@ -515,9 +580,9 @@ function renderCapsuleWorkspace() {
     if (examInfo.isExpired) {
         bannerEl.innerHTML = `<span>📦 <strong>Prueba Rendida:</strong> Modo Práctica Libre (Sin puntos)</span><span>${renderStarsBadge(reviews, maxR)}</span>`;
     } else if (reviews === 0) {
-        bannerEl.innerHTML = `<span>🎯 <strong>1° Estudio:</strong> Completa la cápsula para ganar <strong>+30 🏆 Monedas</strong></span><span>${renderStarsBadge(reviews, maxR)} (0/5)</span>`;
+        bannerEl.innerHTML = `<span>🎯 <strong>1° Estudio:</strong> Completa las 4 etapas para ganar <strong>+30 🏆 Monedas</strong></span><span>${renderStarsBadge(reviews, maxR)} (0/5)</span>`;
     } else if (reviews < maxR) {
-        bannerEl.innerHTML = `<span>💎 <strong>Modo Repaso Activo (${reviews + 1} de ${maxR}):</strong> ¡Gana <strong>+15 💎 Gemas de Esfuerzo</strong> al terminar!</span><span>${renderStarsBadge(reviews, maxR)}</span>`;
+        bannerEl.innerHTML = `<span>💎 <strong>Modo Repaso Activo (${reviews + 1} de ${maxR}):</strong> ¡Completa las 4 etapas y gana <strong>+15 💎 Gemas</strong>!</span><span>${renderStarsBadge(reviews, maxR)}</span>`;
     } else {
         bannerEl.innerHTML = `<span>🏆 <strong>¡Meta 7.0 Alcanzada (5/5)!</strong> Ya ganaste todo el tesoro de esta guía. Modo Práctica Libre.</span><span>⭐⭐⭐⭐⭐</span>`;
     }
@@ -529,19 +594,29 @@ function renderCapsuleWorkspace() {
         world.step4Label
     ];
 
+    // Barra de etapas con candado para impedir saltarse pasos
     const barEl = document.getElementById("capsule-stages-bar");
-    barEl.innerHTML = stages.map((label, idx) => `
-        <button class="stage-step-btn ${appState.currentStageIdx === idx ? 'active' : ''}" onclick="setCapsuleStage(${idx})">
-            ${label}
-        </button>
-    `).join("");
+    barEl.innerHTML = stages.map((label, idx) => {
+        const isLocked = idx > appState.maxUnlockedStageIdx;
+        const isActive = appState.currentStageIdx === idx;
+        return `
+            <button
+                class="stage-step-btn ${isActive ? 'active' : ''}"
+                style="${isLocked ? 'opacity:0.45; cursor:not-allowed;' : ''}"
+                onclick="setCapsuleStage(${idx})"
+                title="${isLocked ? 'Completa primero la etapa anterior para desbloquear' : label}"
+            >
+                ${isLocked ? '🔒 ' : ''}${label}
+            </button>
+        `;
+    }).join("");
 
     const contentEl = document.getElementById("capsule-stage-content");
     const footerEl = document.getElementById("capsule-footer-bar");
 
-    // Registrar timestamp de aparición de la tarjeta para el Detector Anti-Azar
     appState.questionShownAt = Date.now();
 
+    // ETAPA 0: ENTRENAMIENTO
     if (appState.currentStageIdx === 0) {
         hideCalmLockBanner();
         const concepts = cap.concepts && cap.concepts.length ? cap.concepts : [{ icon: cap.icon, title: cap.title, desc: cap.subtitle }];
@@ -563,16 +638,23 @@ function renderCapsuleWorkspace() {
         footerEl.innerHTML = `
             <button class="btn-capsule-prev" onclick="prevConceptOrBack()">Anterior</button>
             <button class="btn-capsule-next" onclick="nextConceptOrStage()">
-                ${cIdx + 1 < concepts.length ? "Siguiente Concepto ➔" : "Ir a Asociación ➔"}
+                ${cIdx + 1 < concepts.length ? "Siguiente Concepto ➔" : "Desbloquear Asociación ➔"}
             </button>
         `;
-    } else if (appState.currentStageIdx === 1) {
+    }
+    // ETAPA 1: ASOCIACIÓN (Con botón Continuar bloqueado hasta acertar y Pista oculta hasta fallar)
+    else if (appState.currentStageIdx === 1) {
         const assocs = cap.associations && cap.associations.length
             ? cap.associations
-            : [{ concept: cap.title, match: "Concepto principal de la guía", distractor: "Tema no relacionado" }];
+            : [{ concept: cap.title, match: "Concepto principal de la guía", distractor: "Tema no relacionado", hint: "Recuerda lo leído en la Zona de Entrenamiento." }];
         const aIdx = Math.min(appState.currentAssocIdx, assocs.length - 1);
         const item = assocs[aIdx];
-        const options = shuffleArray([item.match, item.distractor]);
+
+        if (!appState.currentOptionsOrder) {
+            appState.currentOptionsOrder = shuffleArray([item.match, item.distractor]);
+        }
+        const options = appState.currentOptionsOrder;
+        const hintText = item.hint || `Recuerda qué función o característica tiene "${item.concept}" según el entrenamiento.`;
 
         contentEl.innerHTML = `
             <div class="capsule-inner-pastel">
@@ -584,20 +666,32 @@ function renderCapsuleWorkspace() {
                         <button class="choice-btn" onclick="evaluateInteractiveAnswer(this, '${opt.replace(/'/g, "\\'")}', '${item.match.replace(/'/g, "\\'")}')">${opt}</button>
                     `).join("")}
                 </div>
+                <div id="detective-hint-box" class="hidden" style="margin-top:16px; background:#FEF3C7; color:#92400E; padding:10px 18px; border-radius:999px; font-weight:700; font-size:14px; display:inline-block; border:1.5px solid #F59E0B;">
+                    💡 Pista de Detective: ${hintText}
+                </div>
             </div>
         `;
         footerEl.innerHTML = `
-            <button class="btn-capsule-prev" onclick="setCapsuleStage(0)">Anterior</button>
-            <button class="btn-capsule-next" onclick="nextAssocOrStage()">Continuar ➔</button>
+            <button class="btn-capsule-prev" onclick="prevAssocOrStage()">Anterior</button>
+            <button id="btn-stage-continue" class="btn-capsule-next" disabled style="opacity:0.45; cursor:not-allowed;" onclick="nextAssocOrStage()">
+                🔒 Responde para continuar
+            </button>
         `;
         applyCalmLockIfNeeded();
-    } else if (appState.currentStageIdx === 2) {
+    }
+    // ETAPA 2: MICRO-MISIONES (Pista oculta al inicio; solo aparece si se equivoca)
+    else if (appState.currentStageIdx === 2) {
         const missions = cap.missions && cap.missions.length
             ? cap.missions
-            : [{ question: `¿Listo para superar ${cap.title}?`, options: ["¡Sí!", "Casi"], correct: "¡Sí!", hint: "Tú puedes." }];
+            : [{ question: `¿Listo para superar ${cap.title}?`, options: ["¡Sí!", "Casi"], correct: "¡Sí!", hint: "Elige la respuesta afirmativa." }];
         const mIdx = Math.min(appState.currentMissionIdx, missions.length - 1);
         const m = missions[mIdx];
-        const options = shuffleArray(m.options || []);
+
+        if (!appState.currentOptionsOrder) {
+            appState.currentOptionsOrder = shuffleArray(m.options || []);
+        }
+        const options = appState.currentOptionsOrder;
+        const hintText = m.hint || "Lee con calma las palabras clave de la pregunta para descartar las opciones falsas.";
 
         contentEl.innerHTML = `
             <div class="capsule-inner-pastel">
@@ -608,25 +702,35 @@ function renderCapsuleWorkspace() {
                         <button class="choice-btn" onclick="evaluateInteractiveAnswer(this, '${opt.replace(/'/g, "\\'")}', '${(m.correct || "").replace(/'/g, "\\'")}')">${opt}</button>
                     `).join("")}
                 </div>
-                ${m.hint ? `<div style="margin-top:16px; background:#FEF3C7; color:#92400E; padding:9px 16px; border-radius:999px; font-weight:700; font-size:13px; display:inline-block;">💡 Pista de Detective: ${m.hint}</div>` : ""}
+                <div id="detective-hint-box" class="hidden" style="margin-top:16px; background:#FEF3C7; color:#92400E; padding:10px 18px; border-radius:999px; font-weight:700; font-size:14px; display:inline-block; border:1.5px solid #F59E0B;">
+                    💡 Pista de Detective: ${hintText}
+                </div>
             </div>
         `;
         footerEl.innerHTML = `
-            <button class="btn-capsule-prev" onclick="setCapsuleStage(1)">Anterior</button>
-            <button class="btn-capsule-next" onclick="nextMissionOrStage()">
-                ${mIdx + 1 < missions.length ? "Siguiente Misión ➔" : "Ir al Paso 4 ➔"}
+            <button class="btn-capsule-prev" onclick="prevMissionOrStage()">Anterior</button>
+            <button id="btn-stage-continue" class="btn-capsule-next" disabled style="opacity:0.45; cursor:not-allowed;" onclick="nextMissionOrStage()">
+                🔒 Responde para continuar
             </button>
         `;
         applyCalmLockIfNeeded();
-    } else {
+    }
+    // ETAPA 3: PASO 4 DINÁMICO (CUADERNO NATURALISTA / M.O.R.A. / R.I.C.E.)
+    else {
         const ch = cap.step4Challenge || {
             prompt: `Aplica lo aprendido en ${cap.title}.`,
             guideSteps: ["Lee con calma el desafío.", "Elige la respuesta más completa."],
             question: "¿Cuál alternativa sintetiza mejor el aprendizaje de hoy?",
             options: ["La respuesta completa con evidencia de la guía", "Una respuesta sin justificación"],
-            correct: "La respuesta completa con evidencia de la guía"
+            correct: "La respuesta completa con evidencia de la guía",
+            hint: "Fíjate en los pasos con ticket verde de arriba para elegir la opción más completa."
         };
-        const options = shuffleArray(ch.options || []);
+
+        if (!appState.currentOptionsOrder) {
+            appState.currentOptionsOrder = shuffleArray(ch.options || []);
+        }
+        const options = appState.currentOptionsOrder;
+        const hintText = ch.hint || "Apóyate en las pistas con ticket verde (✅) que están en el recuadro blanco.";
 
         contentEl.innerHTML = `
             <div class="capsule-inner-pastel">
@@ -641,23 +745,31 @@ function renderCapsuleWorkspace() {
                         <button class="choice-btn" onclick="evaluateInteractiveAnswer(this, '${opt.replace(/'/g, "\\'")}', '${(ch.correct || "").replace(/'/g, "\\'")}')">${opt}</button>
                     `).join("")}
                 </div>
+                <div id="detective-hint-box" class="hidden" style="margin-top:16px; background:#FEF3C7; color:#92400E; padding:10px 18px; border-radius:999px; font-weight:700; font-size:14px; display:inline-block; border:1.5px solid #F59E0B;">
+                    💡 Pista de Detective: ${hintText}
+                </div>
             </div>
         `;
         footerEl.innerHTML = `
             <button class="btn-capsule-prev" onclick="setCapsuleStage(2)">Anterior</button>
-            <button class="btn-capsule-next" onclick="finishFullCapsule()">🏆 ¡Completar Cápsula!</button>
+            <button id="btn-stage-continue" class="btn-capsule-next" disabled style="opacity:0.45; cursor:not-allowed;" onclick="finishFullCapsule()">
+                🔒 Responde para completar
+            </button>
         `;
         applyCalmLockIfNeeded();
     }
 }
 
-// Detector Anti-Azar: evalúa si respondió en menos de 1.8 segundos
+// Evalúa la respuesta: bloquea opciones al acertar y muestra la Pista de Detective SOLO al equivocarse
 function evaluateInteractiveAnswer(btnEl, chosen, correct) {
+    // Si ya acertó esta pregunta, no permitir tocar opciones erróneas ni sumar puntos dobles
+    if (appState.answeredCurrentQuestion) return;
+
     const elapsedMs = Date.now() - appState.questionShownAt;
     const cap = getActiveCapsuleObj();
     const canEarn = isCapsuleRewardEligible(cap);
 
-    // Si hace clic en menos de 1800ms (1.8 segundos), activamos alerta Anti-Impulsividad para la siguiente pregunta
+    // Detector Anti-Azar: si responde en menos de 1.8 segundos, programa Modo Calma para la siguiente tarjeta
     if (elapsedMs < 1800) {
         appState.impulsiveCount++;
         appState.triggerCalmLock = true;
@@ -665,8 +777,26 @@ function evaluateInteractiveAnswer(btnEl, chosen, correct) {
     }
 
     if (chosen === correct) {
+        appState.answeredCurrentQuestion = true;
         btnEl.classList.add("correct");
         playSoftTone("win");
+
+        // Bloquear todos los demás botones de alternativa para que no pueda marcar errores después de acertar
+        document.querySelectorAll(".choice-btn").forEach(b => {
+            b.disabled = true;
+        });
+
+        // Habilitar el botón verde de Continuar / Completar Cápsula
+        const continueBtn = document.getElementById("btn-stage-continue");
+        if (continueBtn) {
+            continueBtn.disabled = false;
+            continueBtn.style.opacity = "1";
+            continueBtn.style.cursor = "pointer";
+            continueBtn.textContent = appState.currentStageIdx === 3
+                ? "🏆 ¡Completar Cápsula!"
+                : "¡Correcto! Continuar ➔";
+        }
+
         if (canEarn) {
             if ((cap.reviewCount || 0) === 0) {
                 appState.points += 5;
@@ -676,8 +806,15 @@ function evaluateInteractiveAnswer(btnEl, chosen, correct) {
             saveAppState();
         }
     } else {
+        // Si se equivoca: marca en rojo esa opción, la deshabilita y revela la Pista de Detective
         btnEl.classList.add("wrong");
+        btnEl.disabled = true;
         playSoftTone("click");
+
+        const hintBox = document.getElementById("detective-hint-box");
+        if (hintBox) {
+            hintBox.classList.remove("hidden");
+        }
     }
 }
 
@@ -704,7 +841,11 @@ function applyCalmLockIfNeeded() {
     }, 30);
 
     setTimeout(() => {
-        choiceButtons.forEach(b => { b.disabled = false; });
+        if (!appState.answeredCurrentQuestion) {
+            choiceButtons.forEach(b => {
+                if (!b.classList.contains("wrong")) b.disabled = false;
+            });
+        }
         calmBanner.classList.add("hidden");
         appState.questionShownAt = Date.now();
     }, 2500);
@@ -715,8 +856,14 @@ function hideCalmLockBanner() {
     if (calmBanner) calmBanner.classList.add("hidden");
 }
 
+// Impide saltar a etapas bloqueadas desde la barra superior
 function setCapsuleStage(idx) {
+    if (idx > appState.maxUnlockedStageIdx) {
+        playSoftTone("click");
+        return;
+    }
     appState.currentStageIdx = idx;
+    prepareNewQuestionState();
     renderCapsuleWorkspace();
 }
 
@@ -738,36 +885,76 @@ function nextConceptOrStage() {
         appState.currentConceptIdx++;
         renderCapsuleWorkspace();
     } else {
+        appState.maxUnlockedStageIdx = Math.max(appState.maxUnlockedStageIdx, 1);
         appState.currentStageIdx = 1;
+        appState.currentAssocIdx = 0;
+        prepareNewQuestionState();
+        renderCapsuleWorkspace();
+    }
+}
+
+function prevAssocOrStage() {
+    if (appState.currentAssocIdx > 0) {
+        appState.currentAssocIdx--;
+        prepareNewQuestionState();
+        renderCapsuleWorkspace();
+    } else {
+        appState.currentStageIdx = 0;
         renderCapsuleWorkspace();
     }
 }
 
 function nextAssocOrStage() {
+    if (!appState.answeredCurrentQuestion) return;
     const cap = getActiveCapsuleObj();
     const total = (cap.associations && cap.associations.length) || 1;
+
     if (appState.currentAssocIdx + 1 < total) {
         appState.currentAssocIdx++;
+        prepareNewQuestionState();
         renderCapsuleWorkspace();
     } else {
+        appState.maxUnlockedStageIdx = Math.max(appState.maxUnlockedStageIdx, 2);
         appState.currentStageIdx = 2;
+        appState.currentMissionIdx = 0;
+        prepareNewQuestionState();
+        renderCapsuleWorkspace();
+    }
+}
+
+function prevMissionOrStage() {
+    if (appState.currentMissionIdx > 0) {
+        appState.currentMissionIdx--;
+        prepareNewQuestionState();
+        renderCapsuleWorkspace();
+    } else {
+        appState.currentStageIdx = 1;
+        prepareNewQuestionState();
         renderCapsuleWorkspace();
     }
 }
 
 function nextMissionOrStage() {
+    if (!appState.answeredCurrentQuestion) return;
     const cap = getActiveCapsuleObj();
     const total = (cap.missions && cap.missions.length) || 1;
+
     if (appState.currentMissionIdx + 1 < total) {
         appState.currentMissionIdx++;
+        prepareNewQuestionState();
         renderCapsuleWorkspace();
     } else {
+        appState.maxUnlockedStageIdx = Math.max(appState.maxUnlockedStageIdx, 3);
         appState.currentStageIdx = 3;
+        prepareNewQuestionState();
         renderCapsuleWorkspace();
     }
 }
 
 function finishFullCapsule() {
+    // Doble validación: solo permite terminar si está en el Paso 4 y ya respondió correctamente
+    if (appState.currentStageIdx < 3 || !appState.answeredCurrentQuestion) return;
+
     const cap = getActiveCapsuleObj();
     const examInfo = getExamStatus(cap.examDate);
     const reviews = cap.reviewCount || 0;
@@ -874,12 +1061,11 @@ function selectUploadSubject(subj, btn) {
     btn.classList.add("active-subj");
 }
 
-// Agrega uno o múltiples archivos a la cola sin borrar los que ya había subido
 function handleMultipleFilesSelected(input) {
     const newFiles = Array.from(input.files || []);
     if (newFiles.length > 0) {
         appState.filesQueue.push(...newFiles);
-        input.value = ""; // permite volver a seleccionar o tomar otra foto seguida
+        input.value = "";
         renderAttachedFilesQueue();
     }
 }
@@ -1013,7 +1199,6 @@ async function createCapsuleWithGemini() {
         world.capsules.unshift(newCapsule);
         saveAppState();
 
-        // Limpiar formulario y cola de archivos
         document.getElementById("input-capsule-title").value = "";
         document.getElementById("input-capsule-text").value = "";
         appState.filesQueue = [];
