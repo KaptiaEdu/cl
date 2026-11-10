@@ -1,10 +1,17 @@
 // ============================================================================
-// MOTOR DE IA KAPTIA - SPRINT 3 (MULTIMODAL MULTI-ARCHIVOS CON GEMINI 2.5 FLASH)
+// MOTOR DE IA KAPTIA - SPRINT 3 (AUTO-DETECCIÓN DE MODELO GEMINI FLASH)
 // Soporta múltiples PDFs, múltiples Fotos de cuaderno (.jpg/.png/.webp) y Texto
 // ============================================================================
 
 const KaptiaAIEngine = {
-    model: "gemini-2.5-flash",
+    // Lista de prioridad de modelos Flash actuales en Google AI Studio
+    candidateModels: [
+        "gemini-3.8-flash",
+        "gemini-3.0-flash",
+        "gemini-3-flash-preview",
+        "gemini-flash-latest",
+        "gemini-2.5-flash"
+    ],
 
     getApiKey() {
         return localStorage.getItem("kaptia_gemini_api_key") || "";
@@ -14,7 +21,41 @@ const KaptiaAIEngine = {
         localStorage.setItem("kaptia_gemini_api_key", key.trim());
     },
 
-    // Convierte un archivo individual (PDF, Imagen o TXT) en una parte compatible con Gemini
+    getPreferredModel() {
+        return localStorage.getItem("kaptia_working_model") || this.candidateModels[0];
+    },
+
+    savePreferredModel(modelName) {
+        localStorage.setItem("kaptia_working_model", modelName);
+    },
+
+    // Consulta a la API de Google cuál es el modelo Flash activo para esta API Key
+    async discoverAvailableFlashModel(apiKey) {
+        try {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
+            if (!res.ok) return null;
+            const data = await res.json();
+            const models = data.models || [];
+
+            // Filtrar modelos que soporten generateContent
+            const validModels = models.filter(m =>
+                Array.isArray(m.supportedGenerationMethods) &&
+                m.supportedGenerationMethods.includes("generateContent") &&
+                !m.name.includes("2.5-flash")
+            );
+
+            // Priorizar modelos 'flash' más recientes
+            const flashModel = validModels.find(m => m.name.toLowerCase().includes("flash")) || validModels[0];
+            if (flashModel && flashModel.name) {
+                return flashModel.name.replace("models/", "");
+            }
+        } catch (e) {
+            console.warn("No se pudo listar modelos automáticamente:", e);
+        }
+        return null;
+    },
+
+    // Convierte un archivo individual (PDF, Imagen o TXT) en formato compatible con Gemini
     fileToGenerativePart(file) {
         return new Promise((resolve, reject) => {
             if (file.type === "text/plain" || file.name.endsWith(".txt")) {
@@ -44,7 +85,28 @@ const KaptiaAIEngine = {
         });
     },
 
-    // Procesa múltiples archivos y texto en una sola llamada a Gemini
+    // Envía la petición a un modelo específico de Gemini
+    async callModelEndpoint(modelName, apiKey, parts) {
+        const cleanModel = modelName.replace("models/", "");
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts }],
+                generationConfig: {
+                    temperature: 0.35,
+                    responseMimeType: "application/json"
+                }
+            })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        return { ok: response.ok, status: response.status, data, modelUsed: cleanModel };
+    },
+
+    // Procesa múltiples archivos y texto en una sola llamada con respaldo automático de modelo
     async generateCapsuleFromMaterial({ subject, customTitle, rawText, files = [] }) {
         const apiKey = this.getApiKey();
         if (!apiKey) {
@@ -165,28 +227,54 @@ Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
             parts.push(...fileParts);
         }
 
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        // Construir orden de intento empezando por el modelo preferido
+        const preferred = this.getPreferredModel();
+        const modelsToTry = [preferred, ...this.candidateModels.filter(m => m !== preferred)];
 
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts }],
-                generationConfig: {
-                    temperature: 0.35,
-                    responseMimeType: "application/json"
+        let lastErrorMsg = "";
+        let finalResult = null;
+
+        for (let i = 0; i < modelsToTry.length; i++) {
+            const currentModel = modelsToTry[i];
+            const attempt = await this.callModelEndpoint(currentModel, apiKey, parts);
+
+            if (attempt.ok) {
+                this.savePreferredModel(attempt.modelUsed);
+                finalResult = attempt.data;
+                break;
+            }
+
+            lastErrorMsg = attempt.data?.error?.message || `Error HTTP ${attempt.status}`;
+
+            // Si el mensaje de Google sugiere un modelo exacto (ej: "use models/gemini-3.8-flash"), lo extraemos y probamos de inmediato
+            const suggestedMatch = lastErrorMsg.match(/models\/([a-zA-Z0-9._-]+)/);
+            if (suggestedMatch && suggestedMatch[1]) {
+                const suggestedModel = suggestedMatch[1];
+                if (!modelsToTry.includes(suggestedModel)) {
+                    modelsToTry.splice(i + 1, 0, suggestedModel);
                 }
-            })
-        });
-
-        if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            const msg = errData?.error?.message || `Error HTTP ${response.status}`;
-            throw new Error(`Error de Gemini API: ${msg}`);
+            }
         }
 
-        const result = await response.json();
-        const rawJsonText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+        // Si ninguno de la lista funcionó, consultamos directamente a la API qué modelo tiene activo tu cuenta
+        if (!finalResult) {
+            const discoveredModel = await this.discoverAvailableFlashModel(apiKey);
+            if (discoveredModel) {
+                const retryAttempt = await this.callModelEndpoint(discoveredModel, apiKey, parts);
+                if (retryAttempt.ok) {
+                    this.savePreferredModel(retryAttempt.modelUsed);
+                    finalResult = retryAttempt.data;
+                } else {
+                    lastErrorMsg = retryAttempt.data?.error?.message || lastErrorMsg;
+                }
+            }
+        }
+
+        if (!finalResult) {
+            throw new Error(`Error de Gemini API: ${lastErrorMsg}`);
+        }
+
+        const rawJsonText = finalResult?.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (!rawJsonText) {
             throw new Error("La IA no devolvió contenido válido. Intenta nuevamente.");
