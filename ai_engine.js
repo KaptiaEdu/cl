@@ -1,6 +1,6 @@
 // ============================================================================
-// MOTOR DE IA KAPTIA - SPRINT 3 (MULTI-ARCHIVOS + GEMINI 2.5 FLASH API)
-// Soporta múltiples Fotos de cuadernos (.jpg/.png) y múltiples PDFs simultáneos
+// MOTOR DE IA KAPTIA - SPRINT 3 (MULTIMODAL MULTI-ARCHIVOS CON GEMINI 2.5 FLASH)
+// Soporta múltiples PDFs, múltiples Fotos de cuaderno (.jpg/.png/.webp) y Texto
 // ============================================================================
 
 const KaptiaAIEngine = {
@@ -14,9 +14,21 @@ const KaptiaAIEngine = {
         localStorage.setItem("kaptia_gemini_api_key", key.trim());
     },
 
-    // Convierte un archivo local (PDF o Imagen) a Base64 para enviarlo a Gemini
+    // Convierte un archivo individual (PDF, Imagen o TXT) en una parte compatible con Gemini
     fileToGenerativePart(file) {
         return new Promise((resolve, reject) => {
+            if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+                const textReader = new FileReader();
+                textReader.onloadend = () => {
+                    resolve({
+                        text: `\n--- Contenido del archivo ${file.name} ---\n${textReader.result}\n`
+                    });
+                };
+                textReader.onerror = reject;
+                textReader.readAsText(file);
+                return;
+            }
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64Data = reader.result.split(",")[1];
@@ -32,7 +44,7 @@ const KaptiaAIEngine = {
         });
     },
 
-    // Genera la cápsula procesando TODOS los archivos adjuntos + texto en una sola llamada
+    // Procesa múltiples archivos y texto en una sola llamada a Gemini
     async generateCapsuleFromMaterial({ subject, customTitle, rawText, files = [] }) {
         const apiKey = this.getApiKey();
         if (!apiKey) {
@@ -40,7 +52,7 @@ const KaptiaAIEngine = {
         }
 
         const subjectRules = {
-            ciencias: "El paso 4 es 'Cuaderno Naturalista': diseña un caso práctico de observación o experimento científico basado en las páginas subidas.",
+            ciencias: "El paso 4 es 'Cuaderno Naturalista': diseña un caso práctico de observación o experimento científico basado en las guías adjuntas.",
             historia: "El paso 4 es 'Constructor R.I.C.E.': diseña una pregunta de comprensión histórica guiada con los pasos Reafirmar, Incluir, Citar y Explicar.",
             matematicas: "El paso 4 es 'Pizarra M.O.R.A.': diseña un problema matemático aplicado desglosado en Marcar datos, Operación, Resolver y Anotar respuesta.",
             lenguaje: "El paso 4 es 'Constructor R.I.C.E.': diseña un desafío de lectura aplicando Reafirmar, Incluir, Citar con comillas y Explicar."
@@ -48,16 +60,18 @@ const KaptiaAIEngine = {
 
         const systemInstruction = `
 Eres el motor pedagógico neuro-adaptativo de Kaptia para niños de 8 a 12 años con TDAH.
-Analiza TODAS las páginas, fotos o documentos escolares adjuntos y transfórmalos en una cápsula interactiva completa.
+Analiza TODOS los archivos adjuntos (pueden ser varias páginas de un cuaderno o múltiples guías PDF) y el texto entregado para integrarlos en UNA SOLA cápsula interactiva completa.
+
 REGLAS ESTRICTAS:
 1. Baja carga cognitiva: explicaciones de máximo 25 palabras por tarjeta, lenguaje claro, motivador y sin marcas Markdown raras.
-2. No inventes materia ajena a los documentos proporcionados. Integra los conceptos de todas las páginas adjuntas.
-3. En las micro-misiones, incluye distractores con sentido semántico (no absurdos) y una pista deductiva amigable ("Pista de Detective").
-4. Asignatura seleccionada: ${subject.toUpperCase()}. ${subjectRules[subject] || subjectRules.ciencias}
+2. Independencia del cuaderno físico: nunca digas "según la imagen de tu guía"; incluye siempre el contexto necesario en la pregunta.
+3. No inventes materia ajena a los documentos proporcionados.
+4. En las micro-misiones, incluye distractores con sentido semántico (no absurdos) y una pista deductiva amigable ("Pista de Detective").
+5. Asignatura seleccionada: ${subject.toUpperCase()}. ${subjectRules[subject] || subjectRules.ciencias}
 
 Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
 {
-  "title": "Título corto y atractivo del tema",
+  "title": "Título corto y atractivo del tema unificado",
   "subtitle": "Subtítulo de 3 a 6 palabras",
   "icon": "Un emoji representativo (ej. 🌿, 🌋, 🏛️, 🧮, 📖)",
   "concepts": [
@@ -74,6 +88,11 @@ Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
     {
       "icon": "Emoji del concepto",
       "title": "Nombre del concepto clave 3",
+      "desc": "Explicación sencilla y directa de máximo 25 palabras."
+    },
+    {
+      "icon": "Emoji del concepto",
+      "title": "Nombre del concepto clave 4",
       "desc": "Explicación sencilla y directa de máximo 25 palabras."
     }
   ],
@@ -141,11 +160,8 @@ Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
             parts.push({ text: `Texto adicional de la guía escolar:\n${rawText.trim()}` });
         }
 
-        // Procesar múltiples archivos en paralelo (PDFs y/o Fotos)
         if (files && files.length > 0) {
-            const fileParts = await Promise.all(
-                files.map(fileObj => this.fileToGenerativePart(fileObj))
-            );
+            const fileParts = await Promise.all(files.map(f => this.fileToGenerativePart(f)));
             parts.push(...fileParts);
         }
 
@@ -180,4 +196,3 @@ Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
         return JSON.parse(cleanJson);
     }
 };
-
