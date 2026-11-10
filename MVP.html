@@ -21,14 +21,14 @@
             <div class="brand-group">
                 <div class="logo-k">K</div>
                 <span class="brand-text">KAPTIA</span>
-                <span class="pill-neuro hide-mobile">Neuro-Adaptativo</span>
+                <span class="pill-neuro">Neuro-Adaptativo</span>
             </div>
             <div class="top-actions">
                 <button class="btn-google" onclick="openParentLoginModal()">
-                    <span class="g-icon">G</span> <span class="hide-xs">Acceso Padres</span>
+                    <span class="g-icon">G</span> <span class="hide-xs">Iniciar sesión con Google</span><span class="show-xs">Padres</span>
                 </button>
-                <button class="btn-circle" onclick="toggleFontSize()" title="Tamaño de texto">Aa+</button>
-                <button class="btn-circle" onclick="toggleSound()" title="Sonido">🔊</button>
+                <button class="btn-circle" onclick="toggleFontSize()" title="Cambiar tamaño de texto">Aa+</button>
+                <button class="btn-circle" id="btn-sound-portal" onclick="toggleSound()" title="Sonido">🔊</button>
             </div>
         </header>
 
@@ -45,10 +45,10 @@
                     <div class="profile-info">
                         <span class="role-tag tag-student">MODO ESTUDIANTE</span>
                         <h2 id="portal-student-name">🎮 Santi</h2>
-                        <p>¡A jugar, repasar y lograr el 7.0!</p>
-                        <div class="dual-currency-row">
-                            <span class="points-tag">🏆 <span class="points-val">120</span></span>
-                            <span class="gems-tag">💎 <span class="gems-val">15</span></span>
+                        <p>¡A jugar, repasar y superar misiones!</p>
+                        <div class="currency-badges-row">
+                            <span class="points-tag">🏆 <span class="points-val">120</span> Monedas</span>
+                            <span class="gems-tag">💎 <span class="gems-val">15</span> Gemas</span>
                         </div>
                         <button class="btn-portal-student">¡Entrar a jugar! ➔</button>
                     </div>
@@ -60,8 +60,8 @@
                     <div class="profile-info">
                         <span class="role-tag tag-parent">MODO PADRE (IA)</span>
                         <h2>👨‍👩‍👦 Apoderados</h2>
-                        <p>Subir múltiples fotos/PDFs, fechas de prueba e historial de <span class="student-name-ref">Santi</span></p>
-                        <div class="spacer-tag hide-mobile"></div>
+                        <p>Subir múltiples guías/fotos, fechas de prueba e historial de <span class="student-name-ref">Santi</span></p>
+                        <div class="spacer-tag"></div>
                         <button class="btn-portal-parent">Ir al Panel de Padres ➔</button>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
             </div>
             <div class="top-actions">
                 <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
-                <div class="gems-pill-top" title="Gemas de Esfuerzo por Repasar">💎 <span class="gems-val">15</span></div>
+                <div class="gems-pill-top">💎 <span class="gems-val">15</span></div>
                 <button class="btn-circle" onclick="toggleSound()">🔊</button>
             </div>
         </header>
@@ -153,7 +153,7 @@
             <div class="top-actions">
                 <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
                 <div class="gems-pill-top">💎 <span class="gems-val">15</span></div>
-                <button class="btn-circle hide-xs" onclick="toggleSound()">🔊</button>
+                <button class="btn-circle" onclick="toggleSound()">🔊</button>
             </div>
         </header>
 
@@ -163,15 +163,15 @@
         </div>
 
         <div class="main-wrapper">
-            <h1 class="page-title" style="margin-bottom:14px;">Elige tu misión de estudio:</h1>
+            <h1 class="page-title">¡Elige tu cápsula para llegar al 7.0! 🌟</h1>
 
-            <!-- Selector entre Pruebas Vigentes y Baúl de Pruebas Pasadas -->
+            <!-- Filtro de Vigencia por Fecha de Prueba -->
             <div class="topics-filter-bar">
-                <button id="btn-filter-active" class="filter-pill active" onclick="setTopicsFilter('active')">
-                    🎯 Pruebas Vigentes (Dan Puntos y Gemas 💎)
+                <button id="filter-active-caps" class="filter-pill active" onclick="setTopicsFilter('active')">
+                    📅 Próximas Pruebas (Activas)
                 </button>
-                <button id="btn-filter-archived" class="filter-pill" onclick="setTopicsFilter('archived')">
-                    🏅 Baúl de Pruebas Rendidas
+                <button id="filter-archived-caps" class="filter-pill" onclick="setTopicsFilter('archived')">
+                    📦 Baúl de Pruebas Rendidas
                 </button>
             </div>
 
@@ -180,33 +180,32 @@
     </section>
 
     <!-- ==================================================================
-         PANTALLA 4: LA CÁPSULA DE ENFOQUE (100dvh CERO SCROLL + ANTI-AZAR)
+         PANTALLA 4: LA CÁPSULA DE ENFOQUE (CON DETECTOR ANTI-AZAR)
          ================================================================== -->
-    <section id="screen-capsule" class="screen screen-locked-viewport">
-        <header class="top-bar compact-top-bar">
+    <section id="screen-capsule" class="screen">
+        <header class="top-bar">
             <div class="brand-group">
-                <button class="btn-back-pill" onclick="navigateTo('screen-topics')">⬅ Cápsulas</button>
-                <div id="capsule-breadcrumb" class="breadcrumb-title">Ciencias • Las Plantas</div>
+                <button class="btn-back-pill" onclick="navigateTo('screen-topics')">🏠 Cápsulas</button>
             </div>
+            <div id="capsule-breadcrumb" class="breadcrumb-title">Ciencias • Las Plantas</div>
             <div class="top-actions">
-                <span id="capsule-mastery-pill" class="mastery-pill-top">⭐ 1/5 Repasos</span>
                 <div class="points-pill-top">🏆 <span class="points-val">120</span></div>
                 <div class="gems-pill-top">💎 <span class="gems-val">15</span></div>
+                <button class="btn-circle" onclick="toggleSound()">🔊</button>
             </div>
         </header>
 
         <div class="capsule-workspace">
-            <!-- Barra de 4 Etapas -->
+            <!-- Cinta Informativa del Efecto 7.0 (Repaso Actual y Moneda en Juego) -->
+            <div id="capsule-mastery-banner" class="mastery-banner"></div>
+
+            <!-- Barra de 4 Etapas con Paso 4 Dinámico -->
             <div id="capsule-stages-bar" class="stages-pill-bar"></div>
 
-            <!-- Banner Detector Anti-Azar (Modo Calma de Detective) -->
-            <div id="calm-mode-banner" class="calm-banner hidden">
-                <div class="calm-banner-text">
-                    🧘‍♂️ <strong>¡Pausa de Detective!</strong> Respondiste muy rápido. Respira y lee con calma...
-                </div>
-                <div class="calm-progress-track">
-                    <div id="calm-progress-fill" class="calm-progress-fill"></div>
-                </div>
+            <!-- Aviso de Modo Calma Anti-Impulsividad (Se muestra solo si respondió en <1.8s) -->
+            <div id="calm-mode-banner" class="calm-mode-alert hidden">
+                <div class="calm-text">🧘 <strong>Modo Calma de Detective:</strong> ¡Vas muy rápido! Respira y lee las palabras clave...</div>
+                <div class="calm-progress-track"><div id="calm-progress-bar" class="calm-progress-fill"></div></div>
             </div>
 
             <!-- Tarjeta Central de Enfoque -->
@@ -218,7 +217,7 @@
     </section>
 
     <!-- ==================================================================
-         PANTALLA 5: EL REINO SQUISHY (CON MONEDAS 🏆 Y GEMAS 💎)
+         PANTALLA 5: EL REINO SQUISHY (TIRADA SIMPLE 🏆 + TIRADA MÍTICA 💎)
          ================================================================== -->
     <section id="screen-kingdom" class="screen">
         <header class="top-bar">
@@ -237,9 +236,13 @@
                 <div class="kingdom-title-box">
                     <h1>El Reino Squishy</h1>
                 </div>
-                <div class="kingdom-currencies">
-                    <div class="kingdom-points-box">🏆 Monedas: <span class="points-val">120</span></div>
-                    <div class="kingdom-gems-box">💎 Gemas de Repaso: <span class="gems-val">15</span></div>
+                <div class="kingdom-currencies-row">
+                    <div class="kingdom-points-box">
+                        Monedas: <span class="points-val">120</span> 🏆
+                    </div>
+                    <div class="kingdom-gems-box">
+                        Gemas de Repaso: <span class="gems-val">15</span> 💎
+                    </div>
                 </div>
             </div>
 
@@ -258,13 +261,13 @@
                             <div class="gachapon-exit">🎁</div>
                         </div>
                     </div>
-                    <p id="gachapon-msg" class="gachapon-status">¡Canjea tus Monedas 🏆 o Gemas de Esfuerzo 💎!</p>
+                    <p id="gachapon-msg" class="gachapon-status">¡Usa tus Monedas 🏆 o tus Gemas de Repaso 💎 para abrir una cápsula!</p>
                     <div class="gachapon-buttons-stack">
-                        <button class="btn-gachapon-buy" onclick="buySquishyCapsule('normal')">
-                            🪙 Tirada Simple (40 🏆)
+                        <button class="btn-gachapon-buy" onclick="buySquishyCapsule('simple')">
+                            🪙 Tirada Simple (40 🏆 Monedas)
                         </button>
                         <button class="btn-gachapon-mythic" onclick="buySquishyCapsule('mythic')">
-                            💎 Tirada Élite de Repaso (15 💎)
+                            💎 Tirada Élite Garantizada (25 💎 Gemas)
                         </button>
                     </div>
                 </div>
@@ -277,7 +280,7 @@
     </section>
 
     <!-- ==================================================================
-         PANTALLA 6: PANEL DE APODERADOS (MULTI-ARCHIVOS + FECHA DE PRUEBA)
+         PANTALLA 6: PANEL DE APODERADOS (MULTI-ARCHIVOS + FECHA + MÉTRICAS)
          ================================================================== -->
     <section id="screen-parent" class="screen">
         <header class="top-bar">
@@ -289,7 +292,7 @@
 
             <div class="parent-tabs">
                 <button id="tab-parent-kaptear" class="parent-tab active" onclick="switchParentTab('kaptear')">
-                    ⚡ Kaptear Guías
+                    ⚡ Kaptear con IA
                 </button>
                 <button id="tab-parent-student" class="parent-tab" onclick="switchParentTab('student')">
                     👦🏽 Pase Mágico
@@ -302,22 +305,22 @@
         </header>
 
         <div class="main-wrapper">
-            <!-- SUB-VISTA A: KAPTEAR MULTI-ARCHIVOS CON GEMINI API + HISTORIAL -->
+            <!-- SUB-VISTA A: KAPTEAR MULTI-ARCHIVO + HISTORIAL EFECTO 7.0 -->
             <div id="parent-view-kaptear" class="parent-two-cols">
                 <div class="parent-white-card">
-                    <h2>Kaptear Material con IA (Multi-Archivo)</h2>
+                    <h2>Kaptear Nuevo Material con IA</h2>
 
                     <!-- Configuración rápida de API Key de Gemini -->
                     <div class="api-key-box">
-                        <label class="small-label">🔑 Tu API Key de Google Gemini:</label>
+                        <label class="small-label">🔑 Tu API Key de Google Gemini (Guardada en este equipo):</label>
                         <div class="api-key-row">
                             <input type="password" id="gemini-api-key-input" class="clean-input" style="margin-bottom:0;" placeholder="Pega aquí tu llave AIza..." />
-                            <button class="btn-gray-pill btn-sm" onclick="saveGeminiKeyFromUI()">Guardar</button>
+                            <button class="btn-gray-pill" style="padding:10px 16px; font-size:13px;" onclick="saveGeminiKeyFromUI()">Guardar</button>
                         </div>
-                        <small id="api-key-status" class="api-status-label"></small>
+                        <small id="api-key-status" class="api-key-status-text"></small>
                     </div>
 
-                    <p class="small-label">1. Elige la asignatura:</p>
+                    <p class="small-label">1. Elige el mundo escolar:</p>
                     <div class="subject-pills-row">
                         <button class="subj-pill active-subj" data-subj="ciencias" onclick="selectUploadSubject('ciencias', this)">Ciencias</button>
                         <button class="subj-pill" data-subj="matematicas" onclick="selectUploadSubject('matematicas', this)">Matemáticas</button>
@@ -331,30 +334,30 @@
                             <input type="text" id="input-capsule-title" class="clean-input" placeholder="Ej: Imperio Inca o Las Plantas" />
                         </div>
                         <div>
-                            <label class="small-label">3. Fecha de la Prueba (Vigencia):</label>
+                            <label class="small-label">3. Fecha de la Prueba:</label>
                             <input type="date" id="input-exam-date" class="clean-input" />
                         </div>
                     </div>
 
-                    <label class="small-label">4. Adjunta todas las páginas (varios PDFs o fotos del cuaderno):</label>
-                    <div class="upload-buttons-dual">
-                        <label class="dropzone-box" for="file-upload-input">
-                            <span>📂 Seleccionar Archivos (PDFs / Fotos)</span>
-                            <input type="file" id="file-upload-input" accept=".pdf,.jpg,.jpeg,.png" multiple hidden onchange="handleFilesSelected(this)" />
+                    <label class="small-label">4. Adjunta todas las páginas o guías (Soporta múltiples archivos):</label>
+                    <div class="upload-buttons-grid">
+                        <label class="dropzone-box" for="file-upload-multiple">
+                            <span>📄 Subir PDFs o Fotos (+1 archivo)</span>
+                            <input type="file" id="file-upload-multiple" accept=".pdf,.jpg,.jpeg,.png,.webp,.txt" multiple hidden onchange="handleMultipleFilesSelected(this)" />
                         </label>
-                        <label class="camera-box" for="camera-upload-input">
+                        <label class="dropzone-box camera-box" for="camera-upload-input">
                             <span>📸 Fotografiar Cuaderno</span>
-                            <input type="file" id="camera-upload-input" accept="image/*" capture="environment" multiple hidden onchange="handleFilesSelected(this)" />
+                            <input type="file" id="camera-upload-input" accept="image/*" capture="environment" multiple hidden onchange="handleMultipleFilesSelected(this)" />
                         </label>
                     </div>
 
-                    <!-- Lista de archivos adjuntos con opción de quitar -->
-                    <div id="uploaded-files-list" class="attached-files-list"></div>
+                    <!-- Lista visual de archivos cargados con opción de eliminar o agregar más -->
+                    <div id="attached-files-list" class="attached-files-container hidden"></div>
 
-                    <textarea id="input-capsule-text" class="clean-textarea" rows="2" placeholder="Opcional: Pega texto adicional o indicaciones del profesor..."></textarea>
+                    <textarea id="input-capsule-text" class="clean-textarea" rows="2" placeholder="Opcional: Pega aquí texto adicional o instrucciones de la profesora..."></textarea>
 
                     <div id="ai-loading-box" class="ai-loading-banner hidden">
-                        🧠 Procesando todas las páginas con Gemini IA y armando misiones para <span class="student-name-ref">Santi</span>...
+                        🧠 Analizando <span id="ai-files-count-label">material</span> con Gemini IA y armando cápsula para <span class="student-name-ref">Santi</span>...
                     </div>
 
                     <div id="ai-error-box" class="error-text hidden" style="text-align:center; padding:8px;"></div>
@@ -365,25 +368,28 @@
                 </div>
 
                 <div class="parent-white-card">
-                    <h2>Progreso y Efecto 7.0 de <span class="student-name-ref">Santi</span></h2>
+                    <h2>Progreso y Maestría de <span class="student-name-ref">Santi</span></h2>
                     <div class="metrics-row">
                         <div class="metric-box">
-                            <span class="metric-icon">💎</span>
+                            <span class="metric-icon">🎯</span>
                             <div>
-                                <strong class="gems-val">15</strong>
-                                <small>Gemas de Repaso</small>
+                                <strong id="parent-accuracy-val">92%</strong>
+                                <small>Precisión</small>
                             </div>
                         </div>
                         <div class="metric-box">
-                            <span class="metric-icon">🧘‍♂️</span>
+                            <span class="metric-icon">🧘</span>
                             <div>
-                                <strong id="parent-calm-val">0</strong>
-                                <small>Pausas Anti-Azar</small>
+                                <strong id="parent-impulsive-val">0</strong>
+                                <small>Alertas Anti-Azar</small>
                             </div>
                         </div>
                     </div>
 
-                    <p class="small-label">Estado de Preparación por Prueba (Meta: 5 Repasos = 7.0):</p>
+                    <!-- Notificación de Cofre Familiar cuando una guía llega a 5/5 repasos -->
+                    <div id="family-chest-banner" class="family-chest-alert"></div>
+
+                    <h3 class="small-label" style="margin-top:12px;">Estado de Preparación por Prueba (Meta: 5/5 Repasos = Nota 7.0):</h3>
                     <div id="parent-history-list" class="history-list"></div>
                 </div>
             </div>
@@ -401,18 +407,23 @@
                         🏆 <span class="points-val">120</span> Monedas &nbsp;|&nbsp; 💎 <span class="gems-val">15</span> Gemas
                     </div>
 
+                    <div class="student-progress-strip">
+                        <span class="green-progress-pill">⭐ Meta 5 Repasos Activa</span>
+                        <button class="btn-gray-pill" onclick="switchParentTab('kaptear')">Ver Historial</button>
+                    </div>
+
                     <button class="btn-create-capsule" onclick="switchParentTab('kaptear')">
-                        ⚡ Subir Nueva Guía de Estudio
+                        Cargar Nueva Prueba
                     </button>
                 </div>
 
                 <div class="parent-white-card magic-pass-card">
                     <h2>Pase Mágico</h2>
-                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su celular o tablet</p>
+                    <p class="subtitle-pass">Comparte este código con tu hijo para vincular su tablet o celular sin contraseña</p>
 
                     <div class="qr-and-pin-row">
                         <div class="qr-box">
-                            <svg viewBox="0 0 100 100" width="120" height="120">
+                            <svg viewBox="0 0 100 100" width="130" height="130">
                                 <rect width="100" height="100" rx="12" fill="#DCEEFF"/>
                                 <rect x="12" y="12" width="26" height="26" rx="4" fill="#1E3A8A"/>
                                 <rect x="17" y="17" width="16" height="16" rx="2" fill="#DCEEFF"/>
@@ -449,12 +460,12 @@
     </section>
 
     <!-- ==================================================================
-         MODALES DE AUTENTICACIÓN, PASE MÁGICO Y RECOMPENSA DE MAESTRÍA
+         MODALES DE AUTENTICACIÓN Y VINCULACIÓN
          ================================================================== -->
     <div id="modal-parent-login" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👨‍👩‍👦 Acceso Apoderados</h3>
-            <p>Ingresa con las credenciales del MVP:</p>
+            <p>Ingresa con las credenciales predeterminadas del MVP:</p>
             <label class="small-label">Usuario</label>
             <input type="text" id="login-user" class="clean-input" value="padre" />
             <label class="small-label">Contraseña</label>
@@ -470,9 +481,9 @@
     <div id="modal-student-pin" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>✨ Ingresar con Pase Mágico</h3>
-            <p>Escribe tu PIN de 4 números:</p>
+            <p>Escribe tu PIN de 4 números o simula el escaneo del QR de tu papá/mamá:</p>
             <input type="password" id="student-pin-input" maxlength="4" class="pin-huge-input" placeholder="1234" value="1234" />
-            <div id="pin-error" class="error-text hidden">PIN incorrecto.</div>
+            <div id="pin-error" class="error-text hidden">PIN incorrecto. Revisa el Pase Mágico en el Panel de Padres.</div>
             <div class="modal-buttons">
                 <button class="btn-gray-pill" onclick="closeModals()">Cancelar</button>
                 <button class="btn-portal-student" onclick="verifyStudentPin()">🔓 Desbloquear mi Reino</button>
@@ -483,6 +494,7 @@
     <div id="modal-edit-student" class="modal-overlay hidden">
         <div class="modal-box">
             <h3>👦🏽 Configurar Estudiante</h3>
+            <p>Actualiza el nombre y el PIN de acceso rápido:</p>
             <label class="small-label">Nombre del Estudiante</label>
             <input type="text" id="edit-student-name" class="clean-input" value="Santi" />
             <label class="small-label">PIN de Pase Mágico (4 dígitos)</label>
@@ -494,23 +506,8 @@
         </div>
     </div>
 
-    <!-- Modal de Celebración de Fin de Cápsula / Repaso -->
-    <div id="modal-capsule-reward" class="modal-overlay hidden">
-        <div class="modal-box" style="text-align:center;">
-            <div id="reward-modal-icon" style="font-size:64px; margin-bottom:8px;">🏆</div>
-            <h3 id="reward-modal-title">¡Cápsula Completada!</h3>
-            <p id="reward-modal-desc" style="font-size:15px; color:#334155; margin-bottom:14px;"></p>
-            <div id="reward-modal-stars" style="font-size:26px; margin-bottom:16px;">⭐⭐☆☆☆</div>
-            <div class="modal-buttons">
-                <button class="btn-gray-pill" onclick="closeModals(); navigateTo('screen-topics');">Ver Cápsulas</button>
-                <button class="btn-create-capsule" onclick="closeModals(); navigateTo('screen-kingdom');">🏰 Ir a Mi Reino</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts del Proyecto -->
     <script src="ai_engine.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
-
