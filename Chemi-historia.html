@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kaptia Jr. | Emi-Blox: Misión Historia de Chile 🇨🇱</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Lexend (Alta legibilidad para pre-lectores y TDAH) -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-pastel: #EEF4FF;
+            --roblox-blue: #2563EB;
+            --roblox-green: #10B981;
+            --roblox-amber: #F59E0B;
+            --roblox-red: #EF4444;
+            --roblox-purple: #7C3AED;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-pastel);
+            background-image: radial-gradient(#CBD5E1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: #1E293B;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Botones táctiles 3D estilo Roblox / Kaptia */
+        .btn-3d {
+            transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
+            position: relative;
+        }
+        .btn-3d:active:not(:disabled) {
+            transform: translateY(4px);
+        }
+
+        .btn-3d-blue {
+            background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+            border-bottom: 5px solid #1D4ED8;
+            color: white;
+        }
+        .btn-3d-green {
+            background: linear-gradient(180deg, #34D399 0%, #10B981 100%);
+            border-bottom: 5px solid #047857;
+            color: white;
+        }
+        .btn-3d-amber {
+            background: linear-gradient(180deg, #FBBF24 0%, #F59E0B 100%);
+            border-bottom: 5px solid #B45309;
+            color: #1E293B;
+        }
+        .btn-3d-purple {
+            background: linear-gradient(180deg, #A78BFA 0%, #7C3AED 100%);
+            border-bottom: 5px solid #5B21B6;
+            color: white;
+        }
+        .btn-3d-red {
+            background: linear-gradient(180deg, #F87171 0%, #EF4444 100%);
+            border-bottom: 5px solid #B91C1C;
+            color: white;
+        }
+        .btn-3d-white {
+            background: #FFFFFF;
+            border: 3px solid #E2E8F0;
+            border-bottom: 5px solid #CBD5E1;
+            color: #1E293B;
+        }
+        .btn-3d-locked {
+            background: #F1F5F9;
+            border: 2px solid #CBD5E1;
+            border-bottom: 5px solid #94A3B8;
+            color: #64748B;
+            cursor: not-allowed;
+        }
+
+        /* Animación Squishy elástica al presionar */
+        @keyframes squishy-bounce {
+            0% { transform: scale(1, 1); }
+            30% { transform: scale(1.25, 0.78); }
+            50% { transform: scale(0.88, 1.15); }
+            70% { transform: scale(1.08, 0.94); }
+            100% { transform: scale(1, 1); }
+        }
+        .animate-squish {
+            animation: squishy-bounce 0.55s ease;
+        }
+
+        @keyframes pulse-gentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-pulse-gentle {
+            animation: pulse-gentle 2.2s infinite ease-in-out;
+        }
+
+        @keyframes shake-soft {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-7px) rotate(-2deg); }
+            40% { transform: translateX(7px) rotate(2deg); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake-soft 0.4s ease-in-out;
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0.94); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: pop-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Tarjetas de opciones para pre-lector */
+        .option-card {
+            transition: all 0.18s ease;
+            border: 4px solid #E2E8F0;
+            border-bottom: 8px solid #CBD5E1;
+            background: #FFFFFF;
+        }
+        .option-card:hover:not(.disabled-card) {
+            border-color: #60A5FA;
+            transform: translateY(-2px);
+        }
+        .option-card.correct-card {
+            background: #D1FAE5 !important;
+            border-color: #10B981 !important;
+            border-bottom-color: #047857 !important;
+        }
+        .option-card.wrong-card {
+            background: #FEE2E2 !important;
+            border-color: #F87171 !important;
+            border-bottom-color: #DC2626 !important;
+            opacity: 0.6;
+        }
+        .option-card.disabled-card {
+            pointer-events: none;
+        }
+
+        /* Colores de Rareza Squishy */
+        .rarity-comun { background: #E2E8F0; color: #334155; border-color: #94A3B8; }
+        .rarity-elite { background: #DBEAFE; color: #1E40AF; border-color: #60A5FA; }
+        .rarity-legendario { background: #F3E8FF; color: #6B21A8; border-color: #C084FC; }
+        .rarity-mitico { background: #FCE7F3; color: #9D174D; border-color: #F472B6; }
+        .rarity-dios { background: linear-gradient(90deg, #FEF08A, #FDE047, #FACC15); color: #713F12; border-color: #EAB308; }
+
+        /* Confeti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Canvas para Confeti de Celebración -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ================================================================= -->
+    <!-- BARRA SUPERIOR GAMER + COMPAÑERO SQUISHY + BOTÓN PAPÁS (5101)     -->
+    <!-- ================================================================= -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b-4 border-slate-200 px-3 py-2 shadow-sm">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <!-- Logo y Compañero Squishy Activo -->
+            <div class="flex items-center gap-2.5">
+                <div onclick="goHome()" class="cursor-pointer flex items-center gap-2">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-2xl shadow border-2 border-white">
+                        🎮
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-black text-base md:text-lg tracking-tight text-slate-900">EMI-BLOX</span>
+                            <span class="bg-blue-100 text-blue-800 text-[11px] font-extrabold px-2 py-0.5 rounded-full border border-blue-300">KAPTIA JR</span>
+                        </div>
+                        <p class="text-[11px] font-bold text-slate-500 hidden sm:block">Misión: Identidad de Chile 🇨🇱</p>
+                    </div>
+                </div>
+
+                <!-- Píldora del Compañero Squishy Activo (Interactivo al tocar) -->
+                <button id="hud-companion-pill" onclick="pokeCompanion()" class="bg-purple-50 hover:bg-purple-100 border-2 border-purple-300 rounded-2xl px-2.5 py-1 flex items-center gap-2 transition shadow-sm" title="Toca a tu compañero Squishy">
+                    <span id="hud-companion-emoji" class="text-2xl inline-block">🍓</span>
+                    <div class="text-left">
+                        <span class="block text-[10px] font-extrabold text-purple-700 uppercase leading-none">Compañero</span>
+                        <span id="hud-companion-name" class="font-black text-xs text-slate-800 leading-tight">Frutilla Kawaii</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Controles de Voz, Monedas, Tienda y Reinicio Parental (5101) -->
+            <div class="flex items-center gap-1.5 md:gap-2">
+                <!-- Botón Auto-Voz -->
+                <button id="btn-autovoice" onclick="toggleAutoVoice()" class="btn-3d btn-3d-white px-2.5 py-1.5 rounded-xl font-extrabold text-xs flex items-center gap-1" title="Leer preguntas automáticamente">
+                    <span id="autovoice-icon" class="text-base">🔊</span>
+                    <span id="autovoice-label" class="hidden lg:inline">Voz: SÍ</span>
+                </button>
+
+                <!-- Contador de Monedas Blox -->
+                <div class="bg-amber-100 border-2 border-amber-400 px-3 py-1 rounded-xl flex items-center gap-1 shadow-inner">
+                    <span class="text-lg">🪙</span>
+                    <span id="coin-counter" class="font-black text-amber-900 text-base md:text-lg">60</span>
+                </div>
+
+                <!-- Botón Tienda Squishy -->
+                <button onclick="openScreen('screen-shop')" class="btn-3d btn-3d-purple px-3 py-1.5 rounded-xl font-extrabold text-xs flex items-center gap-1">
+                    <span class="text-base">🧸</span>
+                    <span class="hidden sm:inline">SQUISHIES</span>
+                </button>
+
+                <!-- Botón Reinicio Parental Clave 5101 -->
+                <button onclick="openParentModal()" class="btn-3d btn-3d-white px-2.5 py-1.5 rounded-xl font-extrabold text-xs text-slate-600 flex items-center gap-1" title="Reinicio y Estadísticas para Papás (Clave 5101)">
+                    <span>🔒</span>
+                    <span class="hidden md:inline">Papás</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra de Acceso Rápido (Para que el Clasificador y el Simulador NUNCA se pierdan) -->
+        <div class="max-w-6xl mx-auto pt-2 mt-1.5 border-t border-slate-100 flex items-center justify-between gap-1.5 overflow-x-auto">
+            <div class="flex items-center gap-1.5 w-full justify-center sm:justify-start">
+                <button id="nav-tab-home" onclick="goHome()" class="px-3 py-1 rounded-xl font-black text-xs bg-blue-600 text-white shadow-sm flex items-center gap-1 shrink-0">
+                    <span>🗺️</span> <span>MUNDOS (1-5)</span>
+                </button>
+                <button id="nav-tab-minigame" onclick="startMiniGame()" class="px-3 py-1 rounded-xl font-black text-xs bg-sky-100 text-sky-900 hover:bg-sky-200 border border-sky-300 flex items-center gap-1 shrink-0">
+                    <span>⚔️</span> <span>JUEGO: COLÓN VS PRAT</span>
+                </button>
+                <button id="nav-tab-exam" onclick="startFinalExam()" class="px-3 py-1 rounded-xl font-black text-xs bg-amber-100 text-amber-950 hover:bg-amber-200 border border-amber-400 flex items-center gap-1 shrink-0">
+                    <span>🏆</span> <span>SIMULADOR PRUEBA 7.0</span>
+                </button>
+                <button id="nav-tab-shop" onclick="openScreen('screen-shop')" class="px-3 py-1 rounded-xl font-black text-xs bg-purple-100 text-purple-900 hover:bg-purple-200 border border-purple-300 flex items-center gap-1 shrink-0">
+                    <span>🧸</span> <span>MÁQUINA SQUISHY</span>
+                </button>
+            </div>
+            <span id="total-progress-badge" class="hidden md:inline-block bg-emerald-100 text-emerald-800 font-extrabold text-xs px-2.5 py-0.5 rounded-full border border-emerald-300 shrink-0">
+                0 / 5 Mundos Listos
+            </span>
+        </div>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- CONTENEDOR PRINCIPAL COMPACTO (TODO VISIBLE DE UN VISTAZO)        -->
+    <!-- ================================================================= -->
+    <main class="flex-1 flex flex-col justify-center max-w-6xl w-full mx-auto px-3 py-3 md:py-4">
+
+        <!-- ============================================================= -->
+        <!-- PANTALLA 1: MAPA DE LAS 7 ACTIVIDADES (5 MUNDOS + 2 ESPECIALES)-->
+        <!-- ============================================================= -->
+        <section id="screen-home" class="space-y-3.5 animate-pop">
+            <!-- Banner Compacto con Compañero Squishy e Instrucción de Regla 1° Aprender -> 2° Misiones -->
+            <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-3.5 md:p-4 text-white shadow-lg border-b-6 border-indigo-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-center sm:text-left flex-col sm:flex-row">
+                    <div id="home-companion-box" onclick="pokeCompanion()" class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-4xl border-2 border-white/50 shadow-inner cursor-pointer shrink-0">
+                        🍓
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+                            <span class="bg-amber-400 text-slate-900 font-black text-[11px] px-2.5 py-0.5 rounded-full uppercase">
+                                🌟 Regla de Campeón
+                            </span>
+                            <span class="bg-white/20 text-white font-bold text-[11px] px-2.5 py-0.5 rounded-full">
+                                ⚡ ¡Sin usar pista ganas +25 🪙!
+                            </span>
+                        </div>
+                        <h1 class="text-lg md:text-2xl font-black leading-tight mt-0.5">
+                            ¡Hola, Emiliano! Primero abre 📖 APRENDER para desbloquear 🎯 MISIONES
+                        </h1>
+                    </div>
+                </div>
+                <button onclick="speakWelcome()" class="btn-3d btn-3d-amber px-4 py-2.5 rounded-2xl font-black text-xs md:text-sm flex items-center gap-1.5 shrink-0">
+                    <span class="text-xl">🔊</span>
+                    <span>ESCUCHAR A MI SQUISHY</span>
+                </button>
+            </div>
+
+            <!-- Grilla Unificada de 7 Tarjetas (5 Mundos + Clasificador Colón/Prat + Simulador 7.0) -->
+            <div id="worlds-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <!-- Se llena dinámicamente con JS incluyendo las 7 tarjetas -->
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PANTALLA 2: CÁPSULA DE ESTUDIO Y MISIONES                     -->
+        <!-- ============================================================= -->
+        <section id="screen-world" class="hidden space-y-3 animate-pop">
+            <!-- Barra de Navegación del Mundo + Contador de Lupas de Pista -->
+            <div class="bg-white rounded-3xl p-3 border-4 border-slate-200 shadow-sm flex flex-col gap-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <button onclick="goHome()" class="btn-3d btn-3d-white px-3 py-1.5 rounded-xl font-extrabold text-xs flex items-center gap-1">
+                        <span>⬅️</span> <span>MAPA</span>
+                    </button>
+
+                    <div id="world-header-title" class="font-black text-sm md:text-base text-slate-800 flex items-center gap-1.5">
+                        <!-- Título del Mundo -->
+                    </div>
+
+                    <!-- Pestañas Fase 1 (Aprender) vs Fase 2 (Misiones con Candado si no ha aprendido) -->
+                    <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-2xl">
+                        <button id="tab-learn" onclick="switchWorldPhase('learn')" class="px-3 py-1 rounded-xl font-black text-xs transition">
+                            📖 1. APRENDER
+                        </button>
+                        <button id="tab-quiz" onclick="trySwitchToQuiz()" class="px-3 py-1 rounded-xl font-black text-xs transition">
+                            🔒 2. MISIONES
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Barra de Bloques Estilo Roblox -->
+                <div id="segmented-progress" class="grid gap-1.5 w-full"></div>
+            </div>
+
+            <!-- Contenedor Dinámico de la Tarjeta Actual -->
+            <div id="world-card-stage" class="relative bg-white rounded-3xl p-4 md:p-6 border-4 border-slate-200 border-b-8 border-b-slate-300 shadow-lg min-h-[410px] flex flex-col justify-between overflow-hidden">
+                <!-- Se inyecta Tarjeta de Descubrimiento o Tarjeta de Pregunta -->
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PANTALLA 3: MINI-JUEGO CLASIFICADOR RÁPIDO (COLÓN VS PRAT)    -->
+        <!-- ============================================================= -->
+        <section id="screen-minigame" class="hidden space-y-3 animate-pop">
+            <div class="bg-white rounded-3xl p-3.5 border-4 border-sky-200 flex items-center justify-between flex-wrap gap-2">
+                <button onclick="goHome()" class="btn-3d btn-3d-white px-3 py-1.5 rounded-xl font-extrabold text-xs">
+                    ⬅️ VOLVER AL MAPA
+                </button>
+                <h2 class="font-black text-sm md:text-lg text-sky-900 flex items-center gap-2">
+                    <span>⚔️</span> CLASIFICADOR: COLÓN, PRAT Y BANDERA
+                </h2>
+                <span id="minigame-counter" class="bg-sky-100 text-sky-900 font-black text-xs px-3 py-1 rounded-full">
+                    1 / 8
+                </span>
+            </div>
+
+            <div id="minigame-stage" class="relative bg-white rounded-3xl p-5 md:p-7 border-4 border-sky-200 border-b-8 border-b-sky-400 shadow-lg text-center space-y-5 overflow-hidden">
+                <!-- Contenido del Mini-Juego -->
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PANTALLA 4: TIENDA SQUISHY + MÁQUINA GACHAPON + COMPAÑERO     -->
+        <!-- ============================================================= -->
+        <section id="screen-shop" class="hidden space-y-4 animate-pop">
+            <div class="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 rounded-3xl p-4 text-white shadow-lg border-b-6 border-purple-900 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl md:text-5xl">🧸</span>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black">El Reino Squishy de Emiliano</h2>
+                        <p class="text-purple-100 font-bold text-xs md:text-sm">
+                            ¡Desbloquea Squishies en la máquina o en la repisa y elige a tu <strong>Compañero de Estudio</strong>!
+                        </p>
+                    </div>
+                </div>
+                <button onclick="goHome()" class="btn-3d btn-3d-amber px-4 py-2 rounded-2xl font-black text-xs md:text-sm">
+                    ⬅️ VOLVER A LOS MUNDOS
+                </button>
+            </div>
+
+            <!-- Máquina Gachapon Interactiva + Repisa de Colección -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <!-- Columna 1: Máquina Gachapon Sorpresa -->
+                <div class="bg-white rounded-3xl p-4 border-4 border-pink-200 border-b-8 border-b-pink-400 shadow-md flex flex-col items-center justify-between text-center gap-3">
+                    <span class="bg-pink-100 text-pink-800 font-black text-xs px-3 py-1 rounded-full">
+                        🎰 MÁQUINA GACHAPON SQUISHY
+                    </span>
+
+                    <div id="gachapon-visual" class="w-40 h-44 rounded-3xl bg-gradient-to-b from-sky-100 to-indigo-100 border-4 border-pink-400 flex flex-col justify-between p-3 shadow-inner relative">
+                        <div class="flex flex-wrap justify-center gap-1.5 text-2xl">
+                            <span>🔴</span><span>🔵</span><span>🟡</span><span>🟣</span><span>🟢</span><span>🟠</span>
+                        </div>
+                        <div class="bg-pink-500 text-white rounded-2xl py-2 px-3 border-t-4 border-pink-700 flex items-center justify-around">
+                            <span class="text-2xl">⚙️</span>
+                            <span id="gachapon-prize-slot" class="text-3xl">🎁</span>
+                        </div>
+                    </div>
+
+                    <p id="gachapon-status-msg" class="text-xs md:text-sm font-extrabold text-slate-600">
+                        ¡Gira la máquina por <strong>50 🪙</strong> para ganar un Squishy sorpresa o cómpralo directo en la repisa!
+                    </p>
+
+                    <button onclick="spinGachaponMachine()" class="btn-3d btn-3d-amber w-full py-3 rounded-2xl font-black text-sm md:text-base flex items-center justify-center gap-2">
+                        <span>🪙 GIRAR MÁQUINA (50 🪙)</span>
+                    </button>
+                </div>
+
+                <!-- Columnas 2 y 3: Repisa de los 8 Squishies por Rareza -->
+                <div class="lg:col-span-2 bg-white rounded-3xl p-4 border-4 border-purple-200 border-b-8 border-b-purple-300 shadow-md">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-black text-base md:text-lg text-slate-800">
+                            ✨ Repisa de Squishies (Toca uno para elegirlo de Compañero)
+                        </h3>
+                    </div>
+                    <div id="shop-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <!-- Se llena dinámicamente con los 8 Squishies -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PANTALLA 5: CELEBRACIÓN DE MUNDO O PRUEBA 7.0                 -->
+        <!-- ============================================================= -->
+        <section id="screen-victory" class="hidden animate-pop">
+            <div class="bg-white rounded-3xl p-6 md:p-8 border-4 border-emerald-300 border-b-8 border-b-emerald-500 shadow-xl text-center max-w-xl mx-auto space-y-4">
+                <div id="victory-emoji" class="text-6xl md:text-7xl animate-bounce">🏆</div>
+                <span id="victory-badge" class="inline-block bg-amber-300 text-amber-950 font-black text-xs md:text-sm px-4 py-1 rounded-full">
+                    ¡MISIÓN COMPLETADA!
+                </span>
+                <h2 id="victory-title" class="text-2xl md:text-3xl font-black text-slate-800">
+                    ¡Increíble trabajo, Emiliano!
+                </h2>
+                <p id="victory-desc" class="text-sm md:text-base font-bold text-slate-600">
+                    Ganaste +30 Monedas Blox para tu tienda Squishy.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <button onclick="openScreen('screen-shop')" class="btn-3d btn-3d-purple w-full sm:w-auto px-5 py-3.5 rounded-2xl font-black text-sm md:text-base flex items-center justify-center gap-2">
+                        <span>🧸 IR A LOS SQUISHIES</span>
+                    </button>
+                    <button onclick="goHome()" class="btn-3d btn-3d-green w-full sm:w-auto px-5 py-3.5 rounded-2xl font-black text-sm md:text-base flex items-center justify-center gap-2">
+                        <span>🗺️ VOLVER AL MAPA</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- MODAL PARENTAL CON CLAVE 5101 (ESTADÍSTICAS + REINICIO)           -->
+    <!-- ================================================================= -->
+    <div id="modal-parent-pin" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 md:p-6 border-4 border-slate-300 shadow-2xl space-y-4 animate-pop">
+            <div class="flex items-center justify-between border-b-2 border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🔒</span>
+                    <h3 class="font-black text-lg text-slate-800">Zona de Papás (Clave: 5101)</h3>
+                </div>
+                <button onclick="closeParentModal()" class="w-8 h-8 rounded-xl bg-slate-100 font-black text-slate-600">✕</button>
+            </div>
+
+            <!-- Vista 1: Teclado para ingresar PIN 5101 -->
+            <div id="parent-pin-Step" class="space-y-3 text-center">
+                <p class="text-xs font-bold text-slate-500">
+                    Emiliano: pásale el dispositivo a tu papá o mamá para ingresar la clave de reinicio.
+                </p>
+                <input id="parent-pin-input" type="password" maxlength="4" placeholder="••••" class="w-40 text-center text-3xl font-black tracking-widest py-2 px-4 rounded-2xl bg-slate-100 border-3 border-slate-300 focus:outline-none" readonly />
+                <div id="parent-pin-error" class="hidden text-xs font-black text-red-600">
+                    Clave incorrecta. Intenta de nuevo.
+                </div>
+
+                <!-- Teclado Numérico Táctil -->
+                <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto pt-1">
+                    <button onclick="pressPinDigit('1')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">1</button>
+                    <button onclick="pressPinDigit('2')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">2</button>
+                    <button onclick="pressPinDigit('3')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">3</button>
+                    <button onclick="pressPinDigit('4')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">4</button>
+                    <button onclick="pressPinDigit('5')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">5</button>
+                    <button onclick="pressPinDigit('6')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">6</button>
+                    <button onclick="pressPinDigit('7')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">7</button>
+                    <button onclick="pressPinDigit('8')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">8</button>
+                    <button onclick="pressPinDigit('9')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">9</button>
+                    <button onclick="clearPinDigits()" class="btn-3d btn-3d-red py-2.5 rounded-xl font-black text-xs">BORRAR</button>
+                    <button onclick="pressPinDigit('0')" class="btn-3d btn-3d-white py-2.5 rounded-xl font-black text-lg">0</button>
+                    <button onclick="verifyParentPin()" class="btn-3d btn-3d-green py-2.5 rounded-xl font-black text-xs">ENTRAR</button>
+                </div>
+            </div>
+
+            <!-- Vista 2: Métricas de Aprendizaje de Emiliano + Botones de Reinicio -->
+            <div id="parent-controls-step" class="hidden space-y-4">
+                <div class="bg-slate-50 p-3.5 rounded-2xl border-2 border-slate-200 space-y-2">
+                    <h4 class="font-black text-xs text-slate-500 uppercase">📊 Cómo está aprendiendo Emiliano:</h4>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-white p-2 rounded-xl border border-slate-200">
+                            <span id="stat-first-try" class="block font-black text-xl text-emerald-600">0%</span>
+                            <span class="text-[11px] font-bold text-slate-500">Acierto al 1° Intento</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-slate-200">
+                            <span id="stat-hints-used" class="block font-black text-xl text-amber-600">0</span>
+                            <span class="text-[11px] font-bold text-slate-500">Pistas Voluntarias</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-slate-200">
+                            <span id="stat-learned-worlds" class="block font-black text-xl text-blue-600">0 / 5</span>
+                            <span class="text-[11px] font-bold text-slate-500">Mundos Aprendidos</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-slate-200">
+                            <span id="stat-completed-worlds" class="block font-black text-xl text-purple-600">0 / 5</span>
+                            <span class="text-[11px] font-bold text-slate-500">Misiones Superadas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <button onclick="resetStudyProgressOnly()" class="btn-3d btn-3d-blue w-full py-3 rounded-2xl font-black text-xs md:text-sm flex items-center justify-center gap-2">
+                        <span>🔄 REINICIAR SOLO ESTUDIO (Mantiene Squishies y 🪙)</span>
+                    </button>
+                    <button onclick="resetAllFactory()" class="btn-3d btn-3d-red w-full py-3 rounded-2xl font-black text-xs md:text-sm flex items-center justify-center gap-2">
+                        <span>🧹 REINICIO TOTAL DE FÁBRICA (Todo a Cero)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- PIE DE PÁGINA LIGERO                                              -->
+    <!-- ================================================================= -->
+    <footer class="text-center py-2 text-[11px] font-bold text-slate-400">
+        Kaptia Neuroeducación • Diseñado especialmente para Emiliano 🇨🇱
+    </footer>
+
+    <!-- ================================================================= -->
+    <!-- LÓGICA JAVASCRIPT Y BASE DE DATOS 100% AUTÓNOMA                   -->
+    <!-- ================================================================= -->
+    <script>
+        // =================================================================
+        // 1. ILUSTRACIONES SVG EXCLUSIVAS PARA LA FASE "APRENDER"
+        // (En la Fase "Misiones" se usan Cajas de Misterio para NO regalar
+        // la respuesta por emparejamiento visual de íconos)
+        // =================================================================
+        const CUSTOM_SVGS = {
+            banderaChile: `
+                <svg viewBox="0 0 180 120" class="w-36 h-24 md:w-44 md:h-28 mx-auto rounded-2xl shadow-md border-4 border-slate-300">
+                    <rect width="180" height="60" fill="#FFFFFF"/>
+                    <rect width="60" height="60" fill="#0039A6"/>
+                    <polygon points="30,12 35,26 49,26 38,34 42,48 30,39 18,48 22,34 11,26 25,26" fill="#FFFFFF"/>
+                    <rect y="60" width="180" height="60" fill="#D52B1E"/>
+                </svg>
+            `,
+            escudoChile: `
+                <svg viewBox="0 0 200 130" class="w-44 h-28 md:w-52 md:h-32 mx-auto">
+                    <circle cx="42" cy="68" r="32" fill="#FEF3C7" stroke="#F59E0B" stroke-width="3"/>
+                    <text x="42" y="78" font-size="38" text-anchor="middle">🦌</text>
+                    <path d="M72,25 L128,25 L128,65 C128,90 100,108 100,108 C100,108 72,90 72,65 Z" fill="#0039A6" stroke="#1E293B" stroke-width="3"/>
+                    <path d="M72,62 L128,62 L128,65 C128,90 100,108 100,108 C100,108 72,90 72,65 Z" fill="#D52B1E"/>
+                    <polygon points="100,42 104,54 116,54 106,61 110,73 100,65 90,73 94,61 84,54 96,54" fill="#FFFFFF"/>
+                    <circle cx="90" cy="18" r="7" fill="#0039A6"/>
+                    <circle cx="100" cy="15" r="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                    <circle cx="110" cy="18" r="7" fill="#D52B1E"/>
+                    <circle cx="158" cy="68" r="32" fill="#E0E7FF" stroke="#4F46E5" stroke-width="3"/>
+                    <text x="158" y="78" font-size="38" text-anchor="middle">🦅</text>
+                </svg>
+            `,
+            escudoMisterioSinAnimales: `
+                <svg viewBox="0 0 200 110" class="w-44 h-24 mx-auto">
+                    <circle cx="42" cy="58" r="26" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5"/>
+                    <text x="42" y="68" font-size="28" text-anchor="middle">❓</text>
+                    <path d="M75,20 L125,20 L125,55 C125,78 100,95 100,95 C100,95 75,78 75,55 Z" fill="#0039A6" stroke="#1E293B" stroke-width="3"/>
+                    <path d="M75,52 L125,52 L125,55 C125,78 100,95 100,95 C100,95 75,78 75,55 Z" fill="#D52B1E"/>
+                    <polygon points="100,35 103,45 113,45 105,51 108,61 100,55 92,61 95,51 87,45 97,45" fill="#FFFFFF"/>
+                    <circle cx="158" cy="58" r="26" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5"/>
+                    <text x="158" y="68" font-size="28" text-anchor="middle">❓</text>
+                </svg>
+            `,
+            copihueFlor: `
+                <svg viewBox="0 0 140 120" class="w-28 h-24 md:w-32 md:h-28 mx-auto">
+                    <path d="M25,20 Q70,35 115,15" stroke="#15803D" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="48" cy="28" rx="18" ry="9" transform="rotate(-20 48 28)" fill="#22C55E"/>
+                    <ellipse cx="92" cy="26" rx="18" ry="9" transform="rotate(20 92 26)" fill="#16A34A"/>
+                    <path d="M70,25 C52,50 45,84 42,102 L70,92 L98,102 C95,84 88,50 70,25 Z" fill="#E11D48" stroke="#9F1239" stroke-width="3"/>
+                    <path d="M70,32 C60,55 56,82 55,100 L70,110 L85,100 C84,82 80,55 70,32 Z" fill="#FB7185"/>
+                </svg>
+            `,
+            tresCarabelas: `
+                <svg viewBox="0 0 220 110" class="w-44 h-24 mx-auto">
+                    <rect width="220" height="110" rx="18" fill="#E0F2FE"/>
+                    <path d="M0,82 Q55,72 110,82 T220,82 L220,110 L0,110 Z" fill="#0284C7"/>
+                    <text x="45" y="72" font-size="34" text-anchor="middle">⛵</text>
+                    <text x="110" y="68" font-size="40" text-anchor="middle">⛵</text>
+                    <text x="175" y="72" font-size="34" text-anchor="middle">⛵</text>
+                    <rect x="18" y="8" width="184" height="22" rx="8" fill="#FEF08A" stroke="#CA8A04" stroke-width="2"/>
+                    <text x="110" y="23" font-size="11" font-weight="900" fill="#713F12" text-anchor="middle">PINTA • NIÑA • SANTA MARÍA</text>
+                </svg>
+            `,
+            mingaChiloe: `
+                <svg viewBox="0 0 220 110" class="w-44 h-24 mx-auto">
+                    <rect width="220" height="110" rx="18" fill="#DBEAFE"/>
+                    <path d="M0,76 Q55,66 110,76 T220,76 L220,110 L0,110 Z" fill="#2563EB"/>
+                    <text x="55" y="68" font-size="32" text-anchor="middle">🐂</text>
+                    <text x="105" y="64" font-size="26" text-anchor="middle">🪢</text>
+                    <text x="155" y="68" font-size="42" text-anchor="middle">🏠</text>
+                    <text x="110" y="100" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle">CASA VIAJANDO POR EL MAR</text>
+                </svg>
+            `
+        };
+
+        // Generador de Caja de Misterio para que la pregunta NUNCA tenga el mismo ícono que la respuesta
+        function mysteryClueBadge(categoryIcon, labelText) {
+            return `
+                <div class="inline-flex items-center gap-3 bg-indigo-50 border-3 border-indigo-200 px-5 py-2.5 rounded-2xl shadow-inner my-1">
+                    <span class="text-4xl">${categoryIcon}</span>
+                    <div class="text-left">
+                        <span class="block text-[10px] font-black text-indigo-500 uppercase tracking-wider">PISTA VISUAL DE MISTERIO</span>
+                        <span class="font-black text-sm md:text-base text-slate-800">${labelText}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =================================================================
+        // 2. BASE DE DATOS 100% AUTÓNOMA DE LOS 5 MUNDOS (CERO REFERENCIAS
+        // EXTERNAS AL LIBRO Y CERO ÍCONOS REPETIDOS EN LAS PREGUNTAS)
+        // =================================================================
+        const WORLDS_DB = [
+            {
+                id: "mundo-1",
+                number: 1,
+                title: "Símbolos Patrios y Canción",
+                subtitle: "Bandera, Escudo, Colores y Versos",
+                icon: "🇨🇱",
+                bgCard: "from-blue-500 to-indigo-600",
+                learnCards: [
+                    {
+                        badge: "NUESTRO PAÍS • GEOGRAFÍA Y PAISAJES",
+                        title: "CHILE: LARGO Y ANGOSTO",
+                        highlightWords: "LARGO • ANGOSTO • CORDILLERA • MAR",
+                        speech: "Chile es un país largo y angosto con paisajes muy diversos. Tiene la gran cordillera con nieve blanca y hermosas playas con el mar frío.",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">🏔️ ❄️ 🏖️ 🌊</div>`,
+                        shortText: "Chile es LARGO y ANGOSTO. Tiene la CORDILLERA con nieve y playas junto al MAR."
+                    },
+                    {
+                        badge: "SÍMBOLO PATRIO • LA BANDERA",
+                        title: "LOS 3 COLORES DE LA BANDERA",
+                        highlightWords: "AZUL • BLANCO • ROJO",
+                        speech: "La bandera y el escudo de Chile tienen tres colores que nos representan: El AZUL representa el cielo y el mar. El BLANCO representa la nieve de la cordillera. Y el ROJO representa la sangre de los héroes.",
+                        visualHtml: CUSTOM_SVGS.banderaChile,
+                        shortText: "🔵 AZUL = Cielo y Mar • ⚪ BLANCO = Cordillera • 🔴 ROJO = Sangre de los héroes."
+                    },
+                    {
+                        badge: "SÍMBOLO PATRIO • EL ESCUDO",
+                        title: "¿QUIÉNES SOSTIENEN EL ESCUDO?",
+                        highlightWords: "CÓNDOR • HUEMUL",
+                        speech: "El escudo de Chile lo sostienen dos animales chilenos muy importantes: el CÓNDOR, que es una gran ave de los Andes, y el HUEMUL, que es un ciervo del sur. ¡Ojo! Ni la llama ni el pájaro carpintero están en el escudo.",
+                        visualHtml: CUSTOM_SVGS.escudoChile,
+                        shortText: "Lo sostienen el 🦅 CÓNDOR y el 🦌 HUEMUL."
+                    },
+                    {
+                        badge: "SÍMBOLO PATRIO • CANCIÓN NACIONAL",
+                        title: "VERSOS DE LA CANCIÓN NACIONAL",
+                        highlightWords: "CIELO AZULADO • BLANCA MONTAÑA • MAR",
+                        speech: "Nuestra Canción Nacional describe los paisajes de Chile en tres versos famosos: Puro Chile es tu cielo azulado, habla del CIELO. Majestuosa es la blanca montaña, habla de la CORDILLERA nevada. Ese mar que tranquilo te baña, habla del OCÉANO.",
+                        visualHtml: `<div class="grid grid-cols-3 gap-2 max-w-md mx-auto my-1">
+                            <div class="bg-sky-100 p-2 rounded-2xl border-2 border-sky-300"><div class="text-3xl">🌤️</div><div class="text-[11px] font-black mt-1">CIELO AZULADO</div></div>
+                            <div class="bg-slate-100 p-2 rounded-2xl border-2 border-slate-300"><div class="text-3xl">🏔️</div><div class="text-[11px] font-black mt-1">BLANCA MONTAÑA</div></div>
+                            <div class="bg-blue-100 p-2 rounded-2xl border-2 border-blue-300"><div class="text-3xl">🌊</div><div class="text-[11px] font-black mt-1">MAR TRANQUILO</div></div>
+                        </div>`,
+                        shortText: "🌤️ Cielo azulado • 🏔️ Blanca montaña • 🌊 Mar que te baña."
+                    }
+                ],
+                questions: [
+                    {
+                        question: "Un niño sostiene en sus manos una tela rectangular azul, blanca y roja con una estrella. ¿Qué símbolo patrio es?",
+                        speechQuestion: "Un niño sostiene en sus manos una tela rectangular azul, blanca y roja con una estrella. ¿Qué símbolo patrio está sosteniendo?",
+                        visualHtml: mysteryClueBadge("👦🏻⭐", "Tiene una estrella solitaria y se iza en un mástil"),
+                        hint: "No es una canción ni tiene animales a los lados: es el símbolo con una estrella blanca que flamea con el viento.",
+                        options: [
+                            { text: "LA BANDERA", emoji: "🇨🇱", speech: "La bandera de Chile", correct: true },
+                            { text: "EL ESCUDO", emoji: "🛡️", speech: "El escudo", correct: false },
+                            { text: "LA CANCIÓN NACIONAL", emoji: "🎵", speech: "La canción nacional", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué animales chilenos sostienen el ESCUDO DE CHILE a cada lado?",
+                        speechQuestion: "¿Qué animales chilenos sostienen el escudo de Chile a cada lado?",
+                        visualHtml: CUSTOM_SVGS.escudoMisterioSinAnimales,
+                        hint: "Uno es un ave gigante que vuela alto en la cordillera y el otro es un ciervo del sur. ¡No es la llama ni el carpintero!",
+                        options: [
+                            { text: "EL CÓNDOR Y EL HUEMUL", emoji: "🦅🦌", speech: "El cóndor y el huemul", correct: true },
+                            { text: "LA LLAMA Y EL CARPINTERO", emoji: "🦙🐦", speech: "La llama y el pájaro carpintero", correct: false },
+                            { text: "EL PERRO Y EL GATO", emoji: "🐶🐱", speech: "El perro y el gato", correct: false }
+                        ]
+                    },
+                    {
+                        question: "En la bandera y el escudo de Chile, ¿qué representa el color ROJO?",
+                        speechQuestion: "En la bandera y el escudo de Chile, ¿qué representa el color rojo?",
+                        visualHtml: `<div class="w-16 h-16 rounded-2xl bg-red-600 mx-auto border-4 border-red-900 shadow flex items-center justify-center text-2xl text-white font-black">ROJO</div>`,
+                        hint: "Piensa en la valentía de los héroes que defendieron nuestro país.",
+                        options: [
+                            { text: "LA SANGRE DE LOS HÉROES", emoji: "🦸‍♂️❤️", speech: "La sangre de los héroes", correct: true },
+                            { text: "LA CORDILLERA NEVADA", emoji: "🏔️❄️", speech: "La cordillera nevada", correct: false },
+                            { text: "EL CIELO Y EL MAR", emoji: "🌤️🌊", speech: "El cielo y el mar", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué representa el color BLANCO de nuestra bandera?",
+                        speechQuestion: "¿Qué representa el color blanco de nuestra bandera?",
+                        visualHtml: `<div class="w-20 h-16 rounded-2xl bg-white mx-auto border-4 border-slate-400 shadow flex items-center justify-center text-xs text-slate-800 font-black">BLANCO</div>`,
+                        hint: "Piensa en lo que cubre la parte más alta y fría de nuestras montañas.",
+                        options: [
+                            { text: "LA CORDILLERA Y SU NIEVE", emoji: "🏔️❄️", speech: "La cordillera y su nieve", correct: true },
+                            { text: "EL CIELO Y EL MAR", emoji: "🌊🌤️", speech: "El cielo y el mar", correct: false },
+                            { text: "LA SANGRE DE LOS HÉROES", emoji: "🦸‍♂️", speech: "La sangre de los héroes", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué representa el color AZUL de la bandera de Chile?",
+                        speechQuestion: "¿Qué representa el color azul de la bandera de Chile?",
+                        visualHtml: `<div class="w-16 h-16 rounded-2xl bg-blue-600 mx-auto border-4 border-blue-900 shadow flex items-center justify-center text-xs text-white font-black">AZUL</div>`,
+                        hint: "Mira hacia arriba en un día despejado y mira las olas de la playa.",
+                        options: [
+                            { text: "EL CIELO Y EL MAR", emoji: "🌤️🌊", speech: "El cielo y el mar", correct: true },
+                            { text: "LA CORDILLERA", emoji: "🏔️", speech: "La cordillera", correct: false },
+                            { text: "LOS BOSQUES DEL SUR", emoji: "🌲", speech: "Los bosques del sur", correct: false }
+                        ]
+                    },
+                    {
+                        question: "La Canción Nacional dice: «Majestuosa es la blanca montaña». ¿A qué paisaje de Chile se refiere?",
+                        speechQuestion: "La Canción Nacional dice: Majestuosa es la blanca montaña. ¿A qué paisaje de Chile se refiere?",
+                        visualHtml: mysteryClueBadge("🎵🇨🇱", "Verso: «Majestuosa es la blanca montaña»"),
+                        hint: "La blanca montaña son las cumbres altas llenas de nieve.",
+                        options: [
+                            { text: "LA CORDILLERA NEVADA", emoji: "🏔️❄️", speech: "La cordillera nevada", correct: true },
+                            { text: "EL MAR TRANQUILO", emoji: "🌊🚢", speech: "El mar tranquilo", correct: false },
+                            { text: "LA LUNA Y ESTRELLAS", emoji: "🌙✨", speech: "La luna y las estrellas", correct: false }
+                        ]
+                    }
+                ]
+            },
+
+            // =============================================================
+            // MUNDO 2: BAILE, FLOR, COMIDAS Y JUEGOS TÍPICOS
+            // =============================================================
+            {
+                id: "mundo-2",
+                number: 2,
+                title: "Baile, Flor, Comidas y Juegos",
+                subtitle: "Cueca, Copihue, Empanadas y Volantín",
+                icon: "🪁",
+                bgCard: "from-emerald-500 to-teal-600",
+                learnCards: [
+                    {
+                        badge: "NUESTRA IDENTIDAD NACIONAL",
+                        title: "4 EXPRESIONES DE CHILE",
+                        highlightWords: "SÍMBOLOS • FIESTAS • TRADICIONES • FLORA Y FAUNA",
+                        speech: "Nuestra identidad como chilenos tiene cuatro grandes expresiones: Uno, los Símbolos Patrios. Dos, las Fiestas. Tres, las Costumbres y Tradiciones. Y cuatro, nuestra Flora y Fauna.",
+                        visualHtml: `<div class="grid grid-cols-2 gap-2 max-w-md mx-auto my-1 text-xs font-black">
+                            <div class="bg-blue-50 p-2 rounded-xl border-2 border-blue-200">🇨🇱 1. SÍMBOLOS PATRIOS</div>
+                            <div class="bg-pink-50 p-2 rounded-xl border-2 border-pink-200">🎉 2. FIESTAS</div>
+                            <div class="bg-amber-50 p-2 rounded-xl border-2 border-amber-200">🪁 3. COSTUMBRES Y TRADICIONES</div>
+                            <div class="bg-emerald-50 p-2 rounded-xl border-2 border-emerald-200">🌺 4. FLORA Y FAUNA</div>
+                        </div>`,
+                        shortText: "1) Símbolos Patrios • 2) Fiestas • 3) Tradiciones • 4) Flora y Fauna."
+                    },
+                    {
+                        badge: "TRADICIÓN Y NATURALEZA",
+                        title: "LA CUECA Y EL COPIHUE",
+                        highlightWords: "LA CUECA • EL COPIHUE",
+                        speech: "El baile nacional de Chile es LA CUECA, donde la pareja baila con un pañuelo blanco. Y la flor nacional de Chile es EL COPIHUE, que crece en los bosques del sur y tiene forma de campana roja.",
+                        visualHtml: CUSTOM_SVGS.copihueFlor,
+                        shortText: "💃 Baile Nacional: LA CUECA • 🌺 Flor Nacional: EL COPIHUE."
+                    },
+                    {
+                        badge: "GASTRONOMÍA TRADICIONAL",
+                        title: "COMIDAS TÍPICAS DE CHILE",
+                        highlightWords: "EMPANADAS • HUMITAS • ASADO AL PALO",
+                        speech: "Las comidas típicas chilenas son las EMPANADAS de pino, las HUMITAS hechas con choclo envuelto en sus hojas y el rico ASADO AL PALO. ¡Recuerda que la hamburguesa con papas fritas no es comida típica chilena!",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">🥟 🌽 🍖</div>`,
+                        shortText: "✅ Empanadas, Humitas y Asado al palo. (❌ Hamburguesa NO)."
+                    },
+                    {
+                        badge: "JUEGOS TRADICIONALES",
+                        title: "JUEGOS TÍPICOS CHILENOS",
+                        highlightWords: "VOLANTÍN • SACO • TROMPO • TIRAR LA CUERDA",
+                        speech: "Los juegos típicos de Chile son encumbrar VOLANTÍN en el cielo, saltar en las CARRERAS EN SACO, hacer girar el TROMPO con una lienza y TIRAR LA CUERDA en equipo. ¡El fútbol es un deporte mundial, no un juego típico chileno!",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">🪁 🏃‍♂️ 🪀 🪢</div>`,
+                        shortText: "✅ Volantín, Carreras en saco, Trompo y Tirar la cuerda."
+                    }
+                ],
+                questions: [
+                    {
+                        question: "¿Cuál de estos bailes corresponde al BAILE NACIONAL de Chile?",
+                        speechQuestion: "¿Cuál de estos bailes corresponde al baile nacional de Chile?",
+                        visualHtml: mysteryClueBadge("🎶🇨🇱", "Se baila en pareja zapateando y moviendo un pañuelo"),
+                        hint: "Se baila en todas las fondas de Chile agitando un pañuelo blanco al ritmo de la guitarra y el pandero.",
+                        options: [
+                            { text: "LA CUECA CHILENA", emoji: "💃🧣", speech: "La cueca chilena", correct: true },
+                            { text: "EL TANGO", emoji: "🎩🕺", speech: "El tango", correct: false },
+                            { text: "EL FLAMENCO", emoji: "🪭💃", speech: "El flamenco", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Cuál de estas flores es la FLOR NACIONAL de Chile?",
+                        speechQuestion: "¿Cuál de estas flores es la flor nacional de Chile?",
+                        visualHtml: mysteryClueBadge("🌿❓", "Es roja y tiene forma de campana alargada"),
+                        hint: "Crece en los bosques del sur de Chile y sus pétalos rojos parecen una campanita.",
+                        options: [
+                            { text: "EL COPIHUE ROJO", emoji: "🌺🔔", speech: "El copihue rojo", correct: true },
+                            { text: "LA MARGARITA BLANCA", emoji: "🌼", speech: "La margarita blanca", correct: false },
+                            { text: "LA ROSA", emoji: "🌹", speech: "La rosa", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Cuáles de estos platos corresponden a COMIDAS TÍPICAS CHILENAS?",
+                        speechQuestion: "¿Cuáles de estos platos corresponden a comidas típicas chilenas?",
+                        visualHtml: mysteryClueBadge("🍽️❓", "Se preparan con masa horneada, choclo y carne al fuego"),
+                        hint: "Las comemos en las celebraciones chilenas; una lleva pino al horno, otra es de choclo y otra se asa al palo. ¡No es comida rápida!",
+                        options: [
+                            { text: "EMPANADAS, HUMITAS Y ASADO AL PALO", emoji: "🥟🌽🍖", speech: "Empanadas, humitas y asado al palo", correct: true },
+                            { text: "HAMBURGUESA CON PAPAS", emoji: "🍔🍟", speech: "Hamburguesa con papas", correct: false },
+                            { text: "PIZZA Y SUSHI", emoji: "🍕🍣", speech: "Pizza y sushi", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Cuáles corresponden a JUEGOS TÍPICOS tradicionales de Chile?",
+                        speechQuestion: "¿Cuáles corresponden a juegos típicos tradicionales de Chile?",
+                        visualHtml: mysteryClueBadge("🎪❓", "Juegos tradicionales con hilo en el cielo, madera y sacos"),
+                        hint: "Uno se eleva con el viento, en otro saltas metido en un saco, otro gira en el suelo y en otro tiras de una soga.",
+                        options: [
+                            { text: "VOLANTÍN, SACO, TROMPO Y CUERDA", emoji: "🪁🪀🪢", speech: "Volantín, carrera en saco, trompo y tirar la cuerda", correct: true },
+                            { text: "PARTIDO DE FÚTBOL", emoji: "⚽🥅", speech: "Partido de fútbol", correct: false },
+                            { text: "BÁSQUETBOL Y TENIS", emoji: "🏀🎾", speech: "Básquetbol y tenis", correct: false }
+                        ]
+                    }
+                ]
+            },
+
+            // =============================================================
+            // MUNDO 3: FIESTAS DE CHILE
+            // =============================================================
+            {
+                id: "mundo-3",
+                number: 3,
+                title: "Fiestas de Nuestro País",
+                subtitle: "18 de Septiembre, La Tirana, Vendimia, Cuasimodo y San Pedro",
+                icon: "🎭",
+                bgCard: "from-amber-500 to-orange-600",
+                learnCards: [
+                    {
+                        badge: "CELEBRACIÓN NACIONAL",
+                        title: "18 DE SEPTIEMBRE: FIESTAS PATRIAS",
+                        highlightWords: "18 DE SEPTIEMBRE • INDEPENDENCIA",
+                        speech: "Las Fiestas Patrias se celebran el dieciocho de septiembre. Es la celebración más importante de todos los chilenos, porque recordamos el inicio de la INDEPENDENCIA del país.",
+                        visualHtml: `<div class="bg-red-50 border-4 border-red-300 rounded-2xl p-2.5 max-w-xs mx-auto my-1">
+                            <div class="text-[11px] font-black text-red-700">SEPTIEMBRE</div>
+                            <div class="text-4xl font-black text-slate-900 my-0.5">📅 18 y 19</div>
+                            <div class="text-xs font-extrabold text-blue-800">¡INDEPENDENCIA DE CHILE! 🇨🇱</div>
+                        </div>`,
+                        shortText: "📅 18 de SEPTIEMBRE: Celebramos el inicio de la INDEPENDENCIA en Fiestas Patrias."
+                    },
+                    {
+                        badge: "ZONA NORTE DE CHILE",
+                        title: "FIESTA DE LA TIRANA (NORTE)",
+                        highlightWords: "LA TIRANA • NORTE • VIRGEN • MÁSCARAS",
+                        speech: "La Fiesta de la Tirana se celebra en el NORTE de Chile. Los bailarines usan grandes máscaras de diabladas y trajes brillantes para bailar a la Virgen del Carmen. ¡Atento: La Tirana es en el NORTE, no en el sur!",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-3 my-2">👹 🎭 💃 🎺</div>`,
+                        shortText: "👹 LA TIRANA: Es en el NORTE de Chile y celebra a la VIRGEN con máscaras."
+                    },
+                    {
+                        badge: "ZONA CENTRAL DE CHILE",
+                        title: "LA VENDIMIA Y CUASIMODO",
+                        highlightWords: "VENDIMIA = UVAS • CUASIMODO = CARRETA A ENFERMOS",
+                        speech: "En la Zona Central hay dos fiestas tradicionales: Uno, la Fiesta de la VENDIMIA, que celebra la cosecha y la pisada de la uva. Dos, la Fiesta de CUASIMODO, donde los sacerdotes van en carreta adornada a visitar a los enfermos.",
+                        visualHtml: `<div class="grid grid-cols-2 gap-3 max-w-md mx-auto my-1">
+                            <div class="bg-purple-100 p-2 rounded-2xl border-2 border-purple-300"><div class="text-3xl">🍇🦶</div><div class="text-xs font-black mt-1">VENDIMIA: Pisada de Uva</div></div>
+                            <div class="bg-amber-100 p-2 rounded-2xl border-2 border-amber-300"><div class="text-3xl">🐎🛒</div><div class="text-xs font-black mt-1">CUASIMODO: Visitar enfermos</div></div>
+                        </div>`,
+                        shortText: "🍇 VENDIMIA = Cosecha y pisada de uva • 🐎 CUASIMODO = Carreta a visitar enfermos."
+                    },
+                    {
+                        badge: "COSTAS DE CHILE",
+                        title: "SAN PEDRO Y SAN PABLO",
+                        highlightWords: "CALETAS Y PUERTOS • PESCADORES",
+                        speech: "La Fiesta de San Pedro y San Pablo es una celebración religiosa que se realiza en las CALETAS y PUERTOS de todo nuestro país, donde los pescadores pasean al santo en sus botes por el mar.",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">⛵ 🐟 ⚓ 🌊</div>`,
+                        shortText: "⛵ SAN PEDRO Y SAN PABLO: Se celebra en las CALETAS y PUERTOS."
+                    }
+                ],
+                questions: [
+                    {
+                        question: "Es la celebración más importante de los chilenos, en que se celebra el inicio de la INDEPENDENCIA del país el 18 de septiembre. ¿Cuál es?",
+                        speechQuestion: "Es la celebración más importante de los chilenos, en que se celebra el inicio de la independencia del país el dieciocho de septiembre. ¿Cuál es?",
+                        visualHtml: mysteryClueBadge("🗓️❓", "El 18 de septiembre todo Chile está de fiesta"),
+                        hint: "En esta fiesta de septiembre izamos la bandera, bailamos cueca y celebramos la Independencia.",
+                        options: [
+                            { text: "LAS FIESTAS PATRIAS (18 DE SEPTIEMBRE)", emoji: "🇨🇱🎉", speech: "Las Fiestas Patrias, el dieciocho de septiembre", correct: true },
+                            { text: "COMBATE NAVAL DE IQUIQUE", emoji: "🚢⚓", speech: "El Combate Naval de Iquique", correct: false },
+                            { text: "LA NAVIDAD", emoji: "🎄🎁", speech: "La Navidad", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué caracteriza a la famosa FIESTA DE LA TIRANA del Norte de Chile?",
+                        speechQuestion: "¿Qué caracteriza a la famosa Fiesta de la Tirana del Norte de Chile?",
+                        visualHtml: mysteryClueBadge("🏜️🎶", "Gran fiesta religiosa del Norte Grande de Chile"),
+                        hint: "En el desierto del Norte de Chile los grupos bailan a la Virgen usando trajes de colores y grandes caretas de diabladas.",
+                        options: [
+                            { text: "BAILES CON MÁSCARAS EN EL NORTE", emoji: "👹💃", speech: "Bailes con máscaras a la Virgen en el Norte", correct: true },
+                            { text: "PISAR UVAS EN UN BARRIL", emoji: "🍇🛢️", speech: "Pisar uvas en un barril", correct: false },
+                            { text: "JUGAR FÚTBOL EN LA CANCHA", emoji: "⚽", speech: "Jugar fútbol en la cancha", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué se celebra en la tradicional FIESTA DE LA VENDIMIA?",
+                        speechQuestion: "¿Qué se celebra en la tradicional Fiesta de la Vendimia?",
+                        visualHtml: mysteryClueBadge("🌿🧺", "Fiesta de los campos y viñedos de la Zona Central"),
+                        hint: "Es la fiesta donde recolectan racimos morados y verdes para pisarlos y hacer jugo y vino.",
+                        options: [
+                            { text: "LA COSECHA Y PISADA DE LA UVA", emoji: "🍇🦶", speech: "La cosecha y pisada de la uva", correct: true },
+                            { text: "EL PASEO EN BOTES DE PESCADORES", emoji: "⛵🐟", speech: "El paseo en botes de pescadores", correct: false },
+                            { text: "MOVER UNA CASA POR EL MAR", emoji: "🏠🌊", speech: "Mover una casa por el mar", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Es una celebración religiosa de la ZONA CENTRO donde los sacerdotes van en CARRETA a visitar a los ENFERMOS. ¿Cómo se llama?",
+                        speechQuestion: "Es una celebración religiosa de la Zona Centro donde los sacerdotes van en carreta a visitar a los enfermos. ¿Cómo se llama?",
+                        visualHtml: mysteryClueBadge("⛪🛤️", "Los huasos escoltan al sacerdote por la Zona Central"),
+                        hint: "Los jinetes y carretas adornadas salen corriendo a llevar la comunión a quienes están enfermos en casa.",
+                        options: [
+                            { text: "FIESTA DE CUASIMODO", emoji: "🐎🛒", speech: "La Fiesta de Cuasimodo", correct: true },
+                            { text: "FIESTA DE LA VENDIMIA", emoji: "🍇", speech: "La Fiesta de la Vendimia", correct: false },
+                            { text: "FIESTA DE LA TIRANA", emoji: "👹", speech: "La Fiesta de la Tirana", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Dónde se celebra la fiesta religiosa de SAN PEDRO Y SAN PABLO?",
+                        speechQuestion: "¿Dónde se celebra la fiesta religiosa de San Pedro y San Pablo?",
+                        visualHtml: mysteryClueBadge("🌊🙏", "Fiesta de los trabajadores del mar"),
+                        hint: "San Pedro cuida a los pescadores, por eso adornan sus lanchas y botes en la costa.",
+                        options: [
+                            { text: "EN LAS CALETAS Y PUERTOS DEL PAÍS", emoji: "⛵🐟", speech: "En las caletas y puertos del país", correct: true },
+                            { text: "EN LA CUMBRE DE LA MONTAÑA", emoji: "🏔️❄️", speech: "En la cumbre de la montaña", correct: false },
+                            { text: "EN LOS VIÑEDOS DE UVA", emoji: "🍇", speech: "En los viñedos de uva", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Afirmación: «La Fiesta de la Tirana es una fiesta del SUR de Chile». ¿Es Verdadero o Falso?",
+                        speechQuestion: "Escucha esta afirmación: La Fiesta de la Tirana es una fiesta del SUR de Chile. ¿Es verdadero o es falso?",
+                        visualHtml: mysteryClueBadge("🧭❓", "¿En qué zona de Chile queda el pueblo de La Tirana?"),
+                        hint: "¡Cuidado con la trampa! La Tirana se celebra en el desierto del NORTE de Chile, no en el sur.",
+                        options: [
+                            { text: "FALSO (ES DEL NORTE DE CHILE)", emoji: "👎❌", speech: "Falso, La Tirana es del Norte de Chile", correct: true },
+                            { text: "VERDADERO", emoji: "👍✅", speech: "Verdadero", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Afirmación: «La Fiesta de la Vendimia celebra a la Virgen». ¿Es Verdadero o Falso?",
+                        speechQuestion: "Escucha esta afirmación: La Fiesta de la Vendimia celebra a la Virgen. ¿Es verdadero o es falso?",
+                        visualHtml: mysteryClueBadge("🤔❓", "¿Qué festeja realmente la Vendimia?"),
+                        hint: "Recuerda que la Vendimia festeja la cosecha y pisada de la UVA, mientras que La Tirana celebra a la Virgen.",
+                        options: [
+                            { text: "FALSO (CELEBRA LA COSECHA DE UVAS)", emoji: "👎🍇", speech: "Falso, la Vendimia celebra la cosecha de uvas", correct: true },
+                            { text: "VERDADERO", emoji: "👍✅", speech: "Verdadero", correct: false }
+                        ]
+                    }
+                ]
+            },
+
+            // =============================================================
+            // MUNDO 4: CHILOÉ, RAPA NUI Y PUEBLO MAPUCHE
+            // =============================================================
+            {
+                id: "mundo-4",
+                number: 4,
+                title: "Chiloé, Rapa Nui y Mapuche",
+                subtitle: "La Minga, Tapati Rapa Nui y Nguillatún",
+                icon: "🗿",
+                bgCard: "from-purple-600 to-fuchsia-600",
+                learnCards: [
+                    {
+                        badge: "SUR DE CHILE • ARCHIPIÉLAGO DE CHILOÉ",
+                        title: "LA MINGA DE CHILOÉ (TIRADURA DE CASA)",
+                        highlightWords: "LA MINGA • SOLIDARIA • MOVER UNA CASA",
+                        speech: "La MINGA de Chiloé es una tradición solidaria donde todos los vecinos trabajan unidos. En la tiradura de casas, trasladan una CASA COMPLETA de madera tirándola con bueyes o haciéndola navegar por el mar.",
+                        visualHtml: CUSTOM_SVGS.mingaChiloe,
+                        shortText: "🏠🌊 LA MINGA DE CHILOÉ: Tradición solidaria de mover una CASA COMPLETA."
+                    },
+                    {
+                        badge: "ISLA DE PASCUA • RAPA NUI",
+                        title: "LA TAPATI RAPA NUI",
+                        highlightWords: "TAPATI • ISLA DE PASCUA • SIGNIFICA SEMANA",
+                        speech: "La TAPATI Rapa Nui es la fiesta cultural más importante de ISLA DE PASCUA. Su nombre Tapati significa SEMANA, y la comunidad compite en bailes, cantos y deportes ancestrales.",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">🗿 🌺 🏝️ 🛶</div>`,
+                        shortText: "🗿 TAPATI RAPA NUI: Fiesta de Isla de Pascua. Significa «SEMANA»."
+                    },
+                    {
+                        badge: "PUEBLOS ORIGINARIOS • PUEBLO MAPUCHE",
+                        title: "EL NGUILLATÚN MAPUCHE",
+                        highlightWords: "NGUILLATÚN • PUEBLO MAPUCHE • LLUVIAS Y COSECHA",
+                        speech: "El NGUILLATÚN es la ceremonia religiosa y tradicional más importante del pueblo MAPUCHE. En el Nguillatún la comunidad ruega por las lluvias, el ganado y para tener una buena cosecha.",
+                        visualHtml: `<div class="text-5xl md:text-6xl flex justify-center gap-4 my-2">🌿 🥁 🙏 🌧️</div>`,
+                        shortText: "🥁 NGUILLATÚN: Ceremonia del pueblo MAPUCHE para pedir lluvias y buena cosecha."
+                    }
+                ],
+                questions: [
+                    {
+                        question: "En Chiloé los vecinos realizan una actividad solidaria llamada «tiradura de casas» para mover una casa completa por tierra o mar. ¿Cómo se llama?",
+                        speechQuestion: "En Chiloé los vecinos realizan una actividad solidaria llamada tiradura de casas para mover una casa completa por tierra o mar. ¿Cómo se llama esta tradición?",
+                        visualHtml: mysteryClueBadge("🏝️🤝", "Trabajo solidario de todos los vecinos en Chiloé"),
+                        hint: "Empieza con M: los vecinos ayudan a trasladar la casa entera con bueyes y lanchas.",
+                        options: [
+                            { text: "LA MINGA DE CHILOÉ", emoji: "🏠🌊🐂", speech: "La Minga de Chiloé", correct: true },
+                            { text: "LA VENDIMIA", emoji: "🍇", speech: "La Vendimia", correct: false },
+                            { text: "CUASIMODO", emoji: "🐎🛒", speech: "Cuasimodo", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Es la celebración más importante de ISLA DE PASCUA y su nombre significa «SEMANA». ¿Cuál es?",
+                        speechQuestion: "Es la celebración más importante de Isla de Pascua y su nombre significa semana. ¿Cuál es?",
+                        visualHtml: mysteryClueBadge("🏝️🌊", "Fiesta de la isla donde están los grandes Moáis"),
+                        hint: "Se celebra en Rapa Nui (Isla de Pascua) y dura toda una semana de competencias y bailes.",
+                        options: [
+                            { text: "LA TAPATI RAPA NUI", emoji: "🗿🌺", speech: "La Tapati Rapa Nui", correct: true },
+                            { text: "LA FIESTA DE LA TIRANA", emoji: "👹", speech: "La Fiesta de la Tirana", correct: false },
+                            { text: "LA MINGA DE CHILOÉ", emoji: "🏠", speech: "La Minga de Chiloé", correct: false }
+                        ]
+                    },
+                    {
+                        question: "El NGUILLATÚN (ceremonia donde se ruega por las lluvias, el ganado y una buena cosecha) pertenece al pueblo...",
+                        speechQuestion: "El Nguillatún, ceremonia donde se ruega por las lluvias, el ganado y una buena cosecha, pertenece al pueblo...",
+                        visualHtml: mysteryClueBadge("🌧️🌾", "Ceremonia ancestral de agradecimiento a la naturaleza"),
+                        hint: "Es el pueblo originario del sur de Chile que toca el kultrún junto al árbol sagrado.",
+                        options: [
+                            { text: "PUEBLO MAPUCHE", emoji: "🌿🥁", speech: "El pueblo Mapuche", correct: true },
+                            { text: "LOS NAVEGANTES ESPAÑOLES", emoji: "👑⛵", speech: "Los navegantes españoles", correct: false },
+                            { text: "LOS PESCADORES DE CALETA", emoji: "🐟", speech: "Los pescadores de caleta", correct: false }
+                        ]
+                    }
+                ]
+            },
+
+            // =============================================================
+            // MUNDO 5: 21 DE MAYO VS ENCUENTRO DE DOS MUNDOS
+            // =============================================================
+            {
+                id: "mundo-5",
+                number: 5,
+                title: "Colón vs. Arturo Prat",
+                subtitle: "Encuentro de Dos Mundos y Combate Naval de Iquique",
+                icon: "⚓",
+                bgCard: "from-rose-600 to-red-700",
+                learnCards: [
+                    {
+                        badge: "HISTORIA • CRISTÓBAL COLÓN",
+                        title: "ENCUENTRO DE DOS MUNDOS",
+                        highlightWords: "CRISTÓBAL COLÓN • REINA DE ESPAÑA • PINTA, NIÑA Y SANTA MARÍA",
+                        speech: "En el ENCUENTRO DE DOS MUNDOS: El navegante CRISTÓBAL COLÓN pide ayuda a la Reina de España, cruza el océano en tres carabelas llamadas LA PINTA, LA NIÑA Y LA SANTA MARÍA, y llegan los españoles a América.",
+                        visualHtml: CUSTOM_SVGS.tresCarabelas,
+                        shortText: "👑 Colón pide ayuda a la Reina • ⛵ Viaja en La Pinta, La Niña y La Santa María • 🗺️ Llegan españoles a América."
+                    },
+                    {
+                        badge: "HISTORIA • ARTURO PRAT (21 DE MAYO)",
+                        title: "COMBATE NAVAL DE IQUIQUE",
+                        highlightWords: "21 DE MAYO • ARTURO PRAT • SE HUNDE LA ESMERALDA",
+                        speech: "En el COMBATE NAVAL DE IQUIQUE: Se conmemora el 21 DE MAYO, día de las Glorias Navales. El capitán chileno ARTURO PRAT realiza su acción heroica gritando ¡Al abordaje, muchachos!, y se hunde su barco LA ESMERALDA.",
+                        visualHtml: `<div class="bg-blue-950 text-white rounded-2xl p-2.5 max-w-md mx-auto my-1 border-4 border-amber-400">
+                            <div class="text-3xl">⚓ 🚢 💥 🇨🇱</div>
+                            <div class="text-[11px] font-black text-amber-300 mt-1">21 DE MAYO • GLORIAS NAVALES</div>
+                            <div class="text-xs font-extrabold">Arturo Prat • «¡Al abordaje, muchachos!» • Se hunde la Esmeralda</div>
+                        </div>`,
+                        shortText: "⚓ 21 de Mayo (Glorias Navales) • Arturo Prat grita «¡Al abordaje!» • 🚢 Se hunde la Esmeralda."
+                    }
+                ],
+                questions: [
+                    {
+                        question: "¿En qué conmemoración llegan los ESPAÑOLES A AMÉRICA guiados por CRISTÓBAL COLÓN?",
+                        speechQuestion: "¿En qué conmemoración llegan los españoles a América guiados por Cristóbal Colón?",
+                        visualHtml: mysteryClueBadge("🧭🗺️", "Viaje desde España cruzando el océano hasta América"),
+                        hint: "Unió a dos continentes que no se conocían: Europa y América.",
+                        options: [
+                            { text: "ENCUENTRO DE DOS MUNDOS", emoji: "🌍🤝🌎", speech: "Encuentro de dos mundos", correct: true },
+                            { text: "COMBATE NAVAL DE IQUIQUE", emoji: "🚢💥", speech: "Combate Naval de Iquique", correct: false },
+                            { text: "FIESTAS PATRIAS", emoji: "🪁🥟", speech: "Fiestas Patrias", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Cómo se llamaban los 3 BARCOS en los que viajó Cristóbal Colón en el Encuentro de Dos Mundos?",
+                        speechQuestion: "¿Cómo se llamaban los tres barcos en los que viajó Cristóbal Colón en el Encuentro de Dos Mundos?",
+                        visualHtml: mysteryClueBadge("🧭❓", "Tres carabelas que zarparon con Cristóbal Colón"),
+                        hint: "Son tres nombres de barcos muy famosos. ¡Recuerda que La Esmeralda era el barco de Arturo Prat, no de Colón!",
+                        options: [
+                            { text: "LA PINTA, LA NIÑA Y LA SANTA MARÍA", emoji: "⛵⛵⛵", speech: "La Pinta, la Niña y la Santa María", correct: true },
+                            { text: "LA ESMERALDA", emoji: "🚢🌊", speech: "La Esmeralda", correct: false },
+                            { text: "EL TRANSBORDADOR ESPACIAL", emoji: "🚀", speech: "El transbordador espacial", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Quién pidió ayuda a la REINA DE ESPAÑA para realizar su viaje hacia América?",
+                        speechQuestion: "¿Quién pidió ayuda a la Reina de España para realizar su viaje hacia América?",
+                        visualHtml: mysteryClueBadge("👑🇪🇸", "Un navegante presenta su plan ante los Reyes de España"),
+                        hint: "Fue el marino del Encuentro de Dos Mundos que viajó en las tres carabelas.",
+                        options: [
+                            { text: "CRISTÓBAL COLÓN", emoji: "🧭⛵", speech: "Cristóbal Colón", correct: true },
+                            { text: "ARTURO PRAT", emoji: "⚓🇨🇱", speech: "Arturo Prat", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Quién realizó una acción heroica en el COMBATE NAVAL DE IQUIQUE gritando «¡Al abordaje, muchachos!»?",
+                        speechQuestion: "¿Quién realizó una acción heroica en el Combate Naval de Iquique gritando: Al abordaje, muchachos?",
+                        visualHtml: mysteryClueBadge("🎖️🌊", "Héroe chileno de las Glorias Navales del 21 de Mayo"),
+                        hint: "Es el valiente capitán chileno que comandaba la Esmeralda en Iquique.",
+                        options: [
+                            { text: "EL CAPITÁN ARTURO PRAT", emoji: "⚓🦸‍♂️", speech: "El capitán Arturo Prat", correct: true },
+                            { text: "CRISTÓBAL COLÓN", emoji: "⛵👑", speech: "Cristóbal Colón", correct: false }
+                        ]
+                    },
+                    {
+                        question: "¿Qué barco chileno se hunde en el COMBATE NAVAL DE IQUIQUE el 21 DE MAYO (Glorias Navales)?",
+                        speechQuestion: "¿Qué barco chileno se hunde en el Combate Naval de Iquique el veintiuno de mayo, día de las Glorias Navales?",
+                        visualHtml: mysteryClueBadge("📅2️⃣1️⃣", "21 de Mayo • Combate en el mar de Iquique"),
+                        hint: "Tiene nombre de piedra preciosa verde y era el buque de madera de Arturo Prat.",
+                        options: [
+                            { text: "SE HUNDE LA ESMERALDA", emoji: "🚢🌊", speech: "Se hunde la Esmeralda", correct: true },
+                            { text: "LA PINTA, LA NIÑA Y LA SANTA MARÍA", emoji: "⛵⛵⛵", speech: "La Pinta, la Niña y la Santa María", correct: false }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // =================================================================
+        // 3. MINI-JUEGO ESPECIAL DE CLASIFICACIÓN (SIN REGALAR EL ÍCONO)
+        // =================================================================
+        const MINIGAME_ITEMS = [
+            {
+                badge: "DESAFÍO 1 DE 8 • ¿DE QUÉ HISTORIA ES?",
+                text: "«LA PINTA, LA NIÑA Y LA SANTA MARÍA»",
+                speech: "La Pinta, la Niña y la Santa María. ¿Pertenece al Encuentro de Dos Mundos de Cristóbal Colón, o al Combate Naval de Iquique de Arturo Prat?",
+                clueIcon: "🧭❓",
+                hint: "Son las tres carabelas en las que viajó Cristóbal Colón hacia América.",
+                options: [
+                    { label: "ENCUENTRO DE DOS MUNDOS (COLÓN)", emoji: "👑⛵", speech: "Encuentro de dos mundos, de Cristóbal Colón", isCorrect: true },
+                    { label: "COMBATE NAVAL DE IQUIQUE (PRAT)", emoji: "⚓🚢", speech: "Combate Naval de Iquique, de Arturo Prat", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 2 DE 8 • ¿DE QUÉ HISTORIA ES?",
+                text: "«SE HUNDE LA ESMERALDA EL 21 DE MAYO»",
+                speech: "Se hunde la Esmeralda el veintiuno de mayo. ¿Pertenece al Encuentro de Dos Mundos o al Combate Naval de Iquique?",
+                clueIcon: "🎖️❓",
+                hint: "La Esmeralda era el barco chileno comandado por el capitán Arturo Prat en Iquique.",
+                options: [
+                    { label: "COMBATE NAVAL DE IQUIQUE (PRAT)", emoji: "⚓🚢", speech: "Combate Naval de Iquique, de Arturo Prat", isCorrect: true },
+                    { label: "ENCUENTRO DE DOS MUNDOS (COLÓN)", emoji: "👑⛵", speech: "Encuentro de dos mundos, de Cristóbal Colón", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 3 DE 8 • ¿DE QUÉ HISTORIA ES?",
+                text: "«ARTURO PRAT GRITA: ¡AL ABORDAJE, MUCHACHOS!»",
+                speech: "Arturo Prat grita al abordaje muchachos. ¿De qué conmemoración es?",
+                clueIcon: "📣❓",
+                hint: "Lo gritó el héroe chileno en las Glorias Navales del 21 de mayo.",
+                options: [
+                    { label: "COMBATE NAVAL DE IQUIQUE (21 DE MAYO)", emoji: "⚓🇨🇱", speech: "Combate Naval de Iquique, el veintiuno de mayo", isCorrect: true },
+                    { label: "ENCUENTRO DE DOS MUNDOS (COLÓN)", emoji: "👑⛵", speech: "Encuentro de dos mundos", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 4 DE 8 • ¿DE QUÉ HISTORIA ES?",
+                text: "«CRISTÓBAL COLÓN PIDE AYUDA A LA REINA DE ESPAÑA Y LLEGAN A AMÉRICA»",
+                speech: "Cristóbal Colón pide ayuda a la Reina de España y llegan los españoles a América. ¿De qué conmemoración es?",
+                clueIcon: "🗺️❓",
+                hint: "Cuando los españoles liderados por Colón llegaron a América se encontraron dos mundos.",
+                options: [
+                    { label: "ENCUENTRO DE DOS MUNDOS (COLÓN)", emoji: "👑⛵", speech: "Encuentro de dos mundos, de Cristóbal Colón", isCorrect: true },
+                    { label: "COMBATE NAVAL DE IQUIQUE (PRAT)", emoji: "⚓🚢", speech: "Combate Naval de Iquique", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 5 DE 8 • ¡ATENTO A LA TRAMPA!",
+                text: "«SE CREA LA PRIMERA JUNTA DE GOBIERNO E INICIA LA INDEPENDENCIA»",
+                speech: "Atento a esta pregunta: Se crea la Primera Junta de Gobierno e inicia la Independencia. ¿Eso se celebra en Fiestas Patrias el dieciocho de septiembre, o en el Combate Naval de Iquique?",
+                clueIcon: "📅❓",
+                hint: "La Primera Junta de Gobierno y la Independencia se celebran el 18 de septiembre en Fiestas Patrias.",
+                options: [
+                    { label: "EN FIESTAS PATRIAS (18 DE SEPTIEMBRE)", emoji: "🇨🇱🪁", speech: "En Fiestas Patrias, el dieciocho de septiembre", isCorrect: true },
+                    { label: "EN EL COMBATE NAVAL DE IQUIQUE", emoji: "🚢💥", speech: "En el Combate Naval de Iquique", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 6 DE 8 • COLORES DE LA BANDERA",
+                text: "COLOR AZUL DE LA BANDERA DE CHILE",
+                speech: "Color AZUL de la bandera de Chile. ¿Qué representa el color azul?",
+                clueIcon: "🔵❓",
+                hint: "Piensa en el color del cielo despejado y del océano.",
+                options: [
+                    { label: "EL CIELO Y EL MAR", emoji: "🌤️🌊", speech: "El cielo y el mar", isCorrect: true },
+                    { label: "LA SANGRE DE LOS HÉROES", emoji: "❤️🦸‍♂️", speech: "La sangre de los héroes", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 7 DE 8 • COLORES DE LA BANDERA",
+                text: "COLOR BLANCO DE LA BANDERA DE CHILE",
+                speech: "Color BLANCO de la bandera de Chile. ¿Qué representa el color blanco?",
+                clueIcon: "⚪❓",
+                hint: "Piensa en la nieve blanca que está arriba de nuestras montañas.",
+                options: [
+                    { label: "LA CORDILLERA NEVADA", emoji: "🏔️❄️", speech: "La cordillera nevada", isCorrect: true },
+                    { label: "EL CIELO Y EL MAR", emoji: "🌤️🌊", speech: "El cielo y el mar", isCorrect: false }
+                ]
+            },
+            {
+                badge: "DESAFÍO 8 DE 8 • COLORES DE LA BANDERA",
+                text: "COLOR ROJO DE LA BANDERA DE CHILE",
+                speech: "Color ROJO de la bandera de Chile. ¿Qué representa el color rojo?",
+                clueIcon: "🔴❓",
+                hint: "Representa el valor y la sangre de los héroes chilenos.",
+                options: [
+                    { label: "LA SANGRE DE LOS HÉROES", emoji: "🦸‍♂️❤️", speech: "La sangre de los héroes", isCorrect: true },
+                    { label: "LA CORDILLERA NEVADA", emoji: "🏔️❄️", speech: "La cordillera nevada", isCorrect: false }
+                ]
+            }
+        ];
+
+        // =================================================================
+        // 4. COLECCIÓN DE 8 SQUISHIES CON RAREZAS Y SISTEMA DE COMPAÑERO
+        // =================================================================
+        const SHOP_ITEMS_DEFAULT = [
+            { id: "sq-frutilla", name: "Frutilla Kawaii", emoji: "🍓", rarity: "COMÚN", rarityClass: "rarity-comun", cost: 30, unlocked: true, phrase: "¡Soy Frutilla Kawaii! ¡Vamos por ese siete, Emiliano!" },
+            { id: "sq-pan", name: "Pan con Mantequilla", emoji: "🧈", rarity: "COMÚN", rarityClass: "rarity-comun", cost: 40, unlocked: false, phrase: "¡Calentito y crujiente! ¡Tú puedes con todas las misiones!" },
+            { id: "sq-capibara", name: "Capibara Naranja", emoji: "🦫", rarity: "ÉLITE", rarityClass: "rarity-elite", cost: 55, unlocked: false, phrase: "¡Modo Capibara tranquilo y concentrado! ¡Escuchemos bien cada opción!" },
+            { id: "sq-ajolote", name: "Ajolote Sonriente", emoji: "🦎", rarity: "ÉLITE", rarityClass: "rarity-elite", cost: 65, unlocked: false, phrase: "¡Glu, glu! ¡Soy tu Ajolote de la suerte para la prueba de Historia!" },
+            { id: "sq-mochi", name: "Perrito Mochi", emoji: "🐶", rarity: "LEGENDARIO", rarityClass: "rarity-legendario", cost: 80, unlocked: false, phrase: "¡Guau! ¡Eres el mejor explorador de Chile, Emiliano!" },
+            { id: "sq-pulpo", name: "Pulpo Galáctico", emoji: "🐙", rarity: "LEGENDARIO", rarityClass: "rarity-legendario", cost: 95, unlocked: false, phrase: "¡Con mis ocho tentáculos te doy súper poderes de memoria!" },
+            { id: "sq-dragon", name: "Dragón Esmeralda", emoji: "🐉", rarity: "MÍTICO", rarityClass: "rarity-mitico", cost: 120, unlocked: false, phrase: "¡Fuego esmeralda! ¡Ninguna pregunta nos puede ganar!" },
+            { id: "sq-leon", name: "León Dorado Dios", emoji: "🦁", rarity: "DIOS", rarityClass: "rarity-dios", cost: 150, unlocked: false, phrase: "¡Roooar! ¡Nivel Dios desbloqueado! ¡Eres un maestro de la Historia de Chile!" }
+        ];
+
+        // =================================================================
+        // 5. ESTADO DE LA APLICACIÓN, TELEMETRÍA Y PERSISTENCIA
+        // =================================================================
+        const state = {
+            coins: parseInt(localStorage.getItem("emiblox_v2_coins") || "60", 10),
+            autoVoice: localStorage.getItem("emiblox_v2_autovoice") !== "false",
+            // Mundos donde ya completó la Fase 1 ("Aprender") -> Desbloquea "Misiones"
+            learnedWorlds: JSON.parse(localStorage.getItem("emiblox_v2_learned_worlds") || "[]"),
+            // Mundos donde completó la Fase 2 ("Misiones")
+            completedWorlds: JSON.parse(localStorage.getItem("emiblox_v2_completed_worlds") || "[]"),
+            shopItems: JSON.parse(localStorage.getItem("emiblox_v2_shop") || JSON.stringify(SHOP_ITEMS_DEFAULT)),
+            companionId: localStorage.getItem("emiblox_v2_companion") || "sq-frutilla",
+            // Telemetría para que el papá observe cómo aprende Emiliano
+            telemetry: JSON.parse(localStorage.getItem("emiblox_v2_telemetry") || JSON.stringify({
+                totalQuestionsAnswered: 0,
+                firstTryCorrect: 0,
+                voluntaryHintsUsed: 0
+            })),
+            // Navegación y control de sesión
+            activeWorldIdx: 0,
+            activePhase: "learn", // 'learn' | 'quiz' | 'exam'
+            learnCardIdx: 0,
+            quizIdx: 0,
+            activeQuestionsList: [],
+            hintsLeftInSession: 2,
+            usedHintCurrentQ: false,
+            madeMistakeCurrentQ: false,
+            isListeningLocked: false,
+            minigameIdx: 0
+        };
+
+        function getActiveCompanion() {
+            return state.shopItems.find(item => item.id === state.companionId) || state.shopItems[0];
+        }
+
+        function saveState() {
+            localStorage.setItem("emiblox_v2_coins", state.coins.toString());
+            localStorage.setItem("emiblox_v2_autovoice", state.autoVoice.toString());
+            localStorage.setItem("emiblox_v2_learned_worlds", JSON.stringify(state.learnedWorlds));
+            localStorage.setItem("emiblox_v2_completed_worlds", JSON.stringify(state.completedWorlds));
+            localStorage.setItem("emiblox_v2_shop", JSON.stringify(state.shopItems));
+            localStorage.setItem("emiblox_v2_companion", state.companionId);
+            localStorage.setItem("emiblox_v2_telemetry", JSON.stringify(state.telemetry));
+            updateHUD();
+        }
+
+        function updateHUD() {
+            document.getElementById("coin-counter").textContent = state.coins;
+            const iconEl = document.getElementById("autovoice-icon");
+            const labelEl = document.getElementById("autovoice-label");
+            if (state.autoVoice) {
+                iconEl.textContent = "🔊";
+                if (labelEl) labelEl.textContent = "Voz: SÍ";
+            } else {
+                iconEl.textContent = "🔈";
+                if (labelEl) labelEl.textContent = "Voz: NO";
+            }
+
+            const comp = getActiveCompanion();
+            const hudEmoji = document.getElementById("hud-companion-emoji");
+            const hudName = document.getElementById("hud-companion-name");
+            const homeComp = document.getElementById("home-companion-box");
+            if (hudEmoji) hudEmoji.textContent = comp.emoji;
+            if (hudName) hudName.textContent = comp.name;
+            if (homeComp) homeComp.textContent = comp.emoji;
+
+            const badge = document.getElementById("total-progress-badge");
+            if (badge) {
+                badge.textContent = `${state.completedWorlds.length} / ${WORLDS_DB.length} Mundos Listos ⭐`;
+            }
+        }
+
+        function pokeCompanion() {
+            const comp = getActiveCompanion();
+            const pill = document.getElementById("hud-companion-pill");
+            const homeBox = document.getElementById("home-companion-box");
+            if (pill) {
+                pill.classList.remove("animate-squish");
+                void pill.offsetWidth;
+                pill.classList.add("animate-squish");
+            }
+            if (homeBox) {
+                homeBox.classList.remove("animate-squish");
+                void homeBox.offsetWidth;
+                homeBox.classList.add("animate-squish");
+            }
+            playSound("coin");
+            speak(comp.phrase, true);
+        }
+
+        // =================================================================
+        // 6. MOTOR DE VOZ (WEB SPEECH API) Y EFECTOS SONOROS
+        // =================================================================
+        function speak(text, force = false, rateOverride = 0.96) {
+            if (!("speechSynthesis" in window)) return;
+            if (!state.autoVoice && !force) return;
+
+            window.speechSynthesis.cancel();
+            setTimeout(() => {
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = "es-CL";
+                utter.rate = rateOverride;
+                utter.pitch = 1.05;
+                window.speechSynthesis.speak(utter);
+            }, 50);
+        }
+
+        function toggleAutoVoice() {
+            state.autoVoice = !state.autoVoice;
+            saveState();
+            playSound("click");
+            if (state.autoVoice) {
+                speak("Voz automática activada.", true);
+            } else {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function speakWelcome() {
+            const comp = getActiveCompanion();
+            playSound("coin");
+            speak(`¡Hola Emiliano! Soy tu compañero ${comp.name}. Primero entra al botón APRENDER en cada mundo para desbloquear las MISIONES. ¡Si respondes sin pedir pista ganas veinticinco monedas!`, true);
+        }
+
+        function playSound(type) {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+
+                if (type === "win" || type === "coin") {
+                    const freqs = type === "win" ? [523.25, 659.25, 783.99, 1046.5] : [659.25, 987.77];
+                    freqs.forEach((f, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = "triangle";
+                        osc.frequency.setValueAtTime(f, now + i * 0.07);
+                        gain.gain.setValueAtTime(0.12, now + i * 0.07);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.16);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.07);
+                        osc.stop(now + i * 0.07 + 0.17);
+                    });
+                } else if (type === "hint") {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(310, now);
+                    osc.frequency.linearRampToValueAtTime(230, now + 0.22);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(480, now);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.09);
+                }
+            } catch (e) {}
+        }
+
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // =================================================================
+        // 7. NAVEGACIÓN Y GRILLA UNIFICADA DE LAS 7 ACTIVIDADES
+        // (Mundos 1-5 + Clasificador Colón/Prat + Simulador 7.0 siempre visibles)
+        // =================================================================
+        function openScreen(screenId) {
+            playSound("click");
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            ["screen-home", "screen-world", "screen-minigame", "screen-shop", "screen-victory"].forEach(id => {
+                document.getElementById(id).classList.add("hidden");
+            });
+            document.getElementById(screenId).classList.remove("hidden");
+
+            if (screenId === "screen-home") renderHomeWorlds();
+            if (screenId === "screen-shop") renderShop();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function goHome() {
+            openScreen("screen-home");
+        }
+
+        function renderHomeWorlds() {
+            updateHUD();
+            const grid = document.getElementById("worlds-grid");
+
+            // Renderizamos los 5 Mundos con Candado Pedagógico en "MISIONES" hasta terminar "APRENDER"
+            const worldsHtml = WORLDS_DB.map((w, idx) => {
+                const isLearned = state.learnedWorlds.includes(w.id);
+                const isDone = state.completedWorlds.includes(w.id);
+
+                return `
+                    <div class="bg-white rounded-3xl p-3.5 border-4 ${isDone ? 'border-emerald-400 border-b-8 border-b-emerald-600' : isLearned ? 'border-blue-300 border-b-8 border-b-blue-500' : 'border-slate-200 border-b-8 border-b-slate-300'} shadow-md flex flex-col justify-between gap-2.5 transition">
+                        <div>
+                            <div class="flex items-center justify-between gap-1 mb-1.5">
+                                <span class="bg-slate-100 text-slate-700 font-black text-[11px] px-2.5 py-0.5 rounded-full">
+                                    MUNDO ${w.number}
+                                </span>
+                                ${isDone
+                                    ? `<span class="bg-emerald-100 text-emerald-800 font-black text-[11px] px-2 py-0.5 rounded-full">✅ DOMINADO</span>`
+                                    : isLearned
+                                        ? `<span class="bg-blue-100 text-blue-800 font-black text-[11px] px-2 py-0.5 rounded-full">🔓 MISIONES LISTAS</span>`
+                                        : `<span class="bg-amber-100 text-amber-900 font-black text-[11px] px-2 py-0.5 rounded-full">1° APRENDE 📖</span>`
+                                }
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-13 h-13 p-2.5 rounded-2xl bg-gradient-to-br ${w.bgCard} text-white flex items-center justify-center text-3xl shadow shrink-0">
+                                    ${w.icon}
+                                </div>
+                                <div>
+                                    <h3 class="font-black text-base text-slate-800 leading-tight">${w.title}</h3>
+                                    <p class="text-[11px] font-bold text-slate-500 mt-0.5 leading-snug">${w.subtitle}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-1.5 pt-1">
+                            <button onclick="enterWorld(${idx}, 'learn')" class="btn-3d ${isLearned ? 'btn-3d-white' : 'btn-3d-blue animate-pulse-gentle'} py-2 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1">
+                                <span>📖</span> <span>1. APRENDER</span>
+                            </button>
+                            ${isLearned
+                                ? `<button onclick="enterWorld(${idx}, 'quiz')" class="btn-3d btn-3d-green py-2 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1">
+                                    <span>🎯</span> <span>2. MISIONES</span>
+                                   </button>`
+                                : `<button onclick="remindLearnFirst(${idx})" class="btn-3d btn-3d-locked py-2 px-2 rounded-xl font-black text-[11px] flex items-center justify-center gap-1">
+                                    <span>🔒</span> <span>2. MISIONES</span>
+                                   </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            // Tarjeta 6: Juego Clasificador Rápido (Colón vs Prat + Bandera)
+            const cardClassifier = `
+                <div class="bg-gradient-to-br from-sky-50 to-blue-100 rounded-3xl p-3.5 border-4 border-sky-300 border-b-8 border-b-sky-500 shadow-md flex flex-col justify-between gap-2.5">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5">
+                            <span class="bg-sky-200 text-sky-950 font-black text-[11px] px-2.5 py-0.5 rounded-full">
+                                ⚔️ REFUERZO ESPECIAL
+                            </span>
+                            <span class="bg-amber-200 text-amber-950 font-black text-[11px] px-2 py-0.5 rounded-full">+80 🪙</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2.5 rounded-2xl bg-sky-600 text-white flex items-center justify-center text-3xl shadow shrink-0">
+                                ⛵⚓
+                            </div>
+                            <div>
+                                <h3 class="font-black text-base text-slate-900 leading-tight">Juego: ¿Colón o Prat?</h3>
+                                <p class="text-[11px] font-bold text-slate-600 mt-0.5 leading-snug">Las 3 carabelas, La Esmeralda y colores de la bandera.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="startMiniGame()" class="btn-3d btn-3d-blue w-full py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-1.5">
+                        <span>🎮 JUGAR CLASIFICADOR RÁPIDO</span>
+                    </button>
+                </div>
+            `;
+
+            // Tarjeta 7 y 8 (ocupa 2 columnas en LG): Simulador de Prueba Final 7.0
+            const cardSimulator = `
+                <div class="sm:col-span-2 bg-gradient-to-r from-amber-100 via-yellow-100 to-orange-100 rounded-3xl p-3.5 border-4 border-amber-400 border-b-8 border-b-amber-600 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-center sm:text-left flex-col sm:flex-row">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-400 text-slate-900 flex items-center justify-center text-4xl shadow shrink-0">
+                            🏆
+                        </div>
+                        <div>
+                            <span class="bg-amber-300 text-amber-950 font-black text-[11px] px-2.5 py-0.5 rounded-full">
+                                🌟 SIMULADOR DE PRUEBA COMPLETA • PREMIO +100 🪙
+                            </span>
+                            <h3 class="font-black text-lg md:text-xl text-slate-900 leading-tight mt-0.5">
+                                La Gran Misión del 7.0
+                            </h3>
+                            <p class="text-xs font-bold text-slate-700">
+                                12 preguntas sorpresa de todos los mundos junto a tu compañero Squishy.
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="startFinalExam()" class="btn-3d btn-3d-amber px-5 py-3.5 rounded-2xl font-black text-xs md:text-sm shrink-0 w-full sm:w-auto">
+                        🚀 COMENZAR PRUEBA 7.0
+                    </button>
+                </div>
+            `;
+
+            grid.innerHTML = worldsHtml + cardClassifier + cardSimulator;
+        }
+
+        function remindLearnFirst(worldIdx) {
+            playSound("hint");
+            const w = WORLDS_DB[worldIdx];
+            const comp = getActiveCompanion();
+            speak(`¡Alto ahí, Emiliano! ${comp.name} te recuerda que primero debes mirar y escuchar las tarjetas de APRENDER del Mundo ${w.number} para abrir el candado de las MISIONES.`, true);
+        }
+
+        // =================================================================
+        // 8. MODO MUNDO: CANDADO "1° APRENDER -> 2° MISIONES"
+        // =================================================================
+        function enterWorld(worldIdx, startPhase = "learn") {
+            state.activeWorldIdx = worldIdx;
+            state.learnCardIdx = 0;
+            state.quizIdx = 0;
+            state.hintsLeftInSession = 2; // Máximo 2 lupas voluntarias por mundo
+
+            const world = WORLDS_DB[worldIdx];
+            state.activeQuestionsList = world.questions.map(q => ({
+                ...q,
+                shuffledOptions: shuffle(q.options)
+            }));
+
+            openScreen("screen-world");
+            document.getElementById("tab-learn").classList.remove("hidden");
+            switchWorldPhase(startPhase);
+        }
+
+        function trySwitchToQuiz() {
+            const world = WORLDS_DB[state.activeWorldIdx];
+            if (!state.learnedWorlds.includes(world.id)) {
+                remindLearnFirst(state.activeWorldIdx);
+                return;
+            }
+            switchWorldPhase("quiz");
+        }
+
+        function switchWorldPhase(phase) {
+            state.activePhase = phase;
+            const tabLearn = document.getElementById("tab-learn");
+            const tabQuiz = document.getElementById("tab-quiz");
+            const world = WORLDS_DB[state.activeWorldIdx];
+            const isLearned = world && state.learnedWorlds.includes(world.id);
+
+            if (phase === "learn") {
+                tabLearn.className = "px-3 py-1 rounded-xl font-black text-xs bg-blue-600 text-white shadow";
+                tabQuiz.className = "px-3 py-1 rounded-xl font-black text-xs text-slate-600 hover:bg-slate-200";
+                tabQuiz.textContent = isLearned ? "🎯 2. MISIONES" : "🔒 2. MISIONES";
+                renderLearnCard();
+            } else if (phase === "quiz") {
+                tabQuiz.className = "px-3 py-1 rounded-xl font-black text-xs bg-emerald-600 text-white shadow";
+                tabQuiz.textContent = "🎯 2. MISIONES";
+                tabLearn.className = "px-3 py-1 rounded-xl font-black text-xs text-slate-600 hover:bg-slate-200";
+                renderQuestionCard();
+            } else if (phase === "exam") {
+                tabLearn.classList.add("hidden");
+                tabQuiz.className = "px-4 py-1 rounded-xl font-black text-xs bg-amber-500 text-slate-900 shadow";
+                tabQuiz.textContent = "🏆 SIMULADOR 7.0";
+                renderQuestionCard();
+            }
+        }
+
+        function renderSegmentedProgress(currentIdx, totalCount, colorClass = "bg-blue-500") {
+            const bar = document.getElementById("segmented-progress");
+            bar.style.gridTemplateColumns = `repeat(${totalCount}, minmax(0, 1fr))`;
+            let html = "";
+            for (let i = 0; i < totalCount; i++) {
+                const active = i <= currentIdx ? colorClass : "bg-slate-200";
+                html += `<div class="h-2.5 rounded-full transition-all duration-300 ${active}"></div>`;
+            }
+            bar.innerHTML = html;
+        }
+
+        function renderLearnCard() {
+            const world = WORLDS_DB[state.activeWorldIdx];
+            const card = world.learnCards[state.learnCardIdx];
+            const total = world.learnCards.length;
+            const comp = getActiveCompanion();
+
+            document.getElementById("world-header-title").innerHTML = `<span>${world.icon}</span> <span>MUNDO ${world.number}: ${world.title.toUpperCase()}</span>`;
+            renderSegmentedProgress(state.learnCardIdx, total, "bg-blue-500");
+
+            const stage = document.getElementById("world-card-stage");
+            const safeSpeech = card.speech.replace(/'/g, "\\'");
+
+            stage.innerHTML = `
+                <div class="text-center space-y-3 my-auto animate-pop">
+                    <div class="flex items-center justify-center gap-2 flex-wrap">
+                        <span class="bg-blue-100 text-blue-900 font-black text-xs px-3 py-1 rounded-full border border-blue-300">
+                            📖 APRENDER ${state.learnCardIdx + 1} DE ${total} • ${card.badge}
+                        </span>
+                        <span class="bg-purple-100 text-purple-900 font-black text-xs px-3 py-1 rounded-full border border-purple-300">
+                            ${comp.emoji} Con ${comp.name}
+                        </span>
+                    </div>
+
+                    <div>
+                        <button onclick="speak('${safeSpeech}', true)" class="btn-3d btn-3d-amber px-5 py-2.5 rounded-2xl font-black text-sm md:text-base inline-flex items-center gap-2 animate-pulse-gentle shadow">
+                            <span class="text-xl">🔊</span>
+                            <span>ESCUCHAR EXPLICACIÓN</span>
+                        </button>
+                    </div>
+
+                    <div class="py-1">
+                        ${card.visualHtml}
+                    </div>
+
+                    <h2 class="text-xl md:text-3xl font-black text-slate-900 tracking-tight">
+                        ${card.title}
+                    </h2>
+
+                    <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl px-4 py-2 max-w-xl mx-auto">
+                        <span class="text-[11px] font-extrabold text-amber-800 block uppercase">🔤 Palabras Clave:</span>
+                        <span class="text-sm md:text-lg font-black text-slate-900 tracking-wide">${card.highlightWords}</span>
+                    </div>
+
+                    <p class="text-xs md:text-base font-bold text-slate-600 max-w-xl mx-auto">
+                        ${card.shortText}
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-between gap-3 pt-4 border-t-2 border-slate-100 mt-3">
+                    <button onclick="prevLearnCard()" ${state.learnCardIdx === 0 ? "disabled" : ""} class="btn-3d btn-3d-white px-4 py-3 rounded-2xl font-black text-xs md:text-sm disabled:opacity-40">
+                        ⬅️ ANTERIOR
+                    </button>
+
+                    <button onclick="nextLearnCard()" class="btn-3d btn-3d-green flex-1 max-w-xs py-3 px-4 rounded-2xl font-black text-xs md:text-base flex items-center justify-center gap-2">
+                        <span>${state.learnCardIdx + 1 < total ? "SIGUIENTE TARJETA (+5 🪙) ➔" : "🔓 ¡DESBLOQUEAR MISIONES! 🎯"}</span>
+                    </button>
+                </div>
+            `;
+
+            speak(card.speech, false);
+        }
+
+        function prevLearnCard() {
+            if (state.learnCardIdx > 0) {
+                playSound("click");
+                state.learnCardIdx--;
+                renderLearnCard();
+            }
+        }
+
+        function nextLearnCard() {
+            const world = WORLDS_DB[state.activeWorldIdx];
+            playSound("coin");
+            state.coins += 5;
+
+            if (state.learnCardIdx + 1 < world.learnCards.length) {
+                saveState();
+                state.learnCardIdx++;
+                renderLearnCard();
+            } else {
+                // ¡Desbloquea el candado de Misiones para este mundo!
+                if (!state.learnedWorlds.includes(world.id)) {
+                    state.learnedWorlds.push(world.id);
+                }
+                saveState();
+                launchConfetti(30);
+                switchWorldPhase("quiz");
+            }
+        }
+
+        // =================================================================
+        // 9. FASE 2: MISIONES CON CONTROL DE PISTAS, BLOQUEO DE ESCUCHA DE
+        // 3 SEGUNDOS EN ERROR Y AUDIO ULTRA-CORTO DE CONCEPTO AL ACERTAR
+        // =================================================================
+        function renderQuestionCard() {
+            const qList = state.activeQuestionsList;
+            const q = qList[state.quizIdx];
+            const total = qList.length;
+            const comp = getActiveCompanion();
+
+            state.usedHintCurrentQ = false;
+            state.madeMistakeCurrentQ = false;
+            state.isListeningLocked = false;
+
+            if (state.activePhase === "exam") {
+                document.getElementById("world-header-title").innerHTML = `<span>🏆</span> <span>GRAN MISIÓN DEL 7.0 (${state.quizIdx + 1} DE ${total})</span>`;
+                renderSegmentedProgress(state.quizIdx, total, "bg-amber-500");
+            } else {
+                const world = WORLDS_DB[state.activeWorldIdx];
+                document.getElementById("world-header-title").innerHTML = `<span>${world.icon}</span> <span>MISIÓN ${state.quizIdx + 1} DE ${total}</span>`;
+                renderSegmentedProgress(state.quizIdx, total, "bg-emerald-500");
+            }
+
+            const stage = document.getElementById("world-card-stage");
+            const safeQSpeech = (q.speechQuestion || q.question).replace(/'/g, "\\'");
+
+            stage.innerHTML = `
+                <!-- Overlay de Bloqueo de 3 Segundos cuando se equivoca (Para que escuche la pista sí o sí) -->
+                <div id="listening-lock-overlay" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center text-white space-y-4 animate-pop">
+                    <div class="text-6xl animate-bounce">${comp.emoji}</div>
+                    <span class="bg-amber-400 text-slate-950 font-black text-xs px-3 py-1 rounded-full uppercase">
+                        🎧 ESCUCHA A TU COMPAÑERO ${comp.name.toUpperCase()}
+                    </span>
+                    <p id="lock-hint-text" class="text-lg md:text-2xl font-black max-w-lg text-amber-200 leading-snug">
+                        ${q.hint}
+                    </p>
+                    <div class="w-64 h-4 bg-slate-700 rounded-full overflow-hidden border-2 border-white/30">
+                        <div id="lock-progress-bar" class="h-full bg-emerald-400 transition-all duration-100" style="width: 0%"></div>
+                    </div>
+                    <p class="text-xs font-bold text-slate-300">
+                        Espera a que termine la pista para volver a intentar...
+                    </p>
+                </div>
+
+                <div class="space-y-3 my-auto animate-pop">
+                    <!-- Cabecera de la Pregunta con Botón Gigante de Audio + Bono Sin Pista -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-slate-50 p-3 rounded-3xl border-2 border-slate-200">
+                        <div class="flex items-center gap-3 text-center sm:text-left flex-col sm:flex-row">
+                            <button onclick="speak('${safeQSpeech}', true)" class="btn-3d btn-3d-amber px-4 py-2.5 rounded-2xl font-black text-xs md:text-sm flex items-center gap-1.5 shrink-0 animate-pulse-gentle">
+                                <span class="text-xl">🔊</span>
+                                <span>ESCUCHAR PREGUNTA</span>
+                            </button>
+                            <h2 class="text-base md:text-xl font-black text-slate-900 leading-snug">
+                                ${q.question}
+                            </h2>
+                        </div>
+                        <div id="bonus-badge-indicator" class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-black text-[11px] px-3 py-1 rounded-full shrink-0">
+                            ⚡ Bono Sin Pista: +25 🪙
+                        </div>
+                    </div>
+
+                    <!-- Caja de Misterio (NUNCA repite los íconos de la respuesta correcta) -->
+                    <div class="text-center">
+                        ${q.visualHtml || ""}
+                    </div>
+
+                    <!-- Pista del Compañero Squishy (Si ya la pidió o se equivocó) -->
+                    <div id="detective-hint-box" class="hidden bg-amber-100 border-2 border-amber-400 text-amber-950 rounded-2xl p-2.5 font-extrabold text-xs md:text-sm flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">${comp.emoji}</span>
+                            <span><strong>Pista de ${comp.name}:</strong> ${q.hint}</span>
+                        </div>
+                        <button onclick="speak('${q.hint.replace(/'/g, "\\'")}', true)" class="btn-3d btn-3d-white px-2.5 py-1 rounded-xl font-black text-xs shrink-0">
+                            🔊 OÍR
+                        </button>
+                    </div>
+
+                    <!-- Opciones de Respuesta -->
+                    <div id="options-container-grid" class="grid grid-cols-1 ${q.shuffledOptions.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3">
+                        ${renderOptionsGridHtml(q.shuffledOptions)}
+                    </div>
+                </div>
+
+                <!-- Barra Inferior: Lupas Limitadas (2 por mundo y cuestan 10 monedas) + Siguiente Misión -->
+                <div class="flex items-center justify-between pt-3 mt-3 border-t-2 border-slate-100 gap-2">
+                    <button id="btn-voluntary-hint" onclick="useVoluntaryHint()" class="btn-3d btn-3d-white px-3.5 py-2 rounded-2xl font-black text-xs flex items-center gap-1.5">
+                        <span>🔍</span>
+                        <span id="hint-btn-label">PEDIR PISTA (${state.hintsLeftInSession} disp. • -10 🪙)</span>
+                    </button>
+
+                    <button id="btn-next-question" onclick="advanceQuestion()" class="hidden btn-3d btn-3d-green px-5 py-3 rounded-2xl font-black text-sm md:text-base flex items-center gap-2">
+                        <span id="btn-next-label">⏳ ESCUCHANDO RESPUESTA...</span>
+                    </button>
+                </div>
+            `;
+
+            speak(q.speechQuestion || q.question, false);
+        }
+
+        function renderOptionsGridHtml(optionsArr) {
+            return optionsArr.map((opt, oIdx) => {
+                const safeOptSpeech = (opt.speech || opt.text).replace(/'/g, "\\'");
+                return `
+                    <div id="opt-card-${oIdx}" class="option-card rounded-3xl p-3 flex flex-col justify-between gap-2 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <button type="button" onclick="event.stopPropagation(); speak('${safeOptSpeech}', true)" class="btn-3d btn-3d-blue px-3 py-1 rounded-xl font-black text-xs flex items-center gap-1 shadow">
+                                <span>🔊</span>
+                                <span>OÍR OPCIÓN</span>
+                            </button>
+                            <span class="text-[11px] font-black text-slate-400">OPCIÓN ${oIdx + 1}</span>
+                        </div>
+
+                        <button type="button" onclick="selectAnswer(${oIdx})" class="w-full text-center py-1.5 space-y-1.5 focus:outline-none">
+                            <div class="text-4xl md:text-5xl">${opt.emoji}</div>
+                            <div class="font-black text-sm md:text-base text-slate-900 tracking-wide leading-tight uppercase px-1">
+                                ${opt.text}
+                            </div>
+                            <div class="inline-block bg-emerald-50 text-emerald-800 border border-emerald-300 font-black text-[11px] px-2.5 py-0.5 rounded-full">
+                                👆 TOCAR PARA ELEGIR
+                            </div>
+                        </button>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // Control de Pistas Voluntarias (Máximo 2 por mundo y cuestan 10 monedas)
+        function useVoluntaryHint() {
+            const q = state.activeQuestionsList[state.quizIdx];
+            if (state.usedHintCurrentQ) {
+                speak(q.hint, true);
+                return;
+            }
+            if (state.hintsLeftInSession <= 0) {
+                playSound("hint");
+                speak("Ya usaste tus dos lupas de pista en este mundo, Emiliano. ¡Escucha las opciones con el botón azul, tú te la sabes!", true);
+                return;
+            }
+            if (state.coins < 10) {
+                playSound("hint");
+                speak("Necesitas diez monedas para comprar una pista. ¡Intenta responder escuchando cada botón!", true);
+                return;
+            }
+
+            state.coins -= 10;
+            state.hintsLeftInSession--;
+            state.usedHintCurrentQ = true;
+            state.telemetry.voluntaryHintsUsed++;
+            saveState();
+
+            document.getElementById("detective-hint-box").classList.remove("hidden");
+            const bonusEl = document.getElementById("bonus-badge-indicator");
+            if (bonusEl) {
+                bonusEl.textContent = "🎯 Premio Con Pista: +10 🪙";
+                bonusEl.className = "bg-amber-100 text-amber-900 border border-amber-300 font-black text-[11px] px-3 py-1 rounded-full shrink-0";
+            }
+            const btnLabel = document.getElementById("hint-btn-label");
+            if (btnLabel) {
+                btnLabel.textContent = `🔊 VOLVER A OÍR PISTA (${state.hintsLeftInSession} disp.)`;
+            }
+
+            playSound("click");
+            speak("Pista: " + q.hint, true);
+        }
+
+        function selectAnswer(optionIdx) {
+            if (state.isListeningLocked) return;
+
+            const q = state.activeQuestionsList[state.quizIdx];
+            const chosen = q.shuffledOptions[optionIdx];
+            const cardEl = document.getElementById(`opt-card-${optionIdx}`);
+
+            if (!cardEl || cardEl.classList.contains("disabled-card")) return;
+
+            if (chosen.correct) {
+                // ¡ACIERTO!
+                cardEl.classList.add("correct-card", "disabled-card");
+                q.shuffledOptions.forEach((_, idx) => {
+                    const el = document.getElementById(`opt-card-${idx}`);
+                    if (el) el.classList.add("disabled-card");
+                });
+
+                // Registrar telemetría de aprendizaje para el papá
+                state.telemetry.totalQuestionsAnswered++;
+                const isCleanFirstTry = !state.madeMistakeCurrentQ && !state.usedHintCurrentQ;
+                if (!state.madeMistakeCurrentQ) {
+                    state.telemetry.firstTryCorrect++;
+                }
+
+                const rewardCoins = isCleanFirstTry ? 25 : 10;
+                state.coins += rewardCoins;
+                saveState();
+
+                playSound("win");
+                launchConfetti(35);
+
+                // MEJORA #2: Audio ultra-corto diciendo PRIMERO el concepto correcto y luego 2 palabras de ánimo
+                const shortCelebrations = ["¡Súper bien!", "¡Excelente!", "¡Genial!", "¡Correcto!"];
+                const praiseWord = shortCelebrations[Math.floor(Math.random() * shortCelebrations.length)];
+                speak(`¡${chosen.speech}! ${praiseWord}`, true, 1.0);
+
+                // Bloqueo breve de 1.2s en el botón Siguiente para que escuche el concepto antes de saltar
+                const nextBtn = document.getElementById("btn-next-question");
+                const nextLabel = document.getElementById("btn-next-label");
+                nextBtn.classList.remove("hidden");
+                nextBtn.disabled = true;
+                nextBtn.classList.add("opacity-60");
+                nextLabel.textContent = `🔊 ¡${chosen.text}! (+${rewardCoins} 🪙)`;
+
+                setTimeout(() => {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove("opacity-60");
+                    nextBtn.classList.add("animate-bounce");
+                    nextLabel.textContent = `SIGUIENTE MISIÓN (+${rewardCoins} 🪙) ➔`;
+                }, 1200);
+
+            } else {
+                // MEJORA #6: ERROR -> Bloqueo obligatorio de escucha de 3 segundos + Barajado de opciones
+                state.madeMistakeCurrentQ = true;
+                cardEl.classList.add("wrong-card", "animate-shake");
+                playSound("hint");
+
+                const bonusEl = document.getElementById("bonus-badge-indicator");
+                if (bonusEl) {
+                    bonusEl.textContent = "🎯 Premio: +10 🪙";
+                    bonusEl.className = "bg-amber-100 text-amber-900 border border-amber-300 font-black text-[11px] px-3 py-1 rounded-full shrink-0";
+                }
+
+                triggerMandatoryListeningLock(q.hint, () => {
+                    // Al terminar los 3 segundos de escuchar la pista, barajamos las opciones para que piense
+                    q.shuffledOptions = shuffle(q.shuffledOptions);
+                    const gridContainer = document.getElementById("options-container-grid");
+                    if (gridContainer) {
+                        gridContainer.innerHTML = renderOptionsGridHtml(q.shuffledOptions);
+                    }
+                    const hintBox = document.getElementById("detective-hint-box");
+                    if (hintBox) hintBox.classList.remove("hidden");
+                });
+            }
+        }
+
+        function triggerMandatoryListeningLock(hintText, onComplete) {
+            state.isListeningLocked = true;
+            const overlay = document.getElementById("listening-lock-overlay");
+            const bar = document.getElementById("lock-progress-bar");
+            if (!overlay || !bar) {
+                state.isListeningLocked = false;
+                if (onComplete) onComplete();
+                return;
+            }
+
+            overlay.classList.remove("hidden");
+            bar.style.width = "0%";
+            speak("Escucha esta pista: " + hintText, true);
+
+            let elapsed = 0;
+            const totalMs = 3000;
+            const interval = setInterval(() => {
+                elapsed += 100;
+                const pct = Math.min(100, Math.round((elapsed / totalMs) * 100));
+                bar.style.width = pct + "%";
+                if (elapsed >= totalMs) {
+                    clearInterval(interval);
+                    overlay.classList.add("hidden");
+                    state.isListeningLocked = false;
+                    if (onComplete) onComplete();
+                }
+            }, 100);
+        }
+
+        function advanceQuestion() {
+            playSound("click");
+            const total = state.activeQuestionsList.length;
+
+            if (state.quizIdx + 1 < total) {
+                state.quizIdx++;
+                renderQuestionCard();
+            } else {
+                finishCurrentChallenge();
+            }
+        }
+
+        function finishCurrentChallenge() {
+            playSound("win");
+            launchConfetti(80);
+            const comp = getActiveCompanion();
+
+            if (state.activePhase === "exam") {
+                state.coins += 100;
+                saveState();
+                document.getElementById("victory-emoji").textContent = "🏆🇨🇱";
+                document.getElementById("victory-badge").textContent = "¡NOTA SIMULADA: 7.0 PERFECTO!";
+                document.getElementById("victory-title").textContent = "¡Felicidades, Emiliano! ¡Estás listísimo!";
+                document.getElementById("victory-desc").textContent = `Completaste el Simulador junto a ${comp.name} y ganaste +100 Monedas Blox 🪙.`;
+                openScreen("screen-victory");
+                speak(`¡Siete perfecto, Emiliano! Ganaste cien monedas para tu Reino Squishy.`, true);
+            } else {
+                const world = WORLDS_DB[state.activeWorldIdx];
+                if (!state.completedWorlds.includes(world.id)) {
+                    state.completedWorlds.push(world.id);
+                }
+                state.coins += 35;
+                saveState();
+
+                document.getElementById("victory-emoji").textContent = world.icon;
+                document.getElementById("victory-badge").textContent = `¡MUNDO ${world.number} DOMINADO!`;
+                document.getElementById("victory-title").textContent = `¡Superaste ${world.title}!`;
+                document.getElementById("victory-desc").textContent = "Ganaste un cofre de +35 Monedas Blox 🪙 para la Máquina Squishy.";
+                openScreen("screen-victory");
+                speak(`¡Misión cumplida, Emiliano! Dominaste ${world.title} y ganaste treinta y cinco monedas.`, true);
+            }
+        }
+
+        // =================================================================
+        // 10. SIMULADOR DE PRUEBA FINAL 7.0
+        // =================================================================
+        function startFinalExam() {
+            const allQuestions = [];
+            WORLDS_DB.forEach(w => {
+                w.questions.forEach(q => {
+                    allQuestions.push({
+                        ...q,
+                        shuffledOptions: shuffle(q.options)
+                    });
+                });
+            });
+
+            state.activeQuestionsList = shuffle(allQuestions).slice(0, 12);
+            state.quizIdx = 0;
+            state.hintsLeftInSession = 2;
+
+            openScreen("screen-world");
+            switchWorldPhase("exam");
+        }
+
+        // =================================================================
+        // 11. MINI-JUEGO CLASIFICADOR EXPRÉS (SIN REGALAR ÍCONOS + BLOQUEO)
+        // =================================================================
+        function startMiniGame() {
+            state.minigameIdx = 0;
+            openScreen("screen-minigame");
+            renderMiniGameCard();
+        }
+
+        function renderMiniGameCard() {
+            const item = MINIGAME_ITEMS[state.minigameIdx];
+            const total = MINIGAME_ITEMS.length;
+            const comp = getActiveCompanion();
+            document.getElementById("minigame-counter").textContent = `${state.minigameIdx + 1} / ${total}`;
+
+            const shuffledOpts = shuffle(item.options);
+            const safeSpeech = item.speech.replace(/'/g, "\\'");
+
+            const stage = document.getElementById("minigame-stage");
+            stage.innerHTML = `
+                <!-- Overlay de Bloqueo de 3s en el Mini-Juego si se equivoca -->
+                <div id="mini-lock-overlay" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center text-white space-y-3">
+                    <div class="text-6xl animate-bounce">${comp.emoji}</div>
+                    <span class="bg-amber-400 text-slate-950 font-black text-xs px-3 py-1 rounded-full">
+                        🎧 ESCUCHA LA PISTA DE ${comp.name.toUpperCase()}
+                    </span>
+                    <p class="text-lg md:text-xl font-black text-amber-200 max-w-md">${item.hint}</p>
+                </div>
+
+                <span class="inline-block bg-sky-100 text-sky-900 font-black text-xs px-3 py-1 rounded-full">
+                    ${item.badge}
+                </span>
+
+                <div>
+                    <button onclick="speak('${safeSpeech}', true)" class="btn-3d btn-3d-amber px-5 py-2 rounded-2xl font-black text-xs md:text-sm inline-flex items-center gap-2 animate-pulse-gentle">
+                        <span class="text-lg">🔊</span> <span>ESCUCHAR DESAFÍO</span>
+                    </button>
+                </div>
+
+                <div>
+                    ${mysteryClueBadge(item.clueIcon, "Escucha o lee la tarjeta y clasifícala")}
+                </div>
+
+                <h3 class="text-lg md:text-2xl font-black text-slate-900 max-w-xl mx-auto">
+                    ${item.text}
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-1">
+                    ${shuffledOpts.map((opt, idx) => {
+                        const safeOptSpeech = opt.speech.replace(/'/g, "\\'");
+                        return `
+                            <div id="mini-opt-${idx}" class="option-card rounded-3xl p-3.5 flex flex-col justify-between gap-2">
+                                <div class="flex justify-between items-center">
+                                    <button onclick="event.stopPropagation(); speak('${safeOptSpeech}', true)" class="btn-3d btn-3d-blue px-3 py-1 rounded-xl font-black text-xs flex items-center gap-1">
+                                        <span>🔊</span> <span>OÍR OPCIÓN</span>
+                                    </button>
+                                </div>
+                                <button onclick="checkMiniGameAnswer(${idx}, ${opt.isCorrect}, '${safeOptSpeech}')" class="py-1.5 space-y-1.5">
+                                    <div class="text-4xl md:text-5xl">${opt.emoji}</div>
+                                    <div class="font-black text-sm md:text-base text-slate-900 uppercase">${opt.label}</div>
+                                    <div class="inline-block bg-sky-50 text-sky-800 border border-sky-300 font-black text-xs px-3 py-0.5 rounded-full">
+                                        👆 ELEGIR ESTA
+                                    </div>
+                                </button>
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            `;
+
+            speak(item.speech, false);
+        }
+
+        function checkMiniGameAnswer(idx, isCorrect, optSpeech) {
+            const cardEl = document.getElementById(`mini-opt-${idx}`);
+            const item = MINIGAME_ITEMS[state.minigameIdx];
+            if (!cardEl) return;
+
+            if (isCorrect) {
+                cardEl.classList.add("correct-card", "disabled-card");
+                playSound("win");
+                launchConfetti(25);
+                state.coins += 15;
+                saveState();
+                // Audio corto diciendo primero el concepto correcto
+                speak(`¡${optSpeech}! ¡Muy bien!`, true, 1.0);
+
+                setTimeout(() => {
+                    if (state.minigameIdx + 1 < MINIGAME_ITEMS.length) {
+                        state.minigameIdx++;
+                        renderMiniGameCard();
+                    } else {
+                        document.getElementById("victory-emoji").textContent = "⛵⚓";
+                        document.getElementById("victory-badge").textContent = "¡CLASIFICADOR DOMINADO!";
+                        document.getElementById("victory-title").textContent = "¡Experto en Colón, Prat y la Bandera!";
+                        document.getElementById("victory-desc").textContent = "Ganaste un bono de +40 Monedas para tus Squishies.";
+                        state.coins += 40;
+                        saveState();
+                        openScreen("screen-victory");
+                        speak("¡Bravo Emiliano! Dominaste todo el clasificador de Colón, Prat y la bandera.", true);
+                    }
+                }, 1350);
+            } else {
+                cardEl.classList.add("wrong-card", "animate-shake");
+                playSound("hint");
+                const overlay = document.getElementById("mini-lock-overlay");
+                if (overlay) overlay.classList.remove("hidden");
+                speak("Escucha la pista: " + item.hint, true);
+                setTimeout(() => {
+                    if (overlay) overlay.classList.add("hidden");
+                    renderMiniGameCard();
+                }, 3000);
+            }
+        }
+
+        // =================================================================
+        // 12. REINO SQUISHY: MÁQUINA GACHAPON + ELEGIR COMPAÑERO ACTIVO
+        // =================================================================
+        function renderShop() {
+            updateHUD();
+            const grid = document.getElementById("shop-grid");
+            grid.innerHTML = state.shopItems.map((item, idx) => {
+                const isCompanion = item.id === state.companionId;
+                if (item.unlocked) {
+                    return `
+                        <div onclick="selectCompanion('${item.id}')" class="bg-white rounded-3xl p-3 border-4 ${isCompanion ? 'border-purple-500 border-b-8 border-b-purple-700 bg-purple-50/40' : 'border-emerald-300 border-b-8 border-b-emerald-500'} shadow-sm text-center flex flex-col justify-between gap-1.5 cursor-pointer transition transform hover:scale-105">
+                            <div class="flex items-center justify-between gap-1">
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-full border ${item.rarityClass}">
+                                    ${item.rarity}
+                                </span>
+                                ${isCompanion
+                                    ? `<span class="bg-purple-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full">⭐ ACTIVO</span>`
+                                    : `<span class="bg-emerald-100 text-emerald-800 font-black text-[10px] px-2 py-0.5 rounded-full">✅ TUYO</span>`
+                                }
+                            </div>
+                            <div id="shop-squishy-${idx}" class="text-5xl my-1">${item.emoji}</div>
+                            <h4 class="font-black text-xs md:text-sm text-slate-900 leading-tight">${item.name}</h4>
+                            <button class="btn-3d ${isCompanion ? 'btn-3d-purple' : 'btn-3d-green'} w-full py-1.5 rounded-xl font-black text-[11px] mt-1">
+                                ${isCompanion ? '🤝 TU COMPAÑERO' : '👆 ELEGIR COMPAÑERO'}
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const canBuy = state.coins >= item.cost;
+                    return `
+                        <div class="bg-slate-100 rounded-3xl p-3 border-4 border-slate-300 border-b-8 border-b-slate-400 text-center flex flex-col justify-between gap-1.5">
+                            <div class="flex items-center justify-between gap-1">
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-full border ${item.rarityClass}">
+                                    ${item.rarity}
+                                </span>
+                                <span class="bg-amber-200 text-amber-950 font-black text-[10px] px-2 py-0.5 rounded-full">
+                                    🪙 ${item.cost}
+                                </span>
+                            </div>
+                            <div class="text-5xl my-1 filter grayscale opacity-50">${item.emoji}</div>
+                            <h4 class="font-black text-xs md:text-sm text-slate-600 leading-tight">${item.name}</h4>
+                            <button onclick="buyShopItem(${idx})" class="btn-3d ${canBuy ? 'btn-3d-amber' : 'btn-3d-white opacity-60'} w-full py-1.5 rounded-xl font-black text-[11px] mt-1">
+                                ${canBuy ? `🔓 COMPRAR (${item.cost} 🪙)` : `🔒 FALTAN ${item.cost - state.coins} 🪙`}
+                            </button>
+                        </div>
+                    `;
+                }
+            }).join("");
+        }
+
+        function selectCompanion(itemId) {
+            state.companionId = itemId;
+            saveState();
+            renderShop();
+            const comp = getActiveCompanion();
+            playSound("win");
+            speak(`¡Genial Emiliano! Ahora ${comp.name} es tu compañero de estudio. ${comp.phrase}`, true);
+        }
+
+        function buyShopItem(idx) {
+            const item = state.shopItems[idx];
+            if (item.unlocked) return;
+
+            if (state.coins < item.cost) {
+                playSound("hint");
+                speak(`Te faltan ${item.cost - state.coins} monedas para desbloquear a ${item.name}.`, true);
+                return;
+            }
+
+            state.coins -= item.cost;
+            item.unlocked = true;
+            state.companionId = item.id; // Lo equipa automáticamente como compañero
+            saveState();
+            playSound("win");
+            launchConfetti(50);
+            renderShop();
+            speak(`¡Nuevo Squishy desbloqueado! ${item.name}, rareza ${item.rarity}. ${item.phrase}`, true);
+        }
+
+        function spinGachaponMachine() {
+            const locked = state.shopItems.filter(i => !i.unlocked);
+            const msgEl = document.getElementById("gachapon-status-msg");
+            const machineEl = document.getElementById("gachapon-visual");
+            const prizeSlot = document.getElementById("gachapon-prize-slot");
+
+            if (locked.length === 0) {
+                speak("¡Ya desbloqueaste todos los Squishies de la colección, Emiliano!", true);
+                msgEl.innerHTML = "🎉 <strong>¡Colección 100% completa!</strong> Toca cualquiera en la repisa para elegirlo.";
+                return;
+            }
+            if (state.coins < 50) {
+                playSound("hint");
+                speak(`Necesitas cincuenta monedas para girar la máquina Gachapon. Tienes ${state.coins} monedas.`, true);
+                return;
+            }
+
+            state.coins -= 50;
+            saveState();
+            playSound("coin");
+            machineEl.classList.add("animate-shake");
+            msgEl.textContent = "🎰 ¡Girando la máquina Gachapon...!";
+
+            setTimeout(() => {
+                machineEl.classList.remove("animate-shake");
+                const won = locked[Math.floor(Math.random() * locked.length)];
+                won.unlocked = true;
+                state.companionId = won.id;
+                saveState();
+
+                prizeSlot.textContent = won.emoji;
+                playSound("win");
+                launchConfetti(60);
+                msgEl.innerHTML = `✨ ¡Salió <strong>${won.emoji} ${won.name}</strong> (${won.rarity})! Ya es tu compañero.`;
+                renderShop();
+                speak(`¡Sorpresa Gachapon! Te salió ${won.name}, nivel ${won.rarity}. ${won.phrase}`, true);
+            }, 900);
+        }
+
+        // =================================================================
+        // 13. MODAL PARENTAL CON CLAVE "5101" Y TELEMETRÍA
+        // =================================================================
+        let currentPinBuffer = "";
+
+        function openParentModal() {
+            currentPinBuffer = "";
+            document.getElementById("parent-pin-input").value = "";
+            document.getElementById("parent-pin-error").classList.add("hidden");
+            document.getElementById("parent-pin-Step").classList.remove("hidden");
+            document.getElementById("parent-controls-step").classList.add("hidden");
+            const modal = document.getElementById("modal-parent-pin");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeParentModal() {
+            const modal = document.getElementById("modal-parent-pin");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function pressPinDigit(digit) {
+            if (currentPinBuffer.length < 4) {
+                currentPinBuffer += digit;
+                document.getElementById("parent-pin-input").value = currentPinBuffer;
+                playSound("click");
+                if (currentPinBuffer.length === 4) {
+                    verifyParentPin();
+                }
+            }
+        }
+
+        function clearPinDigits() {
+            currentPinBuffer = "";
+            document.getElementById("parent-pin-input").value = "";
+            document.getElementById("parent-pin-error").classList.add("hidden");
+        }
+
+        function verifyParentPin() {
+            if (currentPinBuffer === "5101") {
+                playSound("win");
+                document.getElementById("parent-pin-Step").classList.add("hidden");
+                document.getElementById("parent-controls-step").classList.remove("hidden");
+
+                const totalQ = state.telemetry.totalQuestionsAnswered;
+                const pct = totalQ > 0 ? Math.round((state.telemetry.firstTryCorrect / totalQ) * 100) : 0;
+                document.getElementById("stat-first-try").textContent = `${pct}% (${state.telemetry.firstTryCorrect}/${totalQ})`;
+                document.getElementById("stat-hints-used").textContent = state.telemetry.voluntaryHintsUsed;
+                document.getElementById("stat-learned-worlds").textContent = `${state.learnedWorlds.length} / 5`;
+                document.getElementById("stat-completed-worlds").textContent = `${state.completedWorlds.length} / 5`;
+            } else {
+                playSound("hint");
+                document.getElementById("parent-pin-error").classList.remove("hidden");
+                currentPinBuffer = "";
+                document.getElementById("parent-pin-input").value = "";
+            }
+        }
+
+        function resetStudyProgressOnly() {
+            state.learnedWorlds = [];
+            state.completedWorlds = [];
+            state.telemetry = { totalQuestionsAnswered: 0, firstTryCorrect: 0, voluntaryHintsUsed: 0 };
+            saveState();
+            closeParentModal();
+            goHome();
+            speak("Progreso de estudio reiniciado. Tus monedas y tus Squishies siguen guardados.", true);
+        }
+
+        function resetAllFactory() {
+            localStorage.removeItem("emiblox_v2_coins");
+            localStorage.removeItem("emiblox_v2_learned_worlds");
+            localStorage.removeItem("emiblox_v2_completed_worlds");
+            localStorage.removeItem("emiblox_v2_shop");
+            localStorage.removeItem("emiblox_v2_companion");
+            localStorage.removeItem("emiblox_v2_telemetry");
+
+            state.coins = 60;
+            state.learnedWorlds = [];
+            state.completedWorlds = [];
+            state.shopItems = JSON.parse(JSON.stringify(SHOP_ITEMS_DEFAULT));
+            state.companionId = "sq-frutilla";
+            state.telemetry = { totalQuestionsAnswered: 0, firstTryCorrect: 0, voluntaryHintsUsed: 0 };
+            saveState();
+            closeParentModal();
+            goHome();
+            speak("Aplicación reiniciada completamente desde cero.", true);
+        }
+
+        // =================================================================
+        // 14. MOTOR DE CONFETI
+        // =================================================================
+        function launchConfetti(count = 40) {
+            const canvas = document.getElementById("confetti-canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ["#2563EB", "#EF4444", "#10B981", "#F59E0B", "#8B5CF6"];
+            const pieces = Array.from({ length: count }, () => ({
+                x: Math.random() * canvas.width,
+                y: -20 - Math.random() * 100,
+                size: 8 + Math.random() * 8,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speedY: 3 + Math.random() * 5,
+                speedX: (Math.random() - 0.5) * 4,
+                angle: Math.random() * Math.PI * 2
+            }));
+
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.angle += 0.08;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+                frame++;
+                if (frame < 85) {
+                    requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            draw();
+        }
+
+        // Inicializar la WebApp al cargar
+        window.onload = function () {
+            renderHomeWorlds();
+        };
+    </script>
+</body>
+</html>
